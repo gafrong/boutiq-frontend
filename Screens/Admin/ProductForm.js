@@ -10,10 +10,11 @@ import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
+import * as ImagePicker from "expo-image-picker"
+import mime from "mime";
 
 const ProductForm = (props) => {
 
-    const [selectValue, setSelectValue] = useState(); // use this instead of pickerValue, setPickerValue
     const [brand, setBrand] = useState();
     const [name, setName] = useState();
     const [price, setPrice] = useState();
@@ -30,6 +31,9 @@ const ProductForm = (props) => {
     const [richDescription, setRichDescription] = useState();
     const [numReviews, setNumReviews] = useState(0);
     const [item, setItem] = useState(null);
+    const [ selected, setSelected ] = useState("");
+
+    const [ categoryData, setCategoryData] = useState();
 
     // function to find the object in an array using key value
     function selectedItem(e) {
@@ -40,8 +44,7 @@ const ProductForm = (props) => {
         // Categories
         axios
             .get(`${baseURL}categories`)
-            .then((res) => [setCategories(res.data), console.log(res.data) ]
-            )
+            .then((res) => setCategories(res.data))
             .catch((error) => console.log("error to categories"))
 
         return () => {
@@ -110,16 +113,26 @@ const ProductForm = (props) => {
             onChangeText={(text) => setDescription(text)}
            />
            <View>
-                <SelectList
-                    setSelectValue={setSelectValue}
-                    data={categories}
+                {/*TODO set category select method */}
+                {/* <SelectList
+                    setSelected={setSelected}
+                    data={categoryData}
                     dropdownStyles={{backgroundCoor:"orange"}}
                     placeholder="Select Category"
                     onSelect={()=> 
                         // using selectedItem function set above
-                        setCategories(categories.find(selectedItem).name)
+                        setCategories(categories.find(selectedItem))
                     }
-                />
+                /> */}
+           </View>
+           {err ? <Error message={err} /> : null}
+           <View style={styles.buttonContainer}>
+            <BoutiqButton
+                large
+                primary
+            >
+                <Text style={styles.buttonText}>Confirm</Text>
+            </BoutiqButton>
            </View>
         </FormContainer>
     )
