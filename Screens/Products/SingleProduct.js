@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Image, View, StyleSheet, Text, ScrollView } from 'react-native';
-import { Card, Button, Title, Paragraph } from 'react-native-paper';
+import { Card, Button, Title, Paragraph, Provider as PaperProvider } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 
 //redux
 import { connect } from 'react-redux';
@@ -10,6 +11,7 @@ const SingleProduct = (props) => {
 
     const [item, setItem] = useState(props.route.params.item);
     const [availability, setAvailability] = useState('');
+    const { name, price, image, countInStock } = props;
 
     return (
        <ScrollView style={{marginBottom:80, padding:5}}>
@@ -35,8 +37,13 @@ const SingleProduct = (props) => {
                     <Button
                         mode="outlined"
                         uppercase
-                        onPress={()=>{
-                            props.addItemToCart(item)
+                        onPress={()=>{ props.addItemToCart(item),
+                            Toast.show({
+                                topOffset: 60,
+                                type: "success",
+                                text1: `${item.name} added to your cart`,
+                                text2: "Go to your cart to complete the order"
+                            })
                         }}
                     >Add</Button>
             </View>

@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 // Stacks
 import HomeNavigator from "./HomeNavigator";
 import CartNavigator from "./CartNavigator";
-// import UserNavigator from "./UserNavigator";
+import UserNavigator from "./UserNavigator";
 // import AdminNavigator from "./AdminNavigator";
 
 import CartIcon from "../Shared/CartIcon";
@@ -75,7 +75,7 @@ const Main = () => {
 
            <Tab.Screen 
                 name="User"
-                component={HomeNavigator}
+                component={UserNavigator}
                 options={{
                     tabBarIcon: ({color}) => (
                         <Icon 
