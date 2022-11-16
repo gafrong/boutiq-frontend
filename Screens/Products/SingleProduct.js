@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Image, View, StyleSheet, Text, ScrollView } from 'react-native';
 import { Card, Button, Title, Paragraph, Provider as PaperProvider } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
+import BoutiqButton from '../../Shared/StyledComponents/BoutiqButton';
+import TrafficLight from '../../Shared/StyledComponents/TrafficLight';
 
 //redux
 import { connect } from 'react-redux';
@@ -11,11 +13,31 @@ const SingleProduct = (props) => {
 
     const [item, setItem] = useState(props.route.params.item);
     const [availability, setAvailability] = useState('');
-    const { name, price, image, countInStock } = props;
+    const [availabilityText, setAvailabilityText] = useState("");
+
+    useEffect(() => {
+        if(props.route.params.item.countInStock == 0) {
+            setAvailability(<TrafficLight unavailable></TrafficLight>);
+            setAvailabilityText("Unavailable")
+        } else if (props.route.params.item.countInStock <= 5) {
+            setAvailability(<TrafficLight limited></TrafficLight>);
+            setAvailabilityText("Limited Stock Available")
+        } else {
+            setAvailability(<TrafficLight available></TrafficLight>);
+            setAvailabilityText("Available")
+        }
+
+        return () => {
+            setAvailability(null);
+            setAvailabilityText("");
+        }
+    }, [])
+
 
     return (
-       <ScrollView style={{marginBottom:80, padding:5}}>
         <Card>
+            <ScrollView>
+        
             <View>
                 <Image
                     source={{
@@ -31,8 +53,16 @@ const SingleProduct = (props) => {
                 <Text>{item.brand}</Text>
                 <Paragraph style={styles.contentText}>{item.description}</Paragraph>
             </Card.Content>
-        </Card>    
-            <View>
+            <View style={styles.availabilityContainer}>
+                <View style={styles.availability}>
+                    <Text style={{marginRight:10}}>
+                        {availabilityText}
+                    </Text>
+                    {availability}
+                </View>
+            </View>
+           
+         
                     <Text style={styles.price}>${item.price}</Text>
                     <Button
                         mode="outlined"
@@ -46,8 +76,9 @@ const SingleProduct = (props) => {
                             })
                         }}
                     >Add</Button>
-            </View>
-       </ScrollView>
+            
+        </ScrollView>
+       </Card> 
     )
 }
 
