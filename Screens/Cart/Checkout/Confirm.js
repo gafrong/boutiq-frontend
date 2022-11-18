@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Dimensions, ScrollView, Button } from 'react-native';
 import { List } from 'react-native-paper';
 
@@ -6,39 +6,108 @@ import { List } from 'react-native-paper';
 import { connect } from "react-redux";
 import * as actions from "../../../Redux/Actions/cartActions";
 
+import Toast from 'react-native-toast-message';
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import baseURL from "../../../assets/common/baseUrl";
+
 var { width, height } = Dimensions.get('window');
 
 const Confirm = (props) => {
+    const [user, setUser] = useState();
+    const [token, setToken] = useState();
+    const [productUpdate, setProductUpdate] = useState();
+    const finalOrder = props.route.params;
 
-    const confirmOrder = () => {
-        setTimeout(() => {
-            props.clearCart();
-            //use the StackScreen name ShopCart in CartNavigator to navigate
-            props.navigation.navigate("CompleteMessage");
-        }, 500);
+    const finalProductOrder = finalOrder;
+
+    useEffect(() => {
+        AsyncStorage.getItem("jwt")
+            .then((res) => {
+                setToken(res);
+            })
+            .catch((error) => console.log(error));
+
+        if(finalOrder){
+            getProduct(finalOrder); 
+        }
+        return () => {
+            setProductUpdate();
+        }
+    }, [props]);
+
+    const getProduct = (x) => {
+        const order = x.order.order;
+        var products = [];
+        if(order){
+            order.orderItems.forEach((cart) => {
+                products.push({"product":cart.product._id, "quantity": 1});
+            })
+        }
+        finalProductOrder.order.order.orderItems = products;
     }
 
-    const orderProps = props.route.params;
-    console.log(orderProps)
+
+    const confirmOrder = () => {
+
+        const order = finalProductOrder.order.order;
+        order.country = "대한민국";
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        };
+
+        axios
+        .post(`${baseURL}orders`, order, config)
+        .then((res) => {
+            if(res.status == 200 || res.status == 201){
+                Toast.show({
+                    topOffset: 60,
+                    type: "success",
+                    text1: "Order Completed",
+                    text2:"",
+                })
+                setTimeout(() => {
+                    props.clearCart();
+                    //use the StackScreen name ShopCart in CartNavigator to navigate
+                    props.navigation.navigate("CompleteMessage");
+                }, 500);
+            }
+        })
+        .catch((error) => {
+            Toast.show({
+                topOffset: 60,
+                type: "error",
+                text1: "Something went wrong",
+                text2:"Please try again",
+            })
+            console.log(error)
+        })
+
+        
+    }
+
     return(
         <ScrollView contentContainerStyle={StyleSheet.container}>
             <View style={styles.titleContainer}>
                      
-                { orderProps && typeof orderProps?.order?.order !== 'undefined' ?
+                { finalOrder && typeof finalOrder?.order?.order !== 'undefined' ?
                     <View>
                         <Text style={{fontSize:20,fontWeight:"bold"}}>Confirm Order</Text>  
                         <View style={{borderWidth:1, borderColor:"orange"}}>
                             <Text style={styles.title}>배송지:</Text>
                             <View style={{ padding: 8}}>
-                                <Text>주소: {orderProps.order.order.shippingAddress1}</Text>
-                                <Text>상세주소: {orderProps.order.order.shippingAddress2}</Text>
-                                <Text>도시: {orderProps.order.order.city}</Text>
-                                <Text>우편번호: {orderProps.order.order.zip}</Text>
+                                <Text>주소: {finalOrder.order.order.shippingAddress1}</Text>
+                                <Text>상세주소: {finalOrder.order.order.shippingAddress2}</Text>
+                                <Text>도시: {finalOrder.order.order.city}</Text>
+                                <Text>우편번호: {finalOrder.order.order.zip}</Text>
 
-                                <Text>연락처: {orderProps.order.order.phone}</Text>
+                                <Text>연락처: {finalOrder.order.order.phone}</Text>
                             </View>
                             <Text style={styles.title}>Items:</Text>
-                                {orderProps.order.order.orderItems.map((x)=>{
+                                {finalOrder.order.order.orderItems.map((x)=>{
                                     return(
                                         <List.Item style={styles.listItem}
                                             title={x.product.name}

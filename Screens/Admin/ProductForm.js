@@ -92,11 +92,10 @@ const ProductForm = (props) => {
             aspect: [4, 3],
             quality: 1
         });
-        console.log(result);
 
         if (!result.canceled) {
-            setMainImage(result.assets[0].uri);
-            setImage(result.assets[0].uri);
+            setMainImage(result.uri);
+            setImage(result.uri);
         }
     };
 
