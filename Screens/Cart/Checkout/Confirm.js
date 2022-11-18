@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, Dimensions, ScrollView, Button } from 'react-native';
 import { List } from 'react-native-paper';
 
@@ -10,17 +10,18 @@ import Toast from 'react-native-toast-message';
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import baseURL from "../../../assets/common/baseUrl";
+import AuthGlobal from "../../../Context/store/AuthGlobal";
 
 var { width, height } = Dimensions.get('window');
 
 const Confirm = (props) => {
-    const [user, setUser] = useState();
+    const context = useContext(AuthGlobal);
     const [token, setToken] = useState();
     const [productUpdate, setProductUpdate] = useState();
     const finalOrder = props.route.params;
 
     const finalProductOrder = finalOrder;
-
+ 
     useEffect(() => {
         AsyncStorage.getItem("jwt")
             .then((res) => {
@@ -52,6 +53,7 @@ const Confirm = (props) => {
 
         const order = finalProductOrder.order.order;
         order.country = "대한민국";
+        order.user = context.stateUser.user.userId;
 
         const config = {
             headers: {
