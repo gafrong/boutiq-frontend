@@ -8,16 +8,10 @@ const paymentCards = [
     { value: 'Other', key: 3}
 ]
 
-// function to find the object in an array using key value
-function selectedItem(e) {
-    return e.key === selected;
-}
-
 const Payment = (props) => {
     // catch order data passed through params from Checkout
     const order = props.route.params;
-    const [ selected, setSelected ] = useState();
-    const [ card, setCard ] = useState();
+
     return(
         <SafeAreaView>
             <View>

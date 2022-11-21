@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Text, View, Dimensions, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { List, Divider } from 'react-native-paper';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -7,10 +7,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { connect } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions'
+import AuthGlobal from '../../Context/store/AuthGlobal';
 
 var { height, width } = Dimensions.get("window");
 
 const ShopCart = (props) => {
+
+    const context = useContext(AuthGlobal);
+
     var total = 0;
     // calculate the total of all products in the cart
     props.cartItems.forEach(cart => {
@@ -53,8 +57,14 @@ const ShopCart = (props) => {
                             title="Clear"
                             onPress={ ()=> props.clearCart() }
                             />
-                        <Button title="Checkout" 
-                            onPress={() => props.navigation.navigate('Checkout')}/>
+                        {context.stateUser.isAuthenticated 
+                            ?   <Button title="Checkout" 
+                                onPress={() => props.navigation.navigate('Checkout')}/> 
+                            : (
+                                <Button title="Login" 
+                                onPress={() => props.navigation.navigate('Login')}/> 
+                        )}
+                        
                     </View>
                 </View>
             ): (

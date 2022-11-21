@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Text, View, Button } from 'react-native';
 
 import FormContainer from '../../../Shared/Form/FormContainer';
 import Input from '../../../Shared/Form/Input';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import AuthGlobal from "../../../Context/store/AuthGlobal"
+
+import Toast from 'react-native-toast-message';
 
 import { connect } from 'react-redux';
 
 const countries = require("../../../assets/data/countries.json")
 
 const Checkout = (props) => {
+    const context = useContext(AuthGlobal)
 
     const [ orderItems, setOrderItems ] = useState();
     const [ address, setAddress ] = useState();
@@ -19,9 +23,22 @@ const Checkout = (props) => {
     const [ country, setCountry ] = useState();
     const [ phone, setPhone ] = useState();
     const [ selected, setSelected ] = useState("");
+    const [ user, setUser ] = useState();
 
     useEffect(() => {
         setOrderItems(props.cartItems)
+
+        if(context.stateUser.isAuthenticated) {
+            setUser(context.stateUser.user.userId)
+        } else {
+            props.navigation.navigate("Cart");
+            Toast.show({
+                topOffset: 60,
+                type: "error",
+                text1: "Please Login to Checkout",
+                text2: ""
+            });
+        }
 
         return () => {
             setOrderItems();
@@ -36,16 +53,12 @@ const Checkout = (props) => {
             phone,
             shippingAddress1: address,
             shippingAddress2: address2,
-            zip,
-            country
+            status: "3",
+            user,
+            zip
         }
         // passing order object as parameter to Payment screen
         props.navigation.navigate("Payment", {order: order})
-    }
-
-    // function to find the object in an array using key value
-    function selectedItem(e) {
-        return e.key === selected;
     }
 
     return (

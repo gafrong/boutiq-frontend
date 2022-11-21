@@ -109,16 +109,21 @@ const Confirm = (props) => {
                                 <Text>연락처: {finalOrder.order.order.phone}</Text>
                             </View>
                             <Text style={styles.title}>Items:</Text>
-                                {finalOrder.order.order.orderItems.map((x)=>{
-                                    return(
-                                        <List.Item style={styles.listItem}
-                                            title={x.product.name}
-                                            left={()=> <List.Image variant="image" source={{uri: x.product.image}}/>}
-                                            description={x.product.price}
-                                        />
-                                    )
-                                })}
-                                
+                            {/* {finalOrder && ( */}
+                                <>
+                                    {finalOrder.order.order.orderItems.map((x)=>{
+                                        return(
+                                            <List.Item style={styles.listItem}
+                                                key={x.product.name}
+                                                title={x.product.name}
+                                                left={()=> <List.Image variant="image" source={{uri: x.product.image}}/>}
+                                                description={x.product.price}
+                                            />
+                                        )
+                                    })}
+
+                                </> 
+                            {/* )}   */}
                         </View>
                         <Button 
                             title={'Place Order'} 

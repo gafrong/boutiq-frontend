@@ -2,6 +2,7 @@ import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, Button } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import OrderCard from '../../Shared/OrderCard';
 
 import axios from 'axios';
 import baseURL from '../../assets/common/baseUrl';
@@ -13,8 +14,10 @@ import { logoutUser } from '../../Context/actions/Auth.actions';
 const UserProfile = (props) => {
     const context = useContext(AuthGlobal)
     const [userProfile, setUserProfile] = useState()
+    const [orders, setOrders] = useState()
 
-    useEffect(() => {
+    useFocusEffect(
+        useCallback(() => {
         if(
             context.stateUser.isAuthenticated === false ||
             context.stateUser.isAuthenticated === null
@@ -29,15 +32,31 @@ const UserProfile = (props) => {
                         headers: { Authorization: `Bearer ${res}`},
                     })
                     .then((user) => setUserProfile(user.data))
+                    .then(
+                        axios
+                        .get(`${baseURL}orders`, {
+                            headers: {Authorization: `Bearer ${res}`}
+                        })
+                        .then((x) => {
+                            const data = x.data;
+                            const userOrders = data.filter(
+                                (order) => order.user._id === context.stateUser.user.userId
+                            );
+                            setOrders(userOrders);
+                        })
+                        .catch((error) => console.log(error))
+                    )
             })
             .catch((error) => console.log('Whatch this error', error.response.data))
 
         return () => {
             setUserProfile();
+            setOrders();
         }    
 
 
-    }, [context.stateUser.isAuthenticated])
+    }, [context.stateUser.isAuthenticated]))
+
     return(
         <>
             <ScrollView contentContainerStyle={styles.subContainer}>
@@ -57,6 +76,20 @@ const UserProfile = (props) => {
                         AsyncStorage.removeItem("jwt"),
                         logoutUser(context.dispatch)
                     }}/>
+                </View>
+                <View style={styles.order}>
+                    <Text style={{fontSize: 20}}>My Orders</Text>
+                    <View>
+                        {orders ? (
+                            orders.map((x) => {
+                                return <OrderCard key={x.id} {...x} />;
+                            })
+                        ) : (
+                            <View style={styles.order}>
+                                <Text>You have no orders</Text>
+                            </View>
+                        )}
+                    </View>
                 </View>
             </ScrollView>
         </>
