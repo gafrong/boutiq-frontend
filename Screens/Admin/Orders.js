@@ -1,13 +1,38 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
+import { View, Text, FlatList, Button } from 'react-native';
 import axios from 'axios';
-import baseURL from '../../assets/common/baseUrl';
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import baseURL from "../../assets/common/baseUrl";
+import AuthGlobal from "../../Context/store/AuthGlobal";
 import { useFocusEffect } from '@react-navigation/native';
 
 const Orders = (props) => {
+    const [ orderList, setOrderList ] = useState();
+    const context = useContext(AuthGlobal);
+
+
+    useFocusEffect(
+        useCallback(() =>{     
+            AsyncStorage.getItem("jwt")
+            .then((res) => {
+                axios
+                    .get(`${baseURL}orders`, {
+                        headers: {Authorization: `Bearer ${res}`}
+                    })
+                    .then((x) => setOrderList(x.data))
+            })
+            .catch((error) => console.log(error))            
+        }, [])
+    )
+    
     return(
         <View>
-            <Text>Orders Screen</Text>
+            <FlatList 
+                data={orderList}
+                renderItem={({item}) => (
+                    <Text>{item.shippingAddress1}</Text>
+                )}
+            />
         </View>
     )
 }
