@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { View, StyleSheet } from 'react-native'
+import Icon from 'react-native-vector-icons/Feather'
+import { BlurView } from 'expo-blur';
+
 
 // Stacks
-import HomeNavigator from "./HomeNavigator";
+import ShopNavigator from "./ShopNavigator";
 import CartNavigator from "./CartNavigator";
 import UserNavigator from "./UserNavigator";
 import AdminNavigator from "./AdminNavigator";
+import VideoNavigator from "./VideoNavigator";
 
 import CartIcon from "../Shared/CartIcon";
 import AuthGlobal from "../Context/store/AuthGlobal";
@@ -20,20 +23,50 @@ const Main = () => {
 
     return (
         <Tab.Navigator 
-            initialRouteName="Home"
+            initialRouteName="Videos"
             screenOptions={{
+                headerShown: false,
                 keboardHidesTabBar: true,
-                showLabel: false,
-                activeTintColor: '#e91e63'
+                // showLabel: false,
+                // activeTintColor: 'tomato',
+                tabBarShowLabel: false,
+                tabBarActiveTintColor: 'tomato',
+                tabBarInactiveTintColor: '#ffffff',
+                tabBarBackground: () => (
+                    <BlurView tint="dark" intensity={80} style={{flex:1}}/>
+                ),
+                tabBarStyle:{
+                    backgroundColor: 'transparent',
+                    position: 'absolute',
+                    left: 0,
+                    bottom: 0,
+                    right: 0,
+                    borderTopWidth: 0,
+                    elevation: 0
+                }
             }}
         >
            <Tab.Screen
-                name="Home"
-                component={HomeNavigator}
+                name="Videos"
+                component={VideoNavigator}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Icon 
-                            name="home"
+                            name="video"
+                            style={{position: "relative"}}
+                            color={color}
+                            size={30}
+                        />
+                    )
+                }}
+           /> 
+           <Tab.Screen
+                name="Shop"
+                component={ShopNavigator}
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <Icon 
+                            name="shopping-bag"
                             style={{position: "relative"}}
                             color={color}
                             size={30}
@@ -66,7 +99,7 @@ const Main = () => {
                 options={{
                     tabBarIcon: ({color}) => (
                         <Icon 
-                            name="cog"
+                            name="settings"
                             color={color}
                             size={30}
                         />

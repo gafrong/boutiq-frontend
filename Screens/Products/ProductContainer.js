@@ -1,6 +1,7 @@
 import React, {useState, useCallback } from "react";
-import { View, StyleSheet, ActivityIndicator, FlatList, Dimensions, Text } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, FlatList, Dimensions } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { Text } from 'react-native-paper';
 
 // import functions to access database
 import baseURL from '../../assets/common/baseUrl';
@@ -68,9 +69,12 @@ const ProductContainer = (props) => {
     return(
         <>
             {loading == false ? (
-                <View style={{width:width}}>
-                    <Text>Hello</Text>
-                    <View style={{marginTop: 10}}>
+                <View style={[styles.container,{width:width}]}>
+                    
+                    <View>
+                        <Text 
+                            style={[{color:"#ffffff"}, {padding:15}]}
+                            variant="titleLarge">STORE</Text>
                         <FlatList
                             numColumns={2}
                             data={products}
@@ -86,7 +90,7 @@ const ProductContainer = (props) => {
                 </View>
             ) : (
                 // Loading
-                <View style={[styles.center, {backgroundColor: '#f2f2f2'}]}>
+                <View style={styles.center}>
                     <ActivityIndicator size="large" color="red" />
                 </View>
             )}
@@ -97,15 +101,7 @@ const ProductContainer = (props) => {
 const styles = StyleSheet.create({
     container: {
       flexWrap: "wrap",
-      backgroundColor: "gainsboro",
-    },
-    listContainer: {
-      height: height,
-      flex: 1,
-      flexDirection: "row",
-      alignItems: "flex-start",
-      flexWrap: "wrap",
-      backgroundColor: "gainsboro",
+      backgroundColor: "#222222"
     },
     center: {
         justifyContent: 'center',

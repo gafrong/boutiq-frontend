@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, Dimensions, ScrollView, Button } from 'react-native';
-import { List } from 'react-native-paper';
+import { List, Avatar } from 'react-native-paper';
 
 // connect to redux to clear cart later
 import { connect } from "react-redux";
@@ -116,7 +116,7 @@ const Confirm = (props) => {
                                             <List.Item style={styles.listItem}
                                                 key={x.product.name}
                                                 title={x.product.name}
-                                                left={()=> <List.Image variant="image" source={{uri: x.product.image}}/>}
+                                                left={()=> <Avatar.Image variant="image" source={{uri: x.product.image}}/>}
                                                 description={x.product.price}
                                             />
                                         )

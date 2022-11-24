@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import { Text, View, Dimensions, StyleSheet, Button, TouchableOpacity } from 'react-native';
-import { List, Divider } from 'react-native-paper';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import CartItem from './CartItem';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -26,7 +25,7 @@ const ShopCart = (props) => {
         <>
             {props.cartItems.length ? (
                 <View style={styles.emptyContainer}>
-                    <Text>Your Cart</Text>
+                    <Text style={styles.cartPageTitie}>쇼핑카트</Text>
                     <SwipeListView
                         data={props.cartItems}
                         renderItem={ data => (
@@ -98,7 +97,12 @@ const styles = StyleSheet.create({
         height: height,
         alignItems: "center",
         justifyContent: "center",
-        height: "100%"
+        height: "100%",
+        marginTop: 50
+    },
+    cartPageTitie:{
+        paddingBottom: 20,
+        fontSize:20
     },
     bottomContainer: {
         flexDirection: 'row',

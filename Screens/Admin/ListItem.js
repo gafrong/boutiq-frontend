@@ -65,7 +65,7 @@ const ListItem = (props) => {
                         ? props.image
                         : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png"
                     }} 
-                    resizeMode="contain" 
+                    resizeMode="cover" 
                     style={styles.image}
                 />
                 <Text style={styles.item}>{props.brand}</Text>
@@ -88,14 +88,14 @@ const ListItem = (props) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        padding: 5,
+        padding: 3,
         width: width
     },
     image: {
-        borderRadius: 50,
+        borderRadius: 0,
         width: width / 6,
-        height: 20,
-        margin: 2
+        height: 50,
+        margin: 1
     },
     item: {
         flexWrap: "wrap",

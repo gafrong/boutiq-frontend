@@ -9,7 +9,7 @@ const Stack = createStackNavigator()
 
 function MyStack() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{headerTrasparent: true}}>
             <Stack.Screen 
                 name='Homee'
                 component={ProductContainer}
@@ -28,6 +28,6 @@ function MyStack() {
     )
 }
 
-export default function HomeNavigator() {
+export default function ShopNavigator() {
     return <MyStack />
 }

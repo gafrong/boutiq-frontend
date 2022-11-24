@@ -37,46 +37,39 @@ const SingleProduct = (props) => {
     return (
         <Card>
             <ScrollView>
-        
-            <View>
-                <Image
+                <Card.Cover
                     source={{
                         uri: item.image ? 
                         item.image : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png"
                     }}
-                    resizeMode="contain"
                     style={styles.image}
                 /> 
-            </View>
-            <Card.Content style={styles.contentContainer}>
-                <Title style={styles.contentHeader}>{item.name}</Title>
-                <Text>{item.brand}</Text>
-                <Paragraph style={styles.contentText}>{item.description}</Paragraph>
-            </Card.Content>
-            <View style={styles.availabilityContainer}>
-                <View style={styles.availability}>
-                    <Text style={{marginRight:10}}>
-                        {availabilityText}
-                    </Text>
-                    {availability}
-                </View>
-            </View>
-           
-         
-                    <Text style={styles.price}>${item.price}</Text>
-                    <Button
-                        mode="outlined"
-                        uppercase
-                        onPress={()=>{ props.addItemToCart(item),
-                            Toast.show({
-                                topOffset: 60,
-                                type: "success",
-                                text1: `${item.name} added to your cart`,
-                                text2: "Go to your cart to complete the order"
-                            })
-                        }}
-                    >Add</Button>
-            
+                <Card.Content style={styles.contentContainer}>
+                    <Title style={styles.contentHeader}>{item.name}</Title>
+                    <Text>{item.brand}</Text>
+                    <Paragraph style={styles.contentText}>{item.description}</Paragraph>
+                </Card.Content>
+                <View style={styles.availabilityContainer}>
+                    <View style={styles.availability}>
+                        <Text style={{marginRight:10}}>
+                            {availabilityText}
+                        </Text>
+                        {availability}
+                    </View>
+                </View>         
+                <Text style={styles.price}>${item.price}</Text>
+                <Button
+                    mode="outlined"
+                    uppercase
+                    onPress={()=>{ props.addItemToCart(item),
+                        Toast.show({
+                            topOffset: 60,
+                            type: "success",
+                            text1: `${item.name} added to your cart`,
+                            text2: "Go to your cart to complete the order"
+                        })
+                    }}
+                >Add</Button>
         </ScrollView>
        </Card> 
     )

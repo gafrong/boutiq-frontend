@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { Text, List, Divider } from 'react-native-paper';
+import { List, Divider, Avatar } from 'react-native-paper';
 
 var { height } = Dimensions.get('window');
 
@@ -16,11 +16,13 @@ const CartItem = (props) => {
         >
             <List.Item 
                 left={()=> 
-                    <List.Image source={{
-                        uri: data.image 
-                        ? data.image 
-                        : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png"
-                        }}/>
+                    <Avatar.Image 
+                        source={{
+                            uri: data.image 
+                            ? data.image 
+                            : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png"
+                        }}
+                        />
                 }
                 title={data.name}
                 description={data.price}
