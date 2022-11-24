@@ -1,12 +1,13 @@
 import React, {useEffect, useState, useContext } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import FormContainer from '../../Shared/Form/FormContainer';
-import Input from '../../Shared/Form/Input';
+import { View, StyleSheet, Button, Dimensions } from 'react-native';
 import Error from '../../Shared/Error';
+import { Text, TextInput } from 'react-native-paper';
 
 // Context
 import AuthGlobal from '../../Context/store/AuthGlobal';
 import { loginUser } from '../../Context/actions/Auth.actions';
+
+var { width } = Dimensions.get('window');
 
 const Login = (props) => {
 
@@ -14,6 +15,7 @@ const Login = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [text, setText] = useState('');
 
     // everytime context.stateUser.isAuthenticated changes useEffect will be triggered
     useEffect(() => {
@@ -35,42 +37,68 @@ const Login = (props) => {
     }
 
     return(
-        <FormContainer title={"Login"}>
-            <Input
-                placeholder={"Enter email"}
+        <View style={styles.formContainer}>
+            <Text variant="displayMedium" style={styles.formTitle}>로그인</Text>
+            <TextInput
+                placeholder={"이메일 주소"}
                 name={"email"}
                 id={"email"}
                 value={email}
                 onChangeText={(text) => setEmail(text.toLowerCase())}
+                style={styles.inputForm}
+                mode={'outlined'}
             />
-            <Input
-                placeholder={"Enter password"}
+            <TextInput
+                placeholder={"비밀번호"}
                 name={"password"}
                 id={"password"}
                 secureTextEntry={true}
                 value={password}
                 onChangeText={(text) => setPassword(text)}
+                style={styles.inputForm}
+                mode={'outlined'}
             />
             <View style={styles.buttonGroup}>
                 {error ? <Error message={error} /> : null}
-                <Button title="login" onPress={() => handleSubmit()}/>
+                <Button title="로그인" onPress={() => handleSubmit()}/>
             </View>
             <View style={[{marginTop:40}, styles.buttonGroup]}>
-                <Text style={styles.middleText}>Don't have an account yet?</Text>
-                <Button title="Register" onPress={() => props.navigation.navigate("Register")}/>
+                <Text style={styles.middleText}>회원가입이 필요한가요?</Text>
+                <Button title="회원가입" onPress={() => props.navigation.navigate("Register")}/>
             </View>
-        </FormContainer>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
+    formContainer:{
+        flex:1,
+        marginTop: 0,
+        padding:30,
+        paddingBottom: 70,
+        justifyContent: 'center',
+        textAlign: 'center',
+        backgroundColor:'#222222',
+        color:"#ffffff"
+    },
+    formTitle:{
+        fontSize:20,
+        marginBottom:30, textAlign: 'center',
+        alignItems: 'center',
+        color:"#ffffff"
+    },
+    inputForm:{
+        marginBottom:15,
+    },
     buttonGroup: {
-      width: "80%",
       alignItems: "center",
+      textAlign: 'center,'
     },
     middleText: {
       marginBottom: 20,
       alignSelf: "center",
+      textAlign: 'center,',
+      color: "#ffffff"
     },
   });
 

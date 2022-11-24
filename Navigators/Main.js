@@ -27,13 +27,11 @@ const Main = () => {
             screenOptions={{
                 headerShown: false,
                 keboardHidesTabBar: true,
-                // showLabel: false,
-                // activeTintColor: 'tomato',
                 tabBarShowLabel: false,
                 tabBarActiveTintColor: 'tomato',
                 tabBarInactiveTintColor: '#ffffff',
                 tabBarBackground: () => (
-                    <BlurView tint="dark" intensity={80} style={{flex:1}}/>
+                    <BlurView tint="dark" intensity={20} style={{flex:1}}/>
                 ),
                 tabBarStyle:{
                     backgroundColor: 'transparent',

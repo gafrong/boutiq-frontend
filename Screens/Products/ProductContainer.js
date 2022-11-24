@@ -70,28 +70,27 @@ const ProductContainer = (props) => {
         <>
             {loading == false ? (
                 <View style={[styles.container,{width:width}]}>
-                    
-                    <View>
-                        <Text 
-                            style={[{color:"#ffffff"}, {padding:15}]}
-                            variant="titleLarge">STORE</Text>
-                        <FlatList
-                            numColumns={2}
-                            data={products}
-                            renderItem={({item}) => 
-                            <ProductList
-                                navigation={props.navigation}
-                                key={item._id}
-                                item={item}
-                            />}
-                            keyExtractor={item => item.name}
-                        />
-                    </View>
+                    <Text 
+                        style={[{color:"#ffffff"}, {padding:15}]}
+                        variant="titleLarge">STORE</Text>
+                    <FlatList
+                        numColumns={2}
+                        data={products}
+                        renderItem={({item}) => 
+                        <ProductList
+                            navigation={props.navigation}
+                            key={item._id}
+                            item={item}
+                        />}
+                        keyExtractor={item => item.name}
+                    />
                 </View>
             ) : (
                 // Loading
-                <View style={styles.center}>
-                    <ActivityIndicator size="large" color="red" />
+                <View style={styles.loadingContainer}>
+                    <View>
+                        <ActivityIndicator size="large" color="red" />
+                    </View>
                 </View>
             )}
         </>
@@ -100,12 +99,19 @@ const ProductContainer = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-      flexWrap: "wrap",
-      backgroundColor: "#222222"
+        flex:1,
+        flexWrap: "wrap",
+        backgroundColor: "#222222"
     },
     center: {
+        // justifyContent: 'center',
+        // alignItems: 'center'
+    },
+    loadingContainer:{
+        flex:1,
         justifyContent: 'center',
-        alignItems: 'center'
+        textAlign: 'center',
+        backgroundColor:'#222222',
     }
   });
 

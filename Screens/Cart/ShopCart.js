@@ -68,8 +68,8 @@ const ShopCart = (props) => {
                 </View>
             ): (
                 <View style={styles.emptyContainer}>
-                    <Text>Looks like your cart is empty</Text>
-                    <Text>Add products to your cart to get started</Text>
+                    <Text style={styles.emptyText}>장바구니가 비어있습니다.</Text>
+                    <Text style={styles.emptyText}>상품을 담아보고 시작해보세요.</Text>
                 </View>
             )}
         </>
@@ -98,7 +98,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         height: "100%",
-        marginTop: 50
+        marginTop: 0,
+        backgroundColor:"#222222",
+        color: "#ffffff"
+    },
+    emptyText: {
+        color: "#ffffff",
+        padding: 10
     },
     cartPageTitie:{
         paddingBottom: 20,

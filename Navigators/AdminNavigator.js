@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 
 function MyStack() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{headerTrasparent: true}}>
             <Stack.Screen 
                 name="Products"
                 component={Products}
