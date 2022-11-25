@@ -28,7 +28,7 @@ const Center = styled.View`
 	flex-direction: row;
 `
 
-const VideoCompiler = ({ videos }) => {
+const VideoCompiler = ({ videos, props }) => {
     const [selected, setSelected] = useState(0)
 
     return(
@@ -55,7 +55,7 @@ const VideoCompiler = ({ videos }) => {
 							]}>
 							<Center>
 								<Info user={item.user} />
-								<Sidebar avatar={item.user.avatar} count={item.count} />
+								<Sidebar avatar={item.user.avatar} count={item.count} props={props} user={item.user}/>
 							</Center>
 						</Gradient>
                     </View>

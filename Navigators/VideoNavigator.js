@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import VideoContainer from "../Screens/Video/VideoContainer";
 import ProductContainer from "../Screens/Products/ProductContainer";
 import SingleProduct from "../Screens/Products/SingleProduct";
-
+import StoreContainer from "../Screens/Store/StoreContainer";
 
 const Stack = createStackNavigator()
 
@@ -19,8 +19,8 @@ function MyStack() {
                 }}
             />
             <Stack.Screen 
-                name='Homee'
-                component={ProductContainer}
+                name='Store'
+                component={StoreContainer}
                 options={{
                     headerShown:false,
                 }}

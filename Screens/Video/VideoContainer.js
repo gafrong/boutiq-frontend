@@ -22,7 +22,7 @@ const VideoContainer = (props) => {
             />
             <Container>
                 <Header />
-                <VideoCompiler videos={api} />
+                <VideoCompiler videos={api} props={props} />
             </Container>    
         </>
     )
