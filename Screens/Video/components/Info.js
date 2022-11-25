@@ -17,11 +17,6 @@ const UserName = styled.Text`
 	font-weight: bold;
 	letter-spacing: -0.3px;
 `
-const Checked = styled.Image`
-	width: 16px;
-	height: 16px;
-	margin: 0 5px;
-`
 const Description = styled.Text`
 	font-size: 15px;
 	color: rgba(255, 255, 255, 0.8);
