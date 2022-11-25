@@ -50,7 +50,7 @@ const Main = () => {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Icon 
-                            name="video"
+                            name="home"
                             style={{position: "relative"}}
                             color={color}
                             size={30}
@@ -64,7 +64,7 @@ const Main = () => {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Icon 
-                            name="shopping-bag"
+                            name="search"
                             style={{position: "relative"}}
                             color={color}
                             size={30}

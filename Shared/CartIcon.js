@@ -39,12 +39,13 @@ const styles = StyleSheet.create({
         alignContent: "center",
         top: -4,
         right: -15,
+        backgroundColor:"tomato"
       },
       text: {
         color: "white",
         fontSize: 12,
         width: 100,
-        fontWeight: "bold"
+        fontWeight: "bold",
       },
 })
 

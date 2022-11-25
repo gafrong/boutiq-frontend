@@ -1,4 +1,5 @@
 import React from 'react'
+import {Pressable} from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import styled from 'styled-components/native'
 
@@ -7,7 +8,7 @@ const Container = styled.View`
 	height: 100%;
 	padding-bottom: 59px;
 	justify-content: flex-end;
-    right: 16px;
+    right: 10px;
     position: absolute;
 `
 const Menu = styled.View`
@@ -32,34 +33,44 @@ const Count = styled.Text`
 	letter-spacing: -0.1px;
 `
 
-const Sidebar = ({ avatar, count }) => {
+const Sidebar = (props) => {
 	return (
 		<Container>
-			<Menu>
-				<User>
-					<Avatar resizeMode='cover' source={avatar} />
-				</User>
-			</Menu>
-
-			<Menu>
-				<Icon name="heart" size={25} color={"#ffffff"}/>
-				<Count>{count.like}</Count>
-			</Menu>
-
+            <Pressable>
+                <Menu>
+                    <User>
+                        <Avatar resizeMode='cover' source={props.avatar}/>
+                    </User>
+                </Menu>
+            </Pressable>
+            <Pressable onPress={()=>alert("update like count")}>
+                <Menu>
+                    <Icon 
+                        name="heart" 
+                        size={25} 
+                        color={"#ffffff"}/>
+                    <Count>{props.count.like}</Count>
+                </Menu>
+            </Pressable>
+            <Pressable onPress={()=>alert("slide up comment field")}>
 			<Menu>
 				<Icon
 					size={25}
 					name="message-circle"
                     color={"#ffffff"}
 				/>
-				<Count>{count.comment}</Count>
+				<Count>{props.count.comment}</Count>
 			</Menu>
-
-			<Menu>
-				<Icon size={25} name="share-2" color={"#ffffff"}/>
-				<Count>{count.share}</Count>
-			</Menu>
-
+            </Pressable>
+            <Pressable onPress={()=>alert("slide up sharing field")}>
+                <Menu>
+                    <Icon 
+                        size={25} 
+                        name="send" 
+                        color={"#ffffff"}/>
+                    <Count>{props.count.share}</Count>
+                </Menu>
+            </Pressable>
 		</Container>
 	)
 }

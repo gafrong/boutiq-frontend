@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {View, StyleSheet, Text, Image, TouchableHighLight, TouchableOpacity, Dimensions, Button, Modal} from 'react-native';
+import {View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import BoutiqButton from "../../Shared/StyledComponents/BoutiqButton";
 

@@ -5,11 +5,14 @@ import styled from "styled-components";
 
 import VideoPlayer from "./VideoPlayer";
 import Sidebar from "./components/Sidebar";
+import PagerView from 'react-native-pager-view';
+import Info from "./components/Info";
 
 const { height } = Dimensions.get('window')
 
-const Container = styled.View`
+const Container = styled(PagerView)`
     height: ${height}px;
+    background-color: #000000;
 `
 const Gradient = styled(LinearGradient)`
 	height: 100%;
@@ -51,7 +54,7 @@ const VideoCompiler = ({ videos }) => {
 								'rgba(26,26,26,0.6)'
 							]}>
 							<Center>
-								{/* <Info user={item.user} /> */}
+								<Info user={item.user} />
 								<Sidebar avatar={item.user.avatar} count={item.count} />
 							</Center>
 						</Gradient>

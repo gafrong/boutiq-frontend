@@ -31,6 +31,23 @@ const api = [
 			comment: '2388',
 			share: '535'
 		}
+	},
+	{
+		id: 2,
+		video: require('../assets/videos/liv.mp4'),
+		poster: require('../assets/gal6.jpg'),
+		user: {
+			username: 'asdjfkaldjklads',
+			description:
+				'lorem ipsum thie ajsdk amksd smfk asdmf mskdf amfk asdfmkafdmsk',
+			music: 'som original',
+			avatar: require('../assets/splash.png')
+		},
+		count: {
+			like: '37',
+			comment: '238',
+			share: '55'
+		}
 	}
 ]
 
