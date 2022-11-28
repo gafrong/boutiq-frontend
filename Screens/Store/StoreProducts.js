@@ -12,7 +12,7 @@ const StoreProducts = () => {
                 <Card style={styles.card}>
                     <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
                     <Card.Content style={styles.whiteText}>
-                        <Title style={styles.whiteText}>Fake Product Name</Title>
+                        <Title style={styles.title}>Fake Product Name</Title>
                         <Paragraph style={styles.whiteText}>ajskdlf ajskdfla dsjaklsdfjkaljdfklajdfl ajdfskaljdfkls</Paragraph>
                     </Card.Content>
                     <Card.Actions>
@@ -23,7 +23,7 @@ const StoreProducts = () => {
                 <Card style={styles.card}>
                     <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
                     <Card.Content>
-                        <Title style={styles.whiteText}>Fake Product Name</Title>
+                        <Title style={styles.title}>Fake Product Name</Title>
                         <Paragraph style={styles.whiteText}>ajskdlf ajskdfla dsjaklsdfjkaljdfklajdfl ajdfskaljdfkls</Paragraph>
                     </Card.Content>
                     <Card.Actions>
@@ -34,7 +34,7 @@ const StoreProducts = () => {
                 <Card style={styles.card}>
                     <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
                     <Card.Content>
-                        <Title style={styles.whiteText}>Fake Product Name</Title>
+                        <Title style={styles.title}>Fake Product Name</Title>
                         <Paragraph style={styles.whiteText}>ajskdlf ajskdfla dsjaklsdfjkaljdfklajdfl ajdfskaljdfkls</Paragraph>
                     </Card.Content>
                     <Card.Actions>
@@ -42,9 +42,14 @@ const StoreProducts = () => {
                     <Button>Add</Button>
                     </Card.Actions>
                 </Card>
-                <Card style={[styles.card, styles.lastCard]}>
-                    <Button style={{alignItems:"center"}}>Visit Store</Button>       
-                </Card>
+                <View style={[styles.card, styles.lastCard]}>
+                    <Button 
+                        color="tomato"
+                        dark
+                        mode={'contained'}
+                        onPress={() => alert('Go to shop')}
+                    >Visit Store</Button>       
+                </View>
             </ScrollView>
         </View>
     )
@@ -64,9 +69,17 @@ const styles = StyleSheet.create({
         color: "#ffffff"
     },
     lastCard:{
-        justifyContent: "center",
-        alignItems: "center",
-        height:350
+        width: 250,
+        backgroundColor: "#222222",
+        color: "#ffffff",
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    title: {
+        fontSize: 16,
+        color: '#ffffff',
+        paddingTop: 5
     }
 })
 export default StoreProducts;
