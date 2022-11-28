@@ -46,7 +46,7 @@ const StoreProfile = ({user, count}) => {
                     uppercase={false}
                     labelStyle={{fontSize:13}}
                     onPress={()=> alert('shop all')}
-                >   <Text style={{paddingRight:5}}>전체보기 </Text>
+                >   <Text style={{paddingRight:5}}>더보기</Text>
                     <Icon name="chevron-right" size={18} color="white"/>
                 </Button>
             </ProfileButtonContainer>              
