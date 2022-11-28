@@ -34,15 +34,14 @@ const Count = styled.Text`
 `
 
 const Sidebar = (props) => {
-    // console.log('sidebar', props)
     const navigationObj = props.props.navigation;
-    const productObj = props.props.route;
-    const userObj = props.user;
-    console.log('USER', userObj)
-    console.log("PRODUCT OBJ", productObj)
+    const product = props.props.route;
+    const user = props.user;
+    const count = props.count;
+    console.log('Sidebar', props)
 	return (
 		<Container>
-            <Pressable onPress={() => props.props.navigation.navigate('Store', {productObj, user:userObj})}>
+            <Pressable onPress={() => props.props.navigation.navigate('Store', {product, user, count})}>
                 <Menu>
                     <User>
                         <Avatar resizeMode='cover' source={props.avatar}/>
