@@ -5,6 +5,7 @@ import VideoContainer from "../Screens/Video/VideoContainer";
 import SingleProduct from "../Screens/Products/SingleProduct";
 import StoreContainer from "../Screens/Store/StoreContainer";
 import SingleProductDetail from "../Screens/Store/SingleProductDetail";
+import StoreProfilePage from "../Screens/Store/StoreProfilePage";
 
 const Stack = createStackNavigator()
 
@@ -28,6 +29,13 @@ function MyStack() {
             <Stack.Screen 
                 name='ProductDetail'
                 component={SingleProductDetail}
+                options={{
+                    headerShown:false,
+                }}
+            />
+            <Stack.Screen 
+                name='StoreProfilePage'
+                component={StoreProfilePage}
                 options={{
                     headerShown:false,
                 }}

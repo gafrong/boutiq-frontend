@@ -7,7 +7,7 @@ import StoreProfile from "./StoreProfile";
 import StoreProducts from './StoreProducts';
 
 const StoreContainer = (props) => {
-    console.log('STORE CONTAINER', props)
+    console.log('STORE CONTAINER', props.route.params.videoProps)
     const profile = props.route.params.videoProps;
     return(        
         <Container>
@@ -24,10 +24,11 @@ const StoreContainer = (props) => {
                         />
                     </Button>
                 </TouchableOpacity>
-                <StoreHeader>{profile.brand.toUpperCase()}</StoreHeader>
+                <StoreHeader>{profile.owner.username}</StoreHeader>
                 <StoreProfile 
-                    user={props.route.params.user}
-                    profile={profile}
+                    // user={props.route.params.user}
+                    // profile={profile}
+                    {...props}
                 />
                 <ProductContainer>
                     <VideoProductTitle>영상 아이템</VideoProductTitle>
@@ -50,7 +51,7 @@ const StoreHeader = styled.Text`
     color: #ffffff;
     text-align: center;
     font-weight: 700;
-    margin-top: -40px;
+    margin-top: 30px;
 `
 const ProductContainer = styled.View`
     background-color: #000000;
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
         width: 30,
         height: 50,
         alignItems: 'center',
+        position: 'absolute'
     }
 })
 

@@ -58,7 +58,7 @@ const api = [
 		numViews: '24K',
 		rating: 2,
 		description: 'sdjkfa ajsdk adfjkal jaskdf ajl jskdfla jsakdla jdsfka dfjkaldsjf aklsf jdal',
-		brand: 'Adidas',
+		brand: 'This is a very long brand name',
 		followers: 750
 	}
 ]
