@@ -7,10 +7,12 @@ import StoreProfile from "./StoreProfile";
 import StoreProducts from './StoreProducts';
 
 const StoreContainer = (props) => {
+    console.log('STORE CONTAINER', props)
+    const profile = props.route.params.videoProps;
     return(        
         <Container>
             <ScrollView>
-                <TouchableOpacity onPress={() => props.navigation.goBack(null)}>
+                <TouchableOpacity onPress={() => props.navigation.navigate('Video')}>
                     <Button
                         size={45}
                         style={styles.goBackBtn}>
@@ -22,14 +24,14 @@ const StoreContainer = (props) => {
                         />
                     </Button>
                 </TouchableOpacity>
-                <StoreHeader>{props.route.params.user.username}</StoreHeader>
+                <StoreHeader>{profile.brand.toUpperCase()}</StoreHeader>
                 <StoreProfile 
                     user={props.route.params.user}
-                    count={props.route.params.count}
+                    profile={profile}
                 />
                 <ProductContainer>
                     <VideoProductTitle>영상 아이템</VideoProductTitle>
-                    <StoreProducts />
+                    <StoreProducts {...props} />
                 </ProductContainer>
                 
                 

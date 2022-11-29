@@ -1,55 +1,67 @@
 import React from "react";
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import {View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import { Button, Card, Title, Paragraph } from 'react-native-paper';
 
-const StoreProducts = () => {
+const StoreProducts = (props) => {
+    console.log('STORE PRODUCTS', props)
+    const products = props.route.params.videoProps;
     return (
         <View style={{flexDirection: 'row'}}>
             <ScrollView 
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-            >
-                <Card style={styles.card}>
-                    <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-                    <Card.Content style={styles.whiteText}>
-                        <Title style={styles.title}>Fake Product Name</Title>
-                        <Paragraph style={styles.whiteText}>ajskdlf ajskdfla dsjaklsdfjkaljdfklajdfl ajdfskaljdfkls</Paragraph>
-                    </Card.Content>
-                    <Card.Actions>
-                    <Button>Like</Button>
-                    <Button>Add</Button>
-                    </Card.Actions>
-                </Card>
-                <Card style={styles.card}>
-                    <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-                    <Card.Content>
-                        <Title style={styles.title}>Fake Product Name</Title>
-                        <Paragraph style={styles.whiteText}>ajskdlf ajskdfla dsjaklsdfjkaljdfklajdfl ajdfskaljdfkls</Paragraph>
-                    </Card.Content>
-                    <Card.Actions>
-                    <Button>Like</Button>
-                    <Button>Add</Button>
-                    </Card.Actions>
-                </Card>
-                <Card style={styles.card}>
-                    <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-                    <Card.Content>
-                        <Title style={styles.title}>Fake Product Name</Title>
-                        <Paragraph style={styles.whiteText}>ajskdlf ajskdfla dsjaklsdfjkaljdfklajdfl ajdfskaljdfkls</Paragraph>
-                    </Card.Content>
-                    <Card.Actions>
-                    <Button>Like</Button>
-                    <Button>Add</Button>
-                    </Card.Actions>
-                </Card>
-                <View style={[styles.card, styles.lastCard]}>
+            >   
+                <TouchableOpacity
+                    onPress={()=>
+                        props.navigation.navigate("ProductDetail", products)
+                    }
+                >
+                    <Card style={styles.card}>
+                        <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+                        <Card.Content style={styles.whiteText}>
+                            <Title style={styles.title}>Fake Product Name</Title>
+                            <Paragraph style={styles.whiteText}>ajskdlf ajskdfla dsjaklsdfjkaljdfklajdfl ajdfskaljdfkls</Paragraph>
+                        </Card.Content>
+                        <Card.Actions>
+                        <Button>Like</Button>
+                        <Button>Add</Button>
+                        </Card.Actions>
+                    </Card>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Card style={styles.card}>
+                        <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+                        <Card.Content style={styles.whiteText}>
+                            <Title style={styles.title}>Fake Product Name</Title>
+                            <Paragraph style={styles.whiteText}>ajskdlf ajskdfla dsjaklsdfjkaljdfklajdfl ajdfskaljdfkls</Paragraph>
+                        </Card.Content>
+                        <Card.Actions>
+                        <Button>Like</Button>
+                        <Button>Add</Button>
+                        </Card.Actions>
+                    </Card>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Card style={styles.card}>
+                        <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+                        <Card.Content style={styles.whiteText}>
+                            <Title style={styles.title}>Fake Product Name</Title>
+                            <Paragraph style={styles.whiteText}>ajskdlf ajskdfla dsjaklsdfjkaljdfklajdfl ajdfskaljdfkls</Paragraph>
+                        </Card.Content>
+                        <Card.Actions>
+                        <Button>Like</Button>
+                        <Button>Add</Button>
+                        </Card.Actions>
+                    </Card>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.card, styles.lastCard]}>
                     <Button 
                         color="tomato"
                         dark
                         mode={'contained'}
                         onPress={() => alert('Go to shop')}
                     >Visit Store</Button>       
-                </View>
+                </TouchableOpacity>
             </ScrollView>
         </View>
     )
@@ -61,9 +73,9 @@ const styles = StyleSheet.create({
     },
     card : {
         width: 250,
-        marginRight:20,
         backgroundColor: "#222222",
-        color: "#ffffff"
+        color: "#ffffff",
+        marginLeft:20,
     },
     whiteText : {
         color: "#ffffff"

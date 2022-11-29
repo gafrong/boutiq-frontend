@@ -1,53 +1,65 @@
 const api = [
 	{
 		id: 0,
-		video: require('../assets/videos/walk.mp4'),
-		poster: require('../assets/gal6.jpg'),
-		user: {
+		videoUrl: require('../assets/videos/walk.mp4'),
+		image: 'https://picsum.photos/700',
+		owner: {
 			username: 'whinderssonnunes',
 			description: 'This is a test video for testing',
 			music: 'som original',
-			avatar: require('../assets/icon.png')
+			avatar: 'https://picsum.photos/700'
 		},
-		count: {
-			like: '1.1M',
-			comment: '4080',
-			share: '2800'
-		}
+		like: '1.1M',
+		comment: '4080',
+		share: '2800',
+		numReviews: 22,
+		numViews: '24K',
+		rating: 3,
+		description: 'sdjkfa ajsdk adfjkal jaskdf ajl jskdfla jsakdla jdsfka dfjkaldsjf aklsf jdal',
+		brand: 'Six and a half',
+		followers: 770
 	},
 	{
 		id: 1,
-		video: require('../assets/videos/liv.mp4'),
-		poster: require('../assets/gal6.jpg'),
-		user: {
+		videoUrl: require('../assets/videos/liv.mp4'),
+		image: 'https://picsum.photos/700',
+		owner: {
 			username: 'luismariz',
 			description:
 				'lorem ipsum thie ajsdk amksd smfk asdmf mskdf amfk asdfmkafdmsk',
 			music: 'som original',
-			avatar: require('../assets/splash.png')
+			avatar: 'https://picsum.photos/700'
 		},
-		count: {
-			like: '380K',
-			comment: '2388',
-			share: '535'
-		}
+		like: '1.1M',
+		comment: '4080',
+		share: '2800',
+		numReviews: 22,
+		numViews: '24K',
+		rating: 5,
+		description: 'sdjkfa ajsdk adfjkal jaskdf ajl jskdfla jsakdla jdsfka dfjkaldsjf aklsf jdal',
+		brand: '리바이스',
+		followers: 35
 	},
 	{
 		id: 2,
-		video: require('../assets/videos/liv.mp4'),
-		poster: require('../assets/gal6.jpg'),
-		user: {
+		videoUrl: require('../assets/videos/liv.mp4'),
+		image: 'https://picsum.photos/700',
+		owner: {
 			username: 'asdjfkaldjklads',
 			description:
 				'lorem ipsum thie ajsdk amksd smfk asdmf mskdf amfk asdfmkafdmsk',
 			music: 'som original',
-			avatar: require('../assets/splash.png')
+			avatar: 'https://picsum.photos/700'
 		},
-		count: {
-			like: '37',
-			comment: '238',
-			share: '55'
-		}
+		like: '1.1M',
+		comment: '4080',
+		share: '2800',
+		numReviews: 22,
+		numViews: '24K',
+		rating: 2,
+		description: 'sdjkfa ajsdk adfjkal jaskdf ajl jskdfla jsakdla jdsfka dfjkaldsjf aklsf jdal',
+		brand: 'Adidas',
+		followers: 750
 	}
 ]
 

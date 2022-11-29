@@ -10,7 +10,8 @@ const Play = styled(Video)`
 const Poster = styled.ImageBackground`
     height: 100%;
 `
-const VideoPlayer = ({video, poster, isPlay}) => {
+const VideoPlayer = ({video, isPlay}) => {
+    console.log('VIDEO', video)
     return isPlay ? (
         <Play
             rate={1.0}
@@ -18,13 +19,13 @@ const VideoPlayer = ({video, poster, isPlay}) => {
             isMuted={false}
             shouldPlay
             useNativeControls={false}
-            posterSource={poster}
-            source={video}
+            posterSource={video.image}
+            source={video.videoUrl}
             resizeMode='cover'
             isLooping
         />
     ) : (
-        <Poster source={poster}/>
+        <Poster source={video.image}/>
     )
 }
 

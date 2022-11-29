@@ -41,10 +41,10 @@ const VideoCompiler = ({ videos, props }) => {
                 return(
                     <View key={index}>
                         <VideoPlayer 
-                            video={item.video}
-							poster={item.poster}
+                            video={item}
 							isPlay={selected === index}
                         />
+						{console.log('ITEM', item)}
                         <Gradient
 							locations={[0, 0.26, 0.6, 1]}
 							colors={[
@@ -54,8 +54,8 @@ const VideoCompiler = ({ videos, props }) => {
 								'rgba(26,26,26,0.6)'
 							]}>
 							<Center>
-								<Info user={item.user} />
-								<Sidebar avatar={item.user.avatar} count={item.count} props={props} user={item.user}/>
+								<Info owner={item.owner} />
+								<Sidebar avatar={item.owner.avatar} props={props} owner={item.owner} videoProps={item}/>
 							</Center>
 						</Gradient>
                     </View>

@@ -4,25 +4,25 @@ import styled from "styled-components";
 import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
 
-const StoreProfile = ({user, count}) => {
-    console.log('Store Profile', user)
-    console.log('Count', count)
+const StoreProfile = ({user, profile}) => {
+    console.log('Store User', user)
+    console.log('Store Profile', profile)
     return(
         <Container>           
             <ProfileContainer>
-                <Avatar.Image size={50} source={require('../../assets/gal6.jpg')} style={{marginRight:20, marginLeft: 20}} />
+                <Avatar.Image size={50} source={'https://picsum.photos/700'} style={{marginRight:20, marginLeft: 20}} />
                 <ProfileItemContainer>
                     <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{count.comment}</ProfileItemText>
+                        <ProfileItemText style={styles.itemBold}>{profile.followers}</ProfileItemText>
                         <ProfileItemText>팔로워</ProfileItemText>
                     </ProfileItem>
                     <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{count.share}</ProfileItemText>
-                        <ProfileItemText>상품 찜</ProfileItemText>
+                        <ProfileItemText style={styles.itemBold}>{profile.like}</ProfileItemText>
+                        <ProfileItemText>좋아요</ProfileItemText>
                     </ProfileItem>
                     <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{count.like}</ProfileItemText>
-                        <ProfileItemText>좋아요</ProfileItemText>
+                        <ProfileItemText style={styles.itemBold}>{profile.numViews}</ProfileItemText>
+                        <ProfileItemText>리뷰</ProfileItemText>
                     </ProfileItem> 
                 </ProfileItemContainer>     
             </ProfileContainer>  
@@ -46,8 +46,8 @@ const StoreProfile = ({user, count}) => {
                     uppercase={false}
                     labelStyle={{fontSize:13}}
                     onPress={()=> alert('shop all')}
-                >   <Text style={{paddingRight:5}}>더보기</Text>
-                    <Icon name="chevron-right" size={18} color="white"/>
+                >   <Text style={{paddingRight:5, alignItems:"center", lineHeight:60, fontSize:13}}>더보기</Text>
+                    <Icon style={{alignItems:"center", lineHeight:40}} name="chevron-right" size={13} color="white"/>
                 </Button>
             </ProfileButtonContainer>              
         </Container>
@@ -80,7 +80,7 @@ const ProfileItemText = styled.Text`
 `
 const ProfileButtonContainer = styled.View`
     flex-direction: row;
-    height: 34px;
+    height: 38px;
     margin: 10px;
     margin-left: 0;
     width: 100%;
@@ -102,8 +102,7 @@ const styles = StyleSheet.create({
         marginLeft: 13,
         justifyContent: "center",
         alignItems: "center",
-        alignContent: "center",
-        textAlign: "center"
+        flexDirection: "row"
     }
 })
 

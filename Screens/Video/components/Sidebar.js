@@ -34,14 +34,17 @@ const Count = styled.Text`
 `
 
 const Sidebar = (props) => {
-    const navigationObj = props.props.navigation;
-    const product = props.props.route;
-    const user = props.user;
-    const count = props.count;
+    // const navigationObj = props.props.navigation;
+    const productObj = props.props.route;
+    const owner = props.owner;
+    const videoProps = props.videoProps;
     console.log('Sidebar', props)
 	return (
 		<Container>
-            <Pressable onPress={() => props.props.navigation.navigate('Store', {product, user, count})}>
+            <Pressable 
+                onPress={() => [
+                    props.props.navigation.navigate('Store', {owner:owner, videoProps})
+                ]}>
                 <Menu>
                     <User>
                         <Avatar resizeMode='cover' source={props.avatar}/>
@@ -54,7 +57,7 @@ const Sidebar = (props) => {
                         name="heart" 
                         size={25} 
                         color={"#ffffff"}/>
-                    <Count>{props.count.like}</Count>
+                    <Count>{videoProps.like}</Count>
                 </Menu>
             </Pressable>
             <Pressable onPress={()=>alert("slide up comment field")}>
@@ -64,7 +67,7 @@ const Sidebar = (props) => {
 					name="message-circle"
                     color={"#ffffff"}
 				/>
-				<Count>{props.count.comment}</Count>
+				<Count>{videoProps.comment}</Count>
 			</Menu>
             </Pressable>
             <Pressable onPress={()=>alert("slide up sharing field")}>
@@ -73,7 +76,7 @@ const Sidebar = (props) => {
                         size={25} 
                         name="send" 
                         color={"#ffffff"}/>
-                    <Count>{props.count.share}</Count>
+                    <Count>{videoProps.share}</Count>
                 </Menu>
             </Pressable>
 		</Container>
