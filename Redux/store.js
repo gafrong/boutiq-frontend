@@ -1,16 +1,16 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers } from 'redux';
 
 import cartItems from './Reducers/cartItem';
+import likeVideoReducer from './Reducers/likeVideoReducer';
 
-const reducers = combineReducers({
-    cartItems: cartItems
+const reducer = combineReducers({
+    cartItems: cartItems,
+    likeVideoReducer: likeVideoReducer
 })
 
-const store = createStore(
-    reducers,
-    composeWithDevTools(applyMiddleware(thunkMiddleware))
-)
+const store = configureStore({
+    reducer,
+})
 
 export default store;

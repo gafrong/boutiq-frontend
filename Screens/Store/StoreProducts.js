@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native
 import { Button, Card, Title, Paragraph } from 'react-native-paper';
 
 const StoreProducts = (props) => {
-    console.log('STORE PRODUCTS', props)
+    // console.log('STORE PRODUCTS', props)
     const products = props.route.params.videoProps;
     return (
         <View style={{flexDirection: 'row'}}>

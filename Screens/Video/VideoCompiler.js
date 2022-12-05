@@ -10,6 +10,48 @@ import Info from "./components/Info";
 
 const { height } = Dimensions.get('window')
 
+const VideoCompiler = ({ videos, props }) => {
+    const [selected, setSelected] = useState(0)
+	
+    return(
+        <Container
+            orientation='vertical'
+            onPageSelected={e => setSelected(e.nativeEvent.position)}
+            initialPage={0}
+        >
+            {videos.map((item, index) => {
+                return(
+                    <View key={index}>
+                        <VideoPlayer 
+                            video={item}
+							isPlay={selected === index}
+                        />
+						{/* {console.log('ITEM', item)}
+						{console.log('ITEM OWNER', item.owner)} */}
+                        <Gradient
+							locations={[0, 0.26, 0.6, 1]}
+							colors={[
+								'rgba(26,26,26,0)',
+								'rgba(26,26,26,0)',
+								'rgba(26,26,26,0)',
+								'rgba(26,26,26,0.6)'
+							]}>
+							<Center>
+								<Info username={item.owner.username} description={item.description} />
+								<Sidebar 
+									avatar={item.owner.image} 
+									props={props} 
+									owner={item.owner} 
+									videoProps={item}/>
+							</Center>
+						</Gradient>
+                    </View>
+                )
+            })}
+        </Container>
+    )
+}
+
 const Container = styled(PagerView)`
     height: ${height}px;
     background-color: #000000;
@@ -27,42 +69,5 @@ const Center = styled.View`
 	flex: 1;
 	flex-direction: row;
 `
-
-const VideoCompiler = ({ videos, props }) => {
-    const [selected, setSelected] = useState(0)
-
-    return(
-        <Container
-            orientation='vertical'
-            onPageSelected={e => setSelected(e.nativeEvent.position)}
-            initialPage={0}
-        >
-            {videos.map((item, index) => {
-                return(
-                    <View key={index}>
-                        <VideoPlayer 
-                            video={item}
-							isPlay={selected === index}
-                        />
-						{console.log('ITEM', item)}
-                        <Gradient
-							locations={[0, 0.26, 0.6, 1]}
-							colors={[
-								'rgba(26,26,26,0)',
-								'rgba(26,26,26,0)',
-								'rgba(26,26,26,0)',
-								'rgba(26,26,26,0.6)'
-							]}>
-							<Center>
-								<Info owner={item.owner} />
-								<Sidebar avatar={item.owner.avatar} props={props} owner={item.owner} videoProps={item}/>
-							</Center>
-						</Gradient>
-                    </View>
-                )
-            })}
-        </Container>
-    )
-}
 
 export default VideoCompiler;

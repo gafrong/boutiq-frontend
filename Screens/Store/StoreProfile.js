@@ -5,9 +5,10 @@ import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
 
 const StoreProfile = (props) => {
-    console.log('Store Profile', props)
+    // console.log('Store Profile', props)
     const profile = props.route.params.videoProps;
     const user = props.route.params.user;
+    // console.log('profile', profile)
     return(
         <Container>           
             <ProfileContainer>

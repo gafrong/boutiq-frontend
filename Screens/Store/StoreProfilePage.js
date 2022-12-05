@@ -5,7 +5,7 @@ import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
 
 const StoreProfilePage = (props) => {
-    console.log('Store Profile Page', props)
+    // console.log('Store Profile Page', props)
     const profile = props.route.params.profile;
     const user = props.route.params.user;
     return(

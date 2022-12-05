@@ -7,7 +7,7 @@ import StoreProfile from "./StoreProfile";
 import StoreProducts from './StoreProducts';
 
 const StoreContainer = (props) => {
-    console.log('STORE CONTAINER', props.route.params.videoProps)
+    // console.log('STORE CONTAINER', props.route.params.videoProps)
     const profile = props.route.params.videoProps;
     return(        
         <Container>
@@ -24,7 +24,7 @@ const StoreContainer = (props) => {
                         />
                     </Button>
                 </TouchableOpacity>
-                <StoreHeader>{profile.owner.username}</StoreHeader>
+                <StoreHeader>{profile.owner.name}</StoreHeader>
                 <StoreProfile 
                     // user={props.route.params.user}
                     // profile={profile}

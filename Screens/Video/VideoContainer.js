@@ -1,18 +1,56 @@
-import React from 'react';
+import React, {useState, useCallback } from "react";
 import { View, Text, StyleSheet, Dimensions, StatusBar } from 'react-native';
 import styled from 'styled-components';
+import { useFocusEffect } from '@react-navigation/native';
 
 import VideoCompiler from './VideoCompiler';
 import Header from './components/Header';
 
-const Container = styled.View`
-    flex:1;
-    background: transparent;
-`
-
-import api from '../../services/testvideoapi';
+// import api from '../../services/testvideoapi';
+// import functions to access database
+import baseURL from '../../assets/common/baseUrl';
+import axios from 'axios';
 
 const VideoContainer = (props) => {
+    const [ videos, setVideos ] = useState([]);
+    const [ videosFiltered, setVideosFiltered ] = useState([]);
+    const [ focus, setFocus] = useState();
+    const [ active, setActive ] = useState();
+    const [ initialState, setInitialState ] = useState([]);
+    const [ loading, setLoading ] = useState(true);
+
+    // react navigation when in focus a screen will use callback. useful when we have several products in the same navigation, so that when we come back, there will be a callback for data changes
+    useFocusEffect((
+        useCallback(
+            () => {
+                setFocus(false);
+                setActive(-1);
+                // Videos from database
+                axios
+                    .get(`${baseURL}videos`)
+                    .then((res) => {
+                        setVideos(res.data);
+                        setVideosFiltered(res.data);
+                        setInitialState(res.data);
+                        setLoading(false);
+                    })
+                    .catch((error) => {
+                        console.log('서버 연결에 문제가 있습니다:',error.message)
+                    })
+        
+                return () => {
+                    setVideos([])
+                    setVideosFiltered([])
+                    setFocus()
+                    setActive()
+                    setInitialState()
+                }
+            },
+            [],
+        )
+    ))
+            // console.log('VIDEOS from DB', videos)
+            // console.log('VIDEO PROPS', props)
     return(
         <>
             <StatusBar
@@ -22,10 +60,16 @@ const VideoContainer = (props) => {
             />
             <Container>
                 <Header />
-                <VideoCompiler videos={api} props={props} />
+                <VideoCompiler videos={videos} props={props} />
             </Container>    
         </>
     )
 }
+
+
+const Container = styled.View`
+    flex:1;
+    background: transparent;
+`
 
 export default VideoContainer;

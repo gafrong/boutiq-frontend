@@ -1,7 +1,9 @@
+import StoreProducts from '../Screens/Store/StoreProducts'
+
 const api = [
 	{
 		id: 0,
-		videoUrl: require('../assets/videos/walk.mp4'),
+		videoUrl: "https://sixandahalf.s3.ap-northeast-2.amazonaws.com/videos/daravideo.mp4",
 		image: 'https://picsum.photos/700',
 		owner: {
 			username: 'whinderssonnunes',
@@ -9,7 +11,10 @@ const api = [
 			music: 'som original',
 			avatar: 'https://picsum.photos/700'
 		},
-		like: '1.1M',
+		likes: new Map([
+			["635880d8bb016260c83d72de", true],
+			["6369e336bada7fee40de1ba5", true],
+		  ]),
 		comment: '4080',
 		share: '2800',
 		numReviews: 22,
@@ -30,7 +35,10 @@ const api = [
 			music: 'som original',
 			avatar: 'https://picsum.photos/700'
 		},
-		like: '1.1M',
+		likes: new Map([
+			["635880d8bb016260c83d72de", true],
+			["6369e336bada7fee40de1ba5", true],
+		]),
 		comment: '4080',
 		share: '2800',
 		numReviews: 22,
@@ -51,7 +59,9 @@ const api = [
 			music: 'som original',
 			avatar: 'https://picsum.photos/700'
 		},
-		like: '1.1M',
+		likes: new Map([
+			["635880d8bb016260c83d72de", true],
+		]),
 		comment: '4080',
 		share: '2800',
 		numReviews: 22,
@@ -62,5 +72,17 @@ const api = [
 		followers: 750
 	}
 ]
+// products 
+// 6375b6e4b2124c817b5daf83
+// 6375b702b2124c817b5daf87
+// 6375b71cb2124c817b5daf8b
+// 637aca0d4264f69eff7c6632
+// 637dad74e2265ed91d68dfe4
 
+// videoitems
+// 6351eb11c32162c9fde05278
+// 63520e2878b6d89190ea6ae0
+// 63521239c3fd2bdb6e3392da
+// 63521244c3fd2bdb6e3392e3
 export default api
+

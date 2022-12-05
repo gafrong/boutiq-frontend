@@ -144,7 +144,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
       clearCart: () => dispatch(actions.clearCart()),
     };
-  };
+};
   
   const styles = StyleSheet.create({
     container: {

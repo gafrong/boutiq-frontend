@@ -25,13 +25,13 @@ const Description = styled.Text`
 	width: 70%;
 `
 
-const Info = ({ owner }) => {
+const Info = ({ username, description }) => {
 	return (
 		<Container>
 			<User>
-				<UserName>@{owner.username}</UserName>
+				<UserName>@{username}</UserName>
 			</User>
-			<Description>{owner.description}</Description>
+			<Description>{description}</Description>
 		</Container>
 	)
 }
