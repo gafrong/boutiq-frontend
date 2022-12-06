@@ -11,6 +11,9 @@ import Header from './components/Header';
 import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
 
+import { useDispatch, useSelector } from "react-redux";
+import { setStateVideos } from '../../Redux/state/authSlice';
+
 const VideoContainer = (props) => {
     const [ videos, setVideos ] = useState([]);
     const [ videosFiltered, setVideosFiltered ] = useState([]);

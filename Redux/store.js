@@ -2,11 +2,11 @@ import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux';
 
 import cartItems from './Reducers/cartItem';
-import likeVideoReducer from './Reducers/likeVideoReducer';
+import authReducer from './state/authSlice';
 
 const reducer = combineReducers({
     cartItems: cartItems,
-    likeVideoReducer: likeVideoReducer
+    authReducer,
 })
 
 const store = configureStore({

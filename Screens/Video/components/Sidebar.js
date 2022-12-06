@@ -1,35 +1,37 @@
 import React, {useContext, useEffect, useState,}  from 'react'
 import {Pressable} from 'react-native'
-import Icon from 'react-native-vector-icons/Feather'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
 
-import { connect } from 'react-redux';
-import * as actions from '../../../Redux/Actions/likeVideoActions'
 import AuthGlobal from '../../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../../assets/common/baseUrl';
 
 const Sidebar = (props) => {
-    const productObj = props.props.route;
+    const context = useContext(AuthGlobal);
+    const userAuthenticated = context.stateUser.isAuthenticated;
+
     const owner = props.owner;
     const videoProps = props.videoProps;
-    
-    const videoId = videoProps.id;
-
-    const context = useContext(AuthGlobal);
-    // console.log('context', context)
-    const loggedInUserId = context.stateUser.user.userId;
-    const isLiked = Boolean(videoProps.likes[loggedInUserId]);
-    const likeCount = videoProps.likes;
+    const [video, setVideo] = useState(videoProps);
     const [token, setToken] = useState();
-    const [like, setLike] = useState();
+
+    const videoId = video.id;
+    const videoLikes = video.likes;
     
-    console.log('SIDEBAR PROPS', props)
-    console.log('LIKES', props.videoProps.likes)
-    // console.log('ISLIKED', isLiked);
-    // console.log('likeCount', likeCount);
+    const loggedInUserId = context.stateUser.user.userId;
+    const isLiked = Boolean(videoLikes[loggedInUserId]);
+    const likeCount = Object.keys(videoLikes).length;
+
+    useEffect(()=> {
+        AsyncStorage.getItem("jwt")
+            .then((res) => {
+                setToken(res)
+            })
+            .catch((error) => console.log(error))
+    }, [])
+
     const patchVideoLike = async () => {
-        console.log('token', token);
         const response = await fetch(`${baseURL}videos/${videoId}/like`, {
             method: "PATCH",
             headers : {
@@ -39,15 +41,8 @@ const Sidebar = (props) => {
             body: JSON.stringify({userId: loggedInUserId}),
         })
         const updatedVideo = await response.json();
+        setVideo(updatedVideo);
     };
-
-    useEffect(()=> {
-        AsyncStorage.getItem("jwt")
-            .then((res) => {
-                setToken(res)
-            })
-            .catch((error) => console.log(error))
-    }, [])
 
 	return (
 		<Container>
@@ -61,52 +56,55 @@ const Sidebar = (props) => {
                     </User>
                 </Menu>
             </Pressable>
-            <Pressable onPress={()=> patchVideoLike()}>
+            {userAuthenticated 
+            ? <Pressable onPress={()=> patchVideoLike()}>
+                <Menu>
+                    {isLiked 
+                    ? <Icon 
+                        name="cards-heart" 
+                        size={28} 
+                        color={'red'}/>
+                    : <Icon 
+                        name="cards-heart-outline" 
+                        size={28} 
+                        color={"#ffffff"}/> }
+                    <Count>{likeCount}</Count>
+                </Menu>
+              </Pressable>
+            : <Pressable onPress={()=> alert('Please login')}>
                 <Menu>
                     <Icon 
                         name="heart" 
                         size={25} 
-                        color={(isLiked? 'red' : "#ffffff")}/>
-                    <Count>0</Count>
+                        color={"#ffffff"}/>
+                    <Count>{likeCount}</Count>
                 </Menu>
-            </Pressable>
+              </Pressable>
+            }
+            
             <Pressable onPress={()=>alert("slide up comment field")}>
 			<Menu>
 				<Icon
 					size={25}
-					name="message-circle"
+					name="comment-outline"
                     color={"#ffffff"}
 				/>
-				<Count>{videoProps.rating}</Count>
+				<Count>{video.rating}</Count>
 			</Menu>
             </Pressable>
             <Pressable onPress={()=>alert("slide up sharing field")}>
                 <Menu>
                     <Icon 
-                        size={25} 
-                        name="send" 
+                        size={26} 
+                        name="share" 
                         color={"#ffffff"}/>
-                    <Count>{videoProps.numReviews}</Count>
+                    <Count>{video.numReviews}</Count>
                 </Menu>
             </Pressable>
 		</Container>
 	)
 }
 
-const mapStateToProps = (state) => {
-    const { likeVideoReducer } = state;
-    return {
-        likeVideoReducer: likeVideoReducer
-    }
-}
-
-// import setVideoLike method that we've created in the Redux store to set like. Use dispatch redux method to do that
-const mapDispatchToProps = (dispatch) => {
-    return {
-        // call our method setVideoLike and use actions that we've created in Redux folder and use dispatch redux method
-        setVideoLike: () => dispatch(actions.setVideoLike({like : updatedVideo}))
-    }
-}
 
 const Container = styled.View`
 	width: 60px;
@@ -138,4 +136,4 @@ const Count = styled.Text`
 	letter-spacing: -0.1px;
 `
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+export default Sidebar;
