@@ -2,10 +2,9 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import VideoContainer from "../Screens/Video/VideoContainer";
-import SingleProduct from "../Screens/Products/SingleProduct";
 import StoreContainer from "../Screens/Store/StoreContainer";
-import SingleProductDetail from "../Screens/Store/SingleProductDetail";
 import StoreProfilePage from "../Screens/Store/StoreProfilePage";
+import SingleProduct from "../Screens/Products/SingleProduct";
 
 const Stack = createStackNavigator()
 
@@ -28,7 +27,7 @@ function MyStack() {
             />
             <Stack.Screen 
                 name='ProductDetail'
-                component={SingleProductDetail}
+                component={SingleProduct}
                 options={{
                     headerShown:false,
                 }}

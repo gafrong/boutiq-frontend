@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Image, View, StyleSheet, Text, ScrollView } from 'react-native';
+import { Image, View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Card, Button, Title, Paragraph, Provider as PaperProvider } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import BoutiqButton from '../../Shared/StyledComponents/BoutiqButton';
 import TrafficLight from '../../Shared/StyledComponents/TrafficLight';
-
+import Icon from "react-native-vector-icons/Feather";
 //redux
 import { connect } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
 
 const SingleProduct = (props) => {
-
-    const [item, setItem] = useState(props.route.params.item);
+console.log('ITEM', props)
+    const [item, setItem] = useState(props.route.params.product);
     const [availability, setAvailability] = useState('');
     const [availabilityText, setAvailabilityText] = useState("");
 
     useEffect(() => {
-        if(props.route.params.item.countInStock == 0) {
+        if(props.route.params.product.countInStock == 0) {
             setAvailability(<TrafficLight unavailable></TrafficLight>);
             setAvailabilityText("Unavailable")
-        } else if (props.route.params.item.countInStock <= 5) {
+        } else if (props.route.params.product.countInStock <= 5) {
             setAvailability(<TrafficLight limited></TrafficLight>);
             setAvailabilityText("Limited Stock Available")
         } else {
             setAvailability(<TrafficLight available></TrafficLight>);
-            setAvailabilityText("Available")
+            setAvailabilityText("판매중")
         }
 
         return () => {
@@ -35,8 +35,20 @@ const SingleProduct = (props) => {
 
 
     return (
-        <Card>
-            <ScrollView>
+        <ScrollView style={styles.container}>
+            <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.goBackBtn}>
+                <Button
+                    size={45}
+                    >
+                    <Icon 
+                        name="chevron-left"
+                        style={{}}
+                        color={"#ffffff"}
+                        size={34}
+                    />
+                </Button>
+            </TouchableOpacity>
+            <Card>
                 <Card.Cover
                     source={{
                         uri: item.image ? 
@@ -46,32 +58,34 @@ const SingleProduct = (props) => {
                 /> 
                 <Card.Content style={styles.contentContainer}>
                     <Title style={styles.contentHeader}>{item.name}</Title>
-                    <Text>{item.brand}</Text>
-                    <Paragraph style={styles.contentText}>{item.description}</Paragraph>
+                    <Text style={styles.contentBrand}>{item.brand}</Text>
+                    <Text style={styles.price}>${item.price}</Text>
+                    <Paragraph style={styles.contentText}>{item.description}</Paragraph>  
+                    <View style={styles.availabilityContainer}>
+                        <View style={styles.availability}>
+                            <Text style={[styles.contentText,{marginRight:10}]}>
+                                {availabilityText}
+                            </Text>
+                            {availability}
+                        </View>
+                    </View>         
+                    <Button
+                        mode="outlined"
+                        uppercase
+                        onPress={()=>{ props.addItemToCart(item),
+                            Toast.show({
+                                topOffset: 60,
+                                type: "success",
+                                text1: `${item.name} added to your cart`,
+                                text2: "Go to your cart to complete the order"
+                            })
+                        }}
+                    >Add</Button>
                 </Card.Content>
-                <View style={styles.availabilityContainer}>
-                    <View style={styles.availability}>
-                        <Text style={{marginRight:10}}>
-                            {availabilityText}
-                        </Text>
-                        {availability}
-                    </View>
-                </View>         
-                <Text style={styles.price}>${item.price}</Text>
-                <Button
-                    mode="outlined"
-                    uppercase
-                    onPress={()=>{ props.addItemToCart(item),
-                        Toast.show({
-                            topOffset: 60,
-                            type: "success",
-                            text1: `${item.name} added to your cart`,
-                            text2: "Go to your cart to complete the order"
-                        })
-                    }}
-                >Add</Button>
+            
+        </Card> 
         </ScrollView>
-       </Card> 
+       
     )
 }
 
@@ -84,13 +98,26 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const styles = StyleSheet.create({
+    goBackBtn:{
+        position: 'absolute',
+        left: 0,
+        top: 5,
+        color: 'green',
+        zIndex: 1,
+        elevation: 1
+    },
     container: {
         position: 'relative',
-        height: '100%'
+        height: '100%',
+        flex: 1,
+        backgroundColor: '#000000',
+        color: '#ffffff',
+        paddingTop: 40
     },
-    scrollView: {
-        marginBottom: 80,
-        padding: 5
+    contentContainer: {
+        backgroundColor: '#222222',
+        paddingTop: 10,
+        paddingBottom: 10
     },
     imageContainer: {
         backgroundColor: 'white',
@@ -103,9 +130,21 @@ const styles = StyleSheet.create({
     center: {
         textAlign: 'center'
     },
-    contentContainer: {
-
-    },
+    contentHeader: {
+        color: '#ffffff',
+        marginBottom: 10,
+        fontSize: 23
+    }, 
+    contentBrand: {
+        color: '#ffffff',
+        fontWeight: 'bold',
+        marginBottom: 10,
+        fontSize: 16
+    }, 
+    contentText: {
+        color: '#ffffff',
+        paddingBottom: 15
+    },  
     bottomContainer: {
         flexDirection: 'row',
         position: 'absolute',
@@ -114,9 +153,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     price: {
+        position: 'absolute',
+        top: 0,
+        right: 10,
         fontsize: 30,
         margin: 20,
-        color: 'red'
+        color: 'tomato',
+        fontWeight: 'bold',
+        fontSize: 16
     },
     availabilityContainer: {
         marginBottom: 20,

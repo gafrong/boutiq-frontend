@@ -1,5 +1,5 @@
 import React, {useState, useCallback } from "react";
-import { View, Text, StyleSheet, Dimensions, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import styled from 'styled-components';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -10,9 +10,6 @@ import Header from './components/Header';
 // import functions to access database
 import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
-
-import { useDispatch, useSelector } from "react-redux";
-import { setStateVideos } from '../../Redux/state/authSlice';
 
 const VideoContainer = (props) => {
     const [ videos, setVideos ] = useState([]);
@@ -52,8 +49,7 @@ const VideoContainer = (props) => {
             [],
         )
     ))
-            // console.log('VIDEOS from DB', videos)
-            // console.log('VIDEO PROPS', props)
+
     return(
         <>
             <StatusBar

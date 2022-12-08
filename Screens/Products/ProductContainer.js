@@ -9,7 +9,7 @@ import axios from 'axios';
 
 import ProductList from './ProductList'
 
-const data = require('../../assets/data/product.json')
+// const data = require('../../assets/data/product.json')
 
 var { width, height } = Dimensions.get('window');
 

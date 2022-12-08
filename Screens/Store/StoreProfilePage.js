@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/Feather";
 
 const StoreProfilePage = (props) => {
     // console.log('Store Profile Page', props)
-    const profile = props.route.params.profile;
+    const storeProfile = props.route.params.videoProfile;
     const user = props.route.params.user;
     return(
         <Container>  
@@ -22,27 +22,27 @@ const StoreProfilePage = (props) => {
                     />
                 </Button>
             </TouchableOpacity>
-            <StoreHeader>{profile.owner.username}</StoreHeader>         
+            <StoreHeader>{storeProfile.createdBy.username}</StoreHeader>         
             <ProfileContainer>
                 <Avatar.Image size={90} source={'https://picsum.photos/700'} style={{marginRight:20, marginLeft: 10}} />
                 <ProfileItemContainer>
                     <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{profile.followers}</ProfileItemText>
+                        <ProfileItemText style={styles.itemBold}>{storeProfile.followers}</ProfileItemText>
                         <ProfileItemText>팔로워</ProfileItemText>
                     </ProfileItem>
                     <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{profile.like}</ProfileItemText>
+                        <ProfileItemText style={styles.itemBold}>{storeProfile.like}</ProfileItemText>
                         <ProfileItemText>좋아요</ProfileItemText>
                     </ProfileItem>
                     <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{profile.numViews}</ProfileItemText>
+                        <ProfileItemText style={styles.itemBold}>{storeProfile.numViews}</ProfileItemText>
                         <ProfileItemText>리뷰</ProfileItemText>
                     </ProfileItem> 
                 </ProfileItemContainer>     
             </ProfileContainer> 
             <ProfileDetail>
-                <Text style={{color:'#ffffff', marginBottom:5}}>{profile.brand.toUpperCase()}</Text>
-                <Text style={{color:'#ffffff'}}>{profile.description}</Text>
+                <Text style={{color:'#ffffff', marginBottom:5}}>{storeProfile.brand.toUpperCase()}</Text>
+                <Text style={{color:'#ffffff'}}>{storeProfile.description}</Text>
             </ProfileDetail> 
             <ProfileButtonContainer>
                 <Button style={styles.allBtn} 

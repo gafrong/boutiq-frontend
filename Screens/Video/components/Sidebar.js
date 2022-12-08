@@ -11,7 +11,7 @@ const Sidebar = (props) => {
     const context = useContext(AuthGlobal);
     const userAuthenticated = context.stateUser.isAuthenticated;
 
-    const owner = props.owner;
+    const createdBy = props.createdBy;
     const videoProps = props.videoProps;
     const [video, setVideo] = useState(videoProps);
     const [token, setToken] = useState();
@@ -81,16 +81,25 @@ const Sidebar = (props) => {
                 </Menu>
               </Pressable>
             }
-            
             <Pressable onPress={()=>alert("slide up comment field")}>
-			<Menu>
-				<Icon
-					size={25}
-					name="comment-outline"
-                    color={"#ffffff"}
-				/>
-				<Count>{video.rating}</Count>
-			</Menu>
+                <Menu>
+                    <Icon
+                        size={28}
+                        name="bookmark-outline"
+                        color={"#ffffff"}
+                    />
+                    <Count>{video.rating}</Count>
+                </Menu>
+            </Pressable>
+            <Pressable onPress={()=>alert("slide up comment field")}>
+                <Menu>
+                    <Icon
+                        size={25}
+                        name="comment-outline"
+                        color={"#ffffff"}
+                    />
+                    <Count>{video.rating}</Count>
+                </Menu>
             </Pressable>
             <Pressable onPress={()=>alert("slide up sharing field")}>
                 <Menu>
@@ -115,7 +124,7 @@ const Container = styled.View`
     position: absolute;
 `
 const Menu = styled.View`
-	margin: 9px 0;
+	margin: 6px 0;
 	align-items: center;
 `
 const User = styled.View`

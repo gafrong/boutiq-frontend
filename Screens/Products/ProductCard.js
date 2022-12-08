@@ -17,6 +17,7 @@ import BoutiqButton from "../../Shared/StyledComponents/BoutiqButton";
 var {width} = Dimensions.get('window');
 
 const ProductCard = (props) => {
+    console.log('PRODUCT CARD', props)
     const { name, price, image, countInStock} = props;
     return(
         <View style={styles.container}>

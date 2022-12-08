@@ -5,25 +5,24 @@ import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
 
 const StoreProfile = (props) => {
-    // console.log('Store Profile', props)
-    const profile = props.route.params.videoProps;
-    const user = props.route.params.user;
-    // console.log('profile', profile)
+    const videoProfile = props.route.params.videoProps;
+    const userProfile = props.route.params.user;
+    // console.log('STORE PROFILE', videoProfile)
     return(
         <Container>           
             <ProfileContainer>
                 <Avatar.Image size={50} source={'https://picsum.photos/700'} style={{marginRight:20, marginLeft: 20}} />
                 <ProfileItemContainer>
                     <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{profile.followers}</ProfileItemText>
+                        <ProfileItemText style={styles.itemBold}>{videoProfile.followers}</ProfileItemText>
                         <ProfileItemText>팔로워</ProfileItemText>
                     </ProfileItem>
                     <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{profile.like}</ProfileItemText>
+                        <ProfileItemText style={styles.itemBold}>{videoProfile.like}</ProfileItemText>
                         <ProfileItemText>좋아요</ProfileItemText>
                     </ProfileItem>
                     <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{profile.numViews}</ProfileItemText>
+                        <ProfileItemText style={styles.itemBold}>{videoProfile.numViews}</ProfileItemText>
                         <ProfileItemText>리뷰</ProfileItemText>
                     </ProfileItem> 
                 </ProfileItemContainer>     
@@ -47,7 +46,7 @@ const StoreProfile = (props) => {
                     dark={true}
                     uppercase={false}
                     labelStyle={{fontSize:13}}
-                    onPress={()=> props.navigation.navigate('StoreProfilePage', {user, profile})}
+                    onPress={()=> props.navigation.navigate('StoreProfilePage', {userProfile, videoProfile})}
                 >   <Text style={{paddingRight:5, alignItems:"center", lineHeight:60, fontSize:13}}>더보기</Text>
                     <Icon style={{alignItems:"center", lineHeight:40}} name="chevron-right" size={13} color="white"/>
                 </Button>
