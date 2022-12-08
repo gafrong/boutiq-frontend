@@ -7,11 +7,11 @@ import StoreProfile from "./StoreProfile";
 import StoreProductList from './StoreProductList';
 
 const StoreContainer = (props) => {
-    // const [products, setProducts] = useState();
 
     const videoProfile = props.route.params.videoProps;
     const products = props.route.params.videoProps.videoItems
-    // console.log('STORE CONTAINER', videoProfile.videoItems)
+    const userProfile = props.route.params.createdBy;
+
     return(        
         <Container>
             <ScrollView>
@@ -49,7 +49,7 @@ const StoreContainer = (props) => {
                                 color="tomato"
                                 dark
                                 mode={'contained'}
-                                onPress={() => alert('Go to shop')}
+                                onPress={()=> props.navigation.navigate('StoreProfilePage', {videoProfile, userProfile})}
                             >Visit Store</Button>       
                         </TouchableOpacity>
                     </ScrollView>
@@ -70,7 +70,8 @@ const StoreHeader = styled.Text`
     color: #ffffff;
     text-align: center;
     font-weight: 700;
-    margin-top: 30px;
+    margin-top: 33px;
+    padding-bottom: 4px;
 `
 const ProductContainer = styled.View`
     background-color: #000000;
@@ -89,7 +90,7 @@ const VideoProductTitle = styled.Text`
 const styles = StyleSheet.create({
     goBackBtn: {
         margin: 10,
-        marginTop: 10,
+        marginTop: 16,
         width: 30,
         height: 50,
         alignItems: 'center',

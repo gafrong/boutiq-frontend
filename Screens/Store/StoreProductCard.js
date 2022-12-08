@@ -20,9 +20,19 @@ const StoreProductCard = ({item, navigation}) => {
             <Card style={styles.card}>
                 <Card.Cover source={{ uri: productImage }} />
                 <Card.Content style={styles.whiteText}>
-                    <Title style={styles.title}>{productName}</Title>
-                    <Paragraph style={styles.whiteText}>{productPrice}</Paragraph>
-                    <Paragraph style={styles.whiteText}>{productDescription}</Paragraph>
+                    <Title style={styles.title}>
+                        {productName.length > 20 
+                            ? productName.substring(0, 20 - 3) + '...' 
+                            : productName    
+                        }
+                    </Title>
+                    <Paragraph style={styles.price}>{productPrice}</Paragraph>
+                    <Paragraph style={styles.whiteText}>
+                        {productDescription.length > 100
+                            ? productDescription.substring(0, 100 - 3) + '...'
+                            : productDescription
+                        }
+                    </Paragraph>
                 </Card.Content>
                 <Card.Actions>
                 <Button>Like</Button>
@@ -43,8 +53,15 @@ const styles = StyleSheet.create({
     whiteText : {
         color: "#ffffff"
     },
+    price: {
+        color: '#ffffff',
+        fontWeight: 'bold'
+    },  
     title: {
-        color: "#ffffff"
+        color: "#ffffff",
+        fontSize: 17,
+        fontWeight: 'bold',
+        paddingTop: 10
     }
 })
 

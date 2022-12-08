@@ -5,9 +5,8 @@ import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
 
 const StoreProfilePage = (props) => {
-    // console.log('Store Profile Page', props)
     const storeProfile = props.route.params.videoProfile;
-    const user = props.route.params.user;
+    // const user = props.route.params.user;
     return(
         <Container>  
             <TouchableOpacity onPress={() => props.navigation.goBack()}>
@@ -122,7 +121,8 @@ const StoreHeader = styled.Text`
     color: #ffffff;
     text-align: center;
     font-weight: 700;
-    margin-top: 30px;
+    margin-top: 33px;
+    padding-bottom: 4px;
 `
 const ProfileDetail = styled.View`
     padding: 15px;
@@ -130,7 +130,7 @@ const ProfileDetail = styled.View`
 const styles = StyleSheet.create({
     goBackBtn: {
         margin: 10,
-        marginTop: 12,
+        marginTop: 18,
         width: 30,
         height: 50,
         alignItems: 'center',

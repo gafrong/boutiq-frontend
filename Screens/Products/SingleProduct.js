@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
 
 const SingleProduct = (props) => {
-console.log('ITEM', props)
+// console.log('ITEM', props)
     const [item, setItem] = useState(props.route.params.product);
     const [availability, setAvailability] = useState('');
     const [availabilityText, setAvailabilityText] = useState("");
@@ -35,55 +35,58 @@ console.log('ITEM', props)
 
 
     return (
-        <ScrollView style={styles.container}>
-            <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.goBackBtn}>
-                <Button
-                    size={45}
-                    >
-                    <Icon 
-                        name="chevron-left"
-                        style={{}}
-                        color={"#ffffff"}
-                        size={34}
-                    />
-                </Button>
-            </TouchableOpacity>
-            <Card>
-                <Card.Cover
-                    source={{
-                        uri: item.image ? 
-                        item.image : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png"
-                    }}
-                    style={styles.image}
-                /> 
-                <Card.Content style={styles.contentContainer}>
-                    <Title style={styles.contentHeader}>{item.name}</Title>
-                    <Text style={styles.contentBrand}>{item.brand}</Text>
-                    <Text style={styles.price}>${item.price}</Text>
-                    <Paragraph style={styles.contentText}>{item.description}</Paragraph>  
-                    <View style={styles.availabilityContainer}>
-                        <View style={styles.availability}>
-                            <Text style={[styles.contentText,{marginRight:10}]}>
-                                {availabilityText}
-                            </Text>
-                            {availability}
-                        </View>
-                    </View>         
+        <ScrollView>
+            <View style={styles.container}>
+                <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.goBackBtn}>
                     <Button
-                        mode="outlined"
-                        uppercase
-                        onPress={()=>{ props.addItemToCart(item),
-                            Toast.show({
-                                topOffset: 60,
-                                type: "success",
-                                text1: `${item.name} added to your cart`,
-                                text2: "Go to your cart to complete the order"
-                            })
+                        size={20}
+                        >
+                        <Icon 
+                            name="chevron-left"
+                            style={styles.backBtnIcon}
+                            color={"#ffffff"}
+                            size={32}
+                        />
+                    </Button>
+                </TouchableOpacity>
+                <Card style={styles.card}>
+                    <Card.Cover
+                        source={{
+                            uri: item.image ? 
+                            item.image : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png"
                         }}
-                    >Add</Button>
-                </Card.Content>
-            
-        </Card> 
+                        style={styles.image}
+                    /> 
+                    <Card.Content style={styles.contentContainer}>
+                        <Title style={styles.contentHeader}>{item.name}</Title>
+                        <View style={styles.subHeader}>
+                            <Text style={styles.contentBrand}>{item.brand}</Text>
+                            <Text style={styles.price}>{item.price}원</Text>
+                        </View>
+                        <Paragraph style={styles.contentText}>{item.description}</Paragraph>  
+                        <View style={styles.availabilityContainer}>
+                            <View style={styles.availability}>
+                                <Text style={[styles.contentText,{marginRight:10}]}>
+                                    {availabilityText}
+                                </Text>
+                                {availability}
+                            </View>
+                        </View>         
+                        <Button
+                            mode="outlined"
+                            uppercase
+                            onPress={()=>{ props.addItemToCart(item),
+                                Toast.show({
+                                    topOffset: 60,
+                                    type: "success",
+                                    text1: `${item.name} added to your cart`,
+                                    text2: "Go to your cart to complete the order"
+                                })
+                            }}
+                        >Add</Button>
+                    </Card.Content>       
+                </Card> 
+            </View>
         </ScrollView>
        
     )
@@ -100,9 +103,10 @@ const mapDispatchToProps = (dispatch) => {
 const styles = StyleSheet.create({
     goBackBtn:{
         position: 'absolute',
-        left: 0,
-        top: 5,
-        color: 'green',
+        left: -5,
+        top: 18,
+        width: 30,
+        height: 50,
         zIndex: 1,
         elevation: 1
     },
@@ -112,12 +116,21 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#000000',
         color: '#ffffff',
-        paddingTop: 40
+        paddingTop: 50
+    },
+    card: {
+        marginTop: 20,
+        paddingBottom: 100,
+        backgroundColor: '#222222'
     },
     contentContainer: {
         backgroundColor: '#222222',
         paddingTop: 10,
         paddingBottom: 10
+    },
+    subHeader: {
+        flexDirection: 'row',
+        marginTop: 10,
     },
     imageContainer: {
         backgroundColor: 'white',
@@ -143,7 +156,8 @@ const styles = StyleSheet.create({
     }, 
     contentText: {
         color: '#ffffff',
-        paddingBottom: 15
+        paddingBottom: 15,
+        marginTop: 15,
     },  
     bottomContainer: {
         flexDirection: 'row',
@@ -153,14 +167,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     price: {
-        position: 'absolute',
-        top: 0,
-        right: 10,
         fontsize: 30,
-        margin: 20,
         color: 'tomato',
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 18,
+        right: 5,
+        position: 'absolute'
     },
     availabilityContainer: {
         marginBottom: 20,
