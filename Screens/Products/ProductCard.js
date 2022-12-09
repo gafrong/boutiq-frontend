@@ -7,12 +7,7 @@ import {
     Text,
     Button
 } from 'react-native';
-import Toast from 'react-native-toast-message';
-
-import { connect } from 'react-redux';
-import * as actions from '../../Redux/Actions/cartActions';
 import { Card, Title, Paragraph } from 'react-native-paper';
-import BoutiqButton from "../../Shared/StyledComponents/BoutiqButton";
 
 var {width} = Dimensions.get('window');
 
@@ -35,34 +30,9 @@ const ProductCard = (props) => {
                     </Title>
                     <Text style={styles.cardDescription}>{price}원</Text>
                 </Card.Content>
-                
-                { countInStock > 0 ? (
-                    <Card.Actions>
-                        <Button 
-                            title={"Add"}
-                            onPress={()=>{
-                                props.addItemToCart(props)
-                                Toast.show({
-                                    topOffset:60,
-                                    type:"success",
-                                    text1: `${name} added to Your Cart`,
-                                    text2: "Go to your cart to complete order"
-                                })
-                            }}
-                        />
-                    </Card.Actions>
-                ) : <Text style={{marginTop:20}}>Currently Unavailable</Text>}
             </Card>
         </View>
     )
-}
-
-// dispatch our actions to the state container
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addItemToCart: (product) =>
-            dispatch(actions.addToCart({quantity: 1, product}))
-    }
 }
 
 const styles = StyleSheet.create({
@@ -80,11 +50,11 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         color: "#ffffff",
-        fontSize: 18
+        fontSize: 14
     },
     cardDescription: {
         color: "#ffffff"
     }
 })
 
-export default connect(null, mapDispatchToProps)(ProductCard);
+export default ProductCard;

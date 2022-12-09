@@ -10,10 +10,10 @@ import { connect } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
 
 const SingleProduct = (props) => {
-// console.log('ITEM', props)
     const [item, setItem] = useState(props.route.params.product);
     const [availability, setAvailability] = useState('');
     const [availabilityText, setAvailabilityText] = useState("");
+console.log('ITEM', item)
 
     useEffect(() => {
         if(props.route.params.product.countInStock == 0) {
@@ -35,59 +35,73 @@ const SingleProduct = (props) => {
 
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.goBackBtn}>
-                    <Button
-                        size={20}
-                        >
-                        <Icon 
-                            name="chevron-left"
-                            style={styles.backBtnIcon}
-                            color={"#ffffff"}
-                            size={32}
-                        />
-                    </Button>
-                </TouchableOpacity>
-                <Card style={styles.card}>
-                    <Card.Cover
-                        source={{
-                            uri: item.image ? 
-                            item.image : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png"
-                        }}
-                        style={styles.image}
-                    /> 
-                    <Card.Content style={styles.contentContainer}>
-                        <Title style={styles.contentHeader}>{item.name}</Title>
-                        <View style={styles.subHeader}>
-                            <Text style={styles.contentBrand}>{item.brand}</Text>
-                            <Text style={styles.price}>{item.price}원</Text>
-                        </View>
-                        <Paragraph style={styles.contentText}>{item.description}</Paragraph>  
-                        <View style={styles.availabilityContainer}>
-                            <View style={styles.availability}>
-                                <Text style={[styles.contentText,{marginRight:10}]}>
-                                    {availabilityText}
-                                </Text>
-                                {availability}
-                            </View>
-                        </View>         
+        <View style={{backgroundColor: '#000000'}}>
+            <ScrollView>
+                <View style={styles.container}>
+                    <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.goBackBtn}>
                         <Button
-                            mode="outlined"
-                            uppercase
-                            onPress={()=>{ props.addItemToCart(item),
-                                Toast.show({
-                                    topOffset: 60,
-                                    type: "success",
-                                    text1: `${item.name} added to your cart`,
-                                    text2: "Go to your cart to complete the order"
-                                })
+                            size={20}
+                            >
+                            <Icon 
+                                name="chevron-left"
+                                style={styles.backBtnIcon}
+                                color={"#ffffff"}
+                                size={32}
+                            />
+                        </Button>
+                    </TouchableOpacity>
+                    <Card style={styles.card}>
+                        <Card.Cover
+                            source={{
+                                uri: item.image ? 
+                                item.image : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png"
                             }}
-                        >Add</Button>
-                    </Card.Content>       
-                </Card> 
+                            style={styles.image}
+                        /> 
+                        <Card.Content style={styles.contentContainer}>
+                            <Title style={styles.contentHeader}>{item.name}</Title>
+                            <View style={styles.subHeader}>
+                                <Text style={styles.contentBrand}>{item.brand}</Text>
+                                <Text style={styles.price}>{item.price}원</Text>
+                            </View>
+                            <Paragraph style={styles.contentText}>{item.description}</Paragraph>  
+                            <View style={styles.availabilityContainer}>
+                                <View style={styles.availability}>
+                                    <Text style={[styles.contentText,{marginRight:10}]}>
+                                        {availabilityText}
+                                    </Text>
+                                    {availability}
+                                </View>
+                            </View>         
+                            
+                        </Card.Content>       
+                    </Card> 
+                </View>
+            </ScrollView>
+            <View style={styles.buyArea}>
+                <BoutiqButton
+                    large
+                    secondary
+                    onPress={()=>{ props.addItemToCart(item),
+                        Toast.show({
+                            topOffset: 60,
+                            type: "success",
+                            text1: `${item.name} added to your cart`,
+                            text2: "Go to your cart to complete the order"
+                        })
+                    }}
+                    style={{width: '20%'}}
+                ><Text style={{color: '#000000'}}>장바구니</Text></BoutiqButton>
+                <BoutiqButton
+                    large
+                    primary
+                    onPress={()=>{ alert('BUY')
+                    }}
+                    style={{width: '60%'}}
+                ><Text style={{color: '#ffffff', fontSize: 18}}>바로구매</Text></BoutiqButton>
             </View>
-        </ScrollView>
+            
+        </View>
        
     )
 }
@@ -146,13 +160,13 @@ const styles = StyleSheet.create({
     contentHeader: {
         color: '#ffffff',
         marginBottom: 10,
-        fontSize: 23
+        fontSize: 20
     }, 
     contentBrand: {
         color: '#ffffff',
         fontWeight: 'bold',
         marginBottom: 10,
-        fontSize: 16
+        fontSize: 14
     }, 
     contentText: {
         color: '#ffffff',
@@ -181,6 +195,18 @@ const styles = StyleSheet.create({
     availability: {
         flexDirection: 'row',
         marginBottom: 10,
+    },
+    buyArea: {
+        flex: 1,
+        flexDirection: "row",
+        flexWrap: 'wrap',
+        alignItems: 'stretch',
+        position: 'absolute',
+        bottom: 49,  
+        backgroundColor: '#000',
+        width: '100%',
+        height: 60,
+        padding: 5
     }
 })
 

@@ -1,11 +1,8 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { Button, Card, Title, Paragraph } from 'react-native-paper';
+import { Card, Title, Paragraph } from 'react-native-paper';
 
 const StoreProductCard = ({item, navigation}) => {
-    // const products = props.route.params.videoProps.videoItems;
-// console.log('CARD PROPS', props.route.params.videoProps.videoItems)
-// console.log('ITEM', navigation)
 
     const productImage = item.product.image;
     const productName = item.product.name;
@@ -34,10 +31,6 @@ const StoreProductCard = ({item, navigation}) => {
                         }
                     </Paragraph>
                 </Card.Content>
-                <Card.Actions>
-                <Button>Like</Button>
-                <Button>Add</Button>
-                </Card.Actions>
             </Card>
         </TouchableOpacity>
     )

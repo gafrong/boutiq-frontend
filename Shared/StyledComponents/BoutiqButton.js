@@ -11,14 +11,16 @@ const BoutiqButton = styled.TouchableOpacity`
     ${(props) =>
         props.primary &&
             css`
-                background: #5cb85c;
+                background: tomato;
+                color: #ffffff;
             `
     }
 
     ${(props) => 
         props.secondary && 
             css`
-                background: #62b1f6;
+                background: #eeeeee;
+                border: 1px solid #000000;
             `
     }
 

@@ -30,10 +30,17 @@ export const authSlice = createSlice({
             state.videos = updatedVideos;
         },
         setStateProducts: (state, action) => {
-            state.products = aciton.payload.products;
+            state.products = action.payload.products;
+        },
+        setStateProduct: (state, action) => {
+            const updatedProducts = state.products.map((product) => {
+                if (product._id === action.payload.product._id) return action.payload.product;
+                return product;
+            });
+            state.products = updatedProducts;
         },
     },
 });
 
-export const { setLogin, setLogout, setVideos, setVideo, setProducts} = authSlice.actions;
+export const { setLogin, setLogout, setStateVideos, setStateVideo, setStateProducts, setStateProduct} = authSlice.actions;
 export default authSlice.reducer;

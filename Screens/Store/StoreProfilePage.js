@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/Feather";
 
 const StoreProfilePage = (props) => {
     const storeProfile = props.route.params.videoProfile;
-    // const user = props.route.params.user;
+  
     return(
         <Container>  
             <TouchableOpacity onPress={() => props.navigation.goBack()}>
