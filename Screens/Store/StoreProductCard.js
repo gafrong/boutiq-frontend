@@ -19,13 +19,10 @@ const StoreProductCard = ({item, navigation}) => {
     const stateProduct = useSelector((state) => state.authReducer.products.find((item) => item.product._id == productId));
     const product = stateProduct.product;
     const productLikes = product.likes;
-console.log('STATE PRODUCT LIKES', productLikes)
     const userAuthenticated = context.stateUser.isAuthenticated;   
 
     const loggedInUserId = context.stateUser.user.userId;
     const isLiked = Boolean(productLikes[loggedInUserId]);
-
-console.log('isLiked', isLiked);
 
     useEffect(()=> {
         AsyncStorage.getItem("jwt")
@@ -47,7 +44,7 @@ console.log('isLiked', isLiked);
         const updatedProduct = await response.json();
         dispatch(setVideoProduct({product: updatedProduct}));
     };
-    
+
     return (
         <TouchableOpacity
             onPress={()=>

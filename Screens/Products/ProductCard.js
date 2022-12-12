@@ -12,7 +12,6 @@ import { Card, Title, Paragraph } from 'react-native-paper';
 var {width} = Dimensions.get('window');
 
 const ProductCard = (props) => {
-    console.log('PRODUCT CARD', props)
     const { name, price, image, countInStock} = props;
     return(
         <View style={styles.container}>
