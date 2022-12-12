@@ -7,28 +7,31 @@ import AuthGlobal from '../../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../../assets/common/baseUrl';
 
+import { useDispatch } from 'react-redux';
+import { setVideoProducts } from '../../../Redux/state/authSlice';
+
 const Sidebar = (props) => {
     const context = useContext(AuthGlobal);
     const userAuthenticated = context.stateUser.isAuthenticated;
 
-    const createdBy = props.createdBy;
     const videoProps = props.videoProps;
     const [video, setVideo] = useState(videoProps);
     const [token, setToken] = useState();
 
     const videoId = video.id;
     const videoLikes = video.likes;
-    
     const loggedInUserId = context.stateUser.user.userId;
     const isLiked = Boolean(videoLikes[loggedInUserId]);
     const likeCount = Object.keys(videoLikes).length;
+
+    const dispatch = useDispatch();
 
     useEffect(()=> {
         AsyncStorage.getItem("jwt")
             .then((res) => {
                 setToken(res)
             })
-            .catch((error) => console.log(error))
+            .catch((error) => console.log(error));
     }, [])
 
     const patchVideoLike = async () => {
@@ -48,6 +51,7 @@ const Sidebar = (props) => {
 		<Container>
             <Pressable 
                 onPress={() => [
+                    dispatch(setVideoProducts({products:videoProps.videoItems})),
                     props.props.navigation.navigate('Store', props)
                 ]}>
                 <Menu>

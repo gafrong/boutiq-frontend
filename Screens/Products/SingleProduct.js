@@ -1,21 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { Image, View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { Image, View, StyleSheet, Text, ScrollView, TouchableOpacity, Pressable } from 'react-native';
 import { Card, Button, Title, Paragraph, Provider as PaperProvider } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import BoutiqButton from '../../Shared/StyledComponents/BoutiqButton';
 import TrafficLight from '../../Shared/StyledComponents/TrafficLight';
-import Icon from "react-native-vector-icons/Feather";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import AuthGlobal from '../../Context/store/AuthGlobal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import baseURL from '../../assets/common/baseUrl';
+
 //redux
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
+import { setVideoProduct } from '../../Redux/state/authSlice';
 
 const SingleProduct = (props) => {
-    const [item, setItem] = useState(props.route.params.product);
     const [availability, setAvailability] = useState('');
     const [availabilityText, setAvailabilityText] = useState("");
-console.log('ITEM', item)
+    const productParams = props.route.params.product;
+    const productId = productParams._id;
+
+    const stateProduct = useSelector((state) => state.authReducer.products.find((item) => item.product._id == productId));
+    const product = stateProduct.product;
+
+    const dispatch = useDispatch();
+    const context = useContext(AuthGlobal);
+    const [token, setToken] = useState();
+
+    const userAuthenticated = context.stateUser.isAuthenticated;
+    const productLikes = product.likes;
+    const loggedInUserId = context.stateUser.user.userId;
+    const isLiked = Boolean(productLikes[loggedInUserId]);
 
     useEffect(() => {
+        AsyncStorage.getItem("jwt")
+        .then((res) => {
+            setToken(res)
+        })
+        .catch((error) => console.log(error))
+        
         if(props.route.params.product.countInStock == 0) {
             setAvailability(<TrafficLight unavailable></TrafficLight>);
             setAvailabilityText("Unavailable")
@@ -33,6 +57,18 @@ console.log('ITEM', item)
         }
     }, [])
 
+    const patchProductLike = async () => {
+        const response = await fetch(`${baseURL}products/${productId}/like`, {
+            method: "PATCH",
+            headers : {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({userId: loggedInUserId}),
+        })
+        const updatedProduct = await response.json();
+        dispatch(setVideoProduct({product: updatedProduct}));
+    };
 
     return (
         <View style={{backgroundColor: '#000000'}}>
@@ -46,25 +82,48 @@ console.log('ITEM', item)
                                 name="chevron-left"
                                 style={styles.backBtnIcon}
                                 color={"#ffffff"}
-                                size={32}
+                                size={40}
                             />
                         </Button>
                     </TouchableOpacity>
                     <Card style={styles.card}>
+                        {userAuthenticated 
+                            ? <Pressable onPress={()=> patchProductLike()}>
+                                <View style={styles.likeBtn}>
+                                    {isLiked 
+                                    ? <Icon 
+                                        name="cards-heart" 
+                                        size={30} 
+                                        color={'red'}/>
+                                    : <Icon 
+                                        name="cards-heart-outline" 
+                                        size={30} 
+                                        color={"#ffffff"}/> }
+                                </View>
+                            </Pressable>
+                            : <Pressable onPress={()=> alert('Please login')}>
+                                <View style={styles.likeBtn}>
+                                    <Icon 
+                                        name="cards-heart-outline" 
+                                        size={30} 
+                                        color={"#ffffff"}/>
+                                </View>
+                            </Pressable>
+                        }
                         <Card.Cover
                             source={{
-                                uri: item.image ? 
-                                item.image : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png"
+                                uri: product.image ? 
+                                product.image : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png"
                             }}
                             style={styles.image}
                         /> 
                         <Card.Content style={styles.contentContainer}>
-                            <Title style={styles.contentHeader}>{item.name}</Title>
+                            <Title style={styles.contentHeader}>{product.name}</Title>
                             <View style={styles.subHeader}>
-                                <Text style={styles.contentBrand}>{item.brand}</Text>
-                                <Text style={styles.price}>{item.price}원</Text>
+                                <Text style={styles.contentBrand}>{product.brand}</Text>
+                                <Text style={styles.price}>{product.price}원</Text>
                             </View>
-                            <Paragraph style={styles.contentText}>{item.description}</Paragraph>  
+                            <Paragraph style={styles.contentText}>{product.description}</Paragraph>  
                             <View style={styles.availabilityContainer}>
                                 <View style={styles.availability}>
                                     <Text style={[styles.contentText,{marginRight:10}]}>
@@ -82,11 +141,11 @@ console.log('ITEM', item)
                 <BoutiqButton
                     large
                     secondary
-                    onPress={()=>{ props.addItemToCart(item),
+                    onPress={()=>{ props.addItemToCart(product),
                         Toast.show({
                             topOffset: 60,
                             type: "success",
-                            text1: `${item.name} added to your cart`,
+                            text1: `${product.name} added to your cart`,
                             text2: "Go to your cart to complete the order"
                         })
                     }}

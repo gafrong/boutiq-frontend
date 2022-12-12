@@ -1,16 +1,17 @@
-import React, {useState} from "react";
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList } from "react-native";
+import React from "react";
+import { StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/Feather'
 import styled from "styled-components";
 import { Button } from 'react-native-paper';
 import StoreProfile from "./StoreProfile";
 import StoreProductList from './StoreProductList';
+import { useSelector } from "react-redux";
 
 const StoreContainer = (props) => {
 
     const videoProfile = props.route.params.videoProps;
-    const products = props.route.params.videoProps.videoItems
     const userProfile = props.route.params.createdBy;
+    const products = useSelector((state) => state.authReducer.products);
 
     return(        
         <Container>
@@ -37,10 +38,10 @@ const StoreContainer = (props) => {
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                     >
-                        {products.map((item) => 
+                        {products.map((item, index) => 
                             <StoreProductList 
                                 navigation={props.navigation}
-                                key={item._id}
+                                key={index}
                                 item={item}
                             />)}
                     

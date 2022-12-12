@@ -1,33 +1,97 @@
-import React from "react";
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState, useContext, useEffect} from "react";
+import { TouchableOpacity, StyleSheet, Pressable, View, Text } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import AuthGlobal from '../../Context/store/AuthGlobal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import baseURL from '../../assets/common/baseUrl';
+
+//redux
+import { useDispatch, useSelector } from 'react-redux';
+import { setVideoProduct } from '../../Redux/state/authSlice';
 
 const StoreProductCard = ({item, navigation}) => {
+    const dispatch = useDispatch();
+    const context = useContext(AuthGlobal);
+    const productId = item.product._id;
+    const [token, setToken] = useState();
+    const stateProduct = useSelector((state) => state.authReducer.products.find((item) => item.product._id == productId));
+    const product = stateProduct.product;
+    const productLikes = product.likes;
+console.log('STATE PRODUCT LIKES', productLikes)
+    const userAuthenticated = context.stateUser.isAuthenticated;   
 
-    const productImage = item.product.image;
-    const productName = item.product.name;
-    const productDescription = item.product.description;
-    const productPrice = item.product.price;
+    const loggedInUserId = context.stateUser.user.userId;
+    const isLiked = Boolean(productLikes[loggedInUserId]);
+
+console.log('isLiked', isLiked);
+
+    useEffect(()=> {
+        AsyncStorage.getItem("jwt")
+            .then((res) => {
+                setToken(res)
+            })
+            .catch((error) => console.log(error))
+    }, [])
+
+    const patchProductLike = async () => {
+        const response = await fetch(`${baseURL}products/${productId}/like`, {
+            method: "PATCH",
+            headers : {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({userId: loggedInUserId}),
+        })
+        const updatedProduct = await response.json();
+        dispatch(setVideoProduct({product: updatedProduct}));
+    };
+    
     return (
         <TouchableOpacity
             onPress={()=>
-                navigation.navigate("ProductDetail", item)
+                navigation.navigate("ProductDetail", {product:product})
             }
         >
             <Card style={styles.card}>
-                <Card.Cover source={{ uri: productImage }} />
+                {userAuthenticated 
+                ? <Pressable onPress={()=> patchProductLike()}>
+                    <View style={styles.likeBtn}>
+                        {isLiked 
+                        ? <Icon 
+                            name="cards-heart" 
+                            size={25} 
+                            color={'red'}/>
+                        : <Icon 
+                            name="cards-heart-outline" 
+                            size={25} 
+                            color={"#ffffff"}/> }
+                    </View>
+                </Pressable>
+                : <Pressable onPress={()=> alert('Please login')}>
+                    <View style={styles.likeBtn}>
+                        <Icon 
+                            name="cards-heart-outline" 
+                            size={25} 
+                            color={"#ffffff"}/>
+                    </View>
+                </Pressable>
+                }
+                <Card.Cover source={{ uri: product.image }} style={{zIndex: -1}}/>
+                
                 <Card.Content style={styles.whiteText}>
                     <Title style={styles.title}>
-                        {productName.length > 20 
-                            ? productName.substring(0, 20 - 3) + '...' 
-                            : productName    
+                        {product.name.length > 20 
+                            ? product.name.substring(0, 20 - 3) + '...' 
+                            : product.name    
                         }
                     </Title>
-                    <Paragraph style={styles.price}>{productPrice}</Paragraph>
+                    <Paragraph style={styles.price}>{product.price}</Paragraph>
                     <Paragraph style={styles.whiteText}>
-                        {productDescription.length > 100
-                            ? productDescription.substring(0, 100 - 3) + '...'
-                            : productDescription
+                        {product.description.length > 100
+                            ? product.description.substring(0, 100 - 3) + '...'
+                            : product.description
                         }
                     </Paragraph>
                 </Card.Content>
@@ -42,6 +106,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#222222",
         color: "#ffffff",
         marginLeft:20,
+        flex: 1,
     },
     whiteText : {
         color: "#ffffff"
@@ -55,6 +120,19 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: 'bold',
         paddingTop: 10
+    },
+    menu: {
+        margin: "6px",
+        alignItems: "center",
+    },
+    likeBtn: {
+        position: 'absolute',
+        zIndex: 1,
+        elevation: 1,
+        right: 10,
+        top: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 

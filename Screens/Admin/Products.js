@@ -108,7 +108,7 @@ const Products = (props) => {
                     medium
                     onPress={() => props.navigation.navigate("Orders")}
                 >
-                    <Icon name="shopping-bag" size={18} color="white"/>
+                    <Icon name="shopping-bag" size={18} color="#000000"/>
                     <Text style={styles.buttonText}>Orders</Text>
                 </BoutiqButton>
                 <BoutiqButton
@@ -116,7 +116,7 @@ const Products = (props) => {
                     medium
                     onPress={() => props.navigation.navigate("ProductForm")}
                 >
-                    <Icon name="plus" size={18} color="white"/>
+                    <Icon name="plus" size={18} color="#000000"/>
                     <Text style={styles.buttonText}>Products</Text>
                 </BoutiqButton>
                 <BoutiqButton
@@ -124,7 +124,7 @@ const Products = (props) => {
                     medium
                     onPress={() => props.navigation.navigate("Categories")}
                 >
-                    <Icon name="reorder" size={18} color="white"/>
+                    <Icon name="reorder" size={18} color="#000000"/>
                     <Text style={styles.buttonText}>Categories</Text>
                 </BoutiqButton>
             </View>
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         marginLeft: 4,
-        color: 'white'
+        color: '#000000'
     }
 })
 
