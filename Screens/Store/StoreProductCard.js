@@ -12,16 +12,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setVideoProduct } from '../../Redux/state/authSlice';
 
 const StoreProductCard = ({item, navigation}) => {
+  
     const dispatch = useDispatch();
-    const context = useContext(AuthGlobal);
-    const productId = item.product._id;
     const [token, setToken] = useState();
-    const stateProduct = useSelector((state) => state.authReducer.products.find((item) => item.product._id == productId));
-    const product = stateProduct.product;
-    const productLikes = product.likes;
-    const userAuthenticated = context.stateUser.isAuthenticated;   
-
+    const context = useContext(AuthGlobal);
+    const userAuthenticated = context.stateUser.isAuthenticated;  
     const loggedInUserId = context.stateUser.user.userId;
+    // console.log('ITEM', item)
+    const productId = item.product._id;
+    const stateProduct = useSelector((state) => state.authReducer.videoProducts.find((item) => item.product._id == productId));
+
+    
+    const product = stateProduct.product;
+    const productLikes = product.likes; 
+    console.log('product ID', productId)
     const isLiked = Boolean(productLikes[loggedInUserId]);
 
     useEffect(()=> {
@@ -48,7 +52,7 @@ const StoreProductCard = ({item, navigation}) => {
     return (
         <TouchableOpacity
             onPress={()=>
-                navigation.navigate("ProductDetail", {product:product})
+                navigation.navigate("StoreProductDetail", {product:product})
             }
         >
             <Card style={styles.card}>

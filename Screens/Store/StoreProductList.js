@@ -1,5 +1,5 @@
 import React from "react";
-import {View, StyleSheet } from 'react-native';
+import {View} from 'react-native';
 import StoreProductCard from "./StoreProductCard";
 
 const StoreProductList = ({navigation, item}) => {

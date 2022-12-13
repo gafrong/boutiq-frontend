@@ -11,8 +11,8 @@ const StoreContainer = (props) => {
 
     const videoProfile = props.route.params.videoProps;
     const userProfile = props.route.params.createdBy;
-    const products = useSelector((state) => state.authReducer.products);
-
+    const products = useSelector((state) => state.authReducer.videoProducts);
+ 
     return(        
         <Container>
             <ScrollView>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Image, View, StyleSheet, Text, ScrollView, TouchableOpacity, Pressable } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Pressable } from 'react-native';
 import { Card, Button, Title, Paragraph, Provider as PaperProvider } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import BoutiqButton from '../../Shared/StyledComponents/BoutiqButton';
@@ -13,16 +13,18 @@ import baseURL from '../../assets/common/baseUrl';
 //redux
 import { connect, useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
-import { setProduct } from '../../Redux/state/authSlice';
+import { setVideoProduct } from '../../Redux/state/authSlice';
 
-const SingleProduct = (props) => {
+const StoreSingleProduct = (props) => {
     const [availability, setAvailability] = useState('');
     const [availabilityText, setAvailabilityText] = useState("");
     const productParams = props.route.params.product;
     const productId = productParams._id;
+    const stateProduct = useSelector((state) => state.authReducer.videoProducts.find((item) => item.product._id == productId));
+    const product = stateProduct.product;
 
-    const product = productParams;
-
+    const test = useSelector((state)=>state.authReducer.videoProducts)
+    // console.log('state products', test)
     const dispatch = useDispatch();
     const context = useContext(AuthGlobal);
     const [token, setToken] = useState();
@@ -66,7 +68,7 @@ const SingleProduct = (props) => {
             body: JSON.stringify({userId: loggedInUserId}),
         })
         const updatedProduct = await response.json();
-        dispatch(setProduct({product: updatedProduct}));
+        dispatch(setVideoProduct({product: updatedProduct}));
     };
 
     return (
@@ -274,4 +276,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(null, mapDispatchToProps)(SingleProduct);
+export default connect(null, mapDispatchToProps)(StoreSingleProduct);

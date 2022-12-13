@@ -51,7 +51,7 @@ const Sidebar = (props) => {
 		<Container>
             <Pressable 
                 onPress={() => [
-                    dispatch(setVideoProducts({products:videoProps.videoItems})),
+                    dispatch(setVideoProducts({videoProducts:videoProps.videoItems})),
                     props.props.navigation.navigate('Store', props)
                 ]}>
                 <Menu>

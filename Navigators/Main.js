@@ -6,7 +6,7 @@ import { BlurView } from 'expo-blur';
 
 
 // Stacks
-import ShopNavigator from "./ShopNavigator";
+import MarketNavigator from "./MarketNavigator";
 import CartNavigator from "./CartNavigator";
 import UserNavigator from "./UserNavigator";
 import AdminNavigator from "./AdminNavigator";
@@ -60,7 +60,7 @@ const Main = () => {
            /> 
            <Tab.Screen
                 name="Shop"
-                component={ShopNavigator}
+                component={MarketNavigator}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Icon 

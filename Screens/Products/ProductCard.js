@@ -2,17 +2,13 @@ import React from "react";
 import {
     StyleSheet,
     View,
-    Dimensions,
-    Image,
-    Text,
-    Button
+    Text
 } from 'react-native';
-import { Card, Title, Paragraph } from 'react-native-paper';
+import { Card, Title } from 'react-native-paper';
 
-var {width} = Dimensions.get('window');
 
 const ProductCard = (props) => {
-    const { name, price, image, countInStock} = props;
+    const { name, price, image } = props;
     return(
         <View style={styles.container}>
             <Card style={styles.cardCover}>

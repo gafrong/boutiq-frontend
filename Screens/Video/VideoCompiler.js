@@ -29,12 +29,11 @@ const VideoCompiler = ({ videos, props }) => {
                         <Gradient
 							locations={[0, 0.26, 0.6, 1]}
 							colors={[
+								'rgba(26,26,26,0.2)',
 								'rgba(26,26,26,0)',
 								'rgba(26,26,26,0)',
-								'rgba(26,26,26,0)',
-								'rgba(26,26,26,0.6)'
+								'rgba(26,26,26,0.5)'
 							]}>
-								{/* {console.log('ITEM', item)} */}
 							<Center>
 								<Info username={item.createdBy.username} description={item.description} />
 								<Sidebar 

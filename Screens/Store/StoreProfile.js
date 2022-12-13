@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import styled from "styled-components";
 import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
@@ -7,7 +7,6 @@ import Icon from "react-native-vector-icons/Feather";
 const StoreProfile = (props) => {
     const videoProfile = props.route.params.videoProps;
     const userProfile = props.route.params.user;
-    // console.log('STORE PROFILE', videoProfile)
     return(
         <Container>           
             <ProfileContainer>

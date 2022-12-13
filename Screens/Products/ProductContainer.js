@@ -8,8 +8,7 @@ import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
 
 import ProductList from './ProductList'
-
-// const data = require('../../assets/data/product.json')
+import { setProducts } from "../../Redux/state/authSlice";
 
 var { width, height } = Dimensions.get('window');
 
@@ -24,10 +23,12 @@ const ProductContainer = (props) => {
     const [ initialState, setInitialState ] = useState([]);
     const [ loading, setLoading ] = useState(true);
 
+
     // react navigation when in focus a screen will use callback. useful when we have several products in the same navigation, so that when we come back, there will be a callback for data changes
     useFocusEffect((
         useCallback(
             () => {
+                console.log('PRODUC CONTAINER')
                 setFocus(false);
                 setActive(-1);
                 // Products from database
@@ -35,9 +36,9 @@ const ProductContainer = (props) => {
                     .get(`${baseURL}products`)
                     .then((res) => {
                         setProducts(res.data);
-                        setProductsFiltered(res.data);
-                        setProductsCtg(res.data);
-                        setInitialState(res.data);
+                        // setProductsFiltered(res.data);
+                        // setProductsCtg(res.data);
+                        // setInitialState(res.data);
                         setLoading(false);
                     })
                     .catch((error) => {
@@ -102,10 +103,6 @@ const styles = StyleSheet.create({
         flex:1,
         flexWrap: "wrap",
         backgroundColor: "#222222"
-    },
-    center: {
-        // justifyContent: 'center',
-        // alignItems: 'center'
     },
     loadingContainer:{
         flex:1,

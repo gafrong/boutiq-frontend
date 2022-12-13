@@ -4,6 +4,7 @@ const initialState = {
     user: null,
     token: null,
     videos: [],
+    videoProducts: [],
     products: [],
 };
 
@@ -29,18 +30,28 @@ export const authSlice = createSlice({
             });
             state.videos = updatedVideos;
         },
-        setVideoProducts: (state, action) => {
+        setProducts: (state, action) => {
             state.products = action.payload.products;
         },
-        setVideoProduct: (state, action) => {
-            const updatedProducts = state.products.map((product) => {
+        setProduct: (state, action) => {
+            const updatedProducts = state.videoProducts.map((product) => {
                 if (product.product._id === action.payload.product._id) return action.payload;
                 return product;
             });
             state.products = updatedProducts;
         },
+        setVideoProducts: (state, action) => {
+            state.videoProducts = action.payload.videoProducts;
+        },
+        setVideoProduct: (state, action) => {
+            const updatedProducts = state.videoProducts.map((product) => {
+                if (product.product._id === action.payload.product._id) return action.payload; 
+                return product;
+            });
+            state.videoProducts = updatedProducts;
+        },
     },
 });
 
-export const { setLogin, setLogout, setStateVideos, setStateVideo, setVideoProducts, setVideoProduct} = authSlice.actions;
+export const { setLogin, setLogout, setStateVideos, setStateVideo, setProducts, setProduct, setVideoProducts, setVideoProduct} = authSlice.actions;
 export default authSlice.reducer;
