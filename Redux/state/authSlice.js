@@ -34,8 +34,8 @@ export const authSlice = createSlice({
             state.products = action.payload.products;
         },
         setProduct: (state, action) => {
-            const updatedProducts = state.videoProducts.map((product) => {
-                if (product.product._id === action.payload.product._id) return action.payload;
+            const updatedProducts = state.products.map((product) => {
+                if (product._id === action.payload.product._id) return action.payload.product;
                 return product;
             });
             state.products = updatedProducts;
@@ -44,11 +44,11 @@ export const authSlice = createSlice({
             state.videoProducts = action.payload.videoProducts;
         },
         setVideoProduct: (state, action) => {
-            const updatedProducts = state.videoProducts.map((product) => {
+            const updatedVideoProducts = state.videoProducts.map((product) => {
                 if (product.product._id === action.payload.product._id) return action.payload; 
                 return product;
             });
-            state.videoProducts = updatedProducts;
+            state.videoProducts = updatedVideoProducts;
         },
     },
 });

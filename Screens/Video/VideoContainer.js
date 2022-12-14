@@ -6,19 +6,24 @@ import { useFocusEffect } from '@react-navigation/native';
 import VideoCompiler from './VideoCompiler';
 import Header from './components/Header';
 
-// import api from '../../services/testvideoapi';
 // import functions to access database
 import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
+import { setStateVideos } from "../../Redux/state/authSlice";
 
 const VideoContainer = (props) => {
-    const [ videos, setVideos ] = useState([]);
+    // const [ videos, setVideos ] = useState([]);
     const [ videosFiltered, setVideosFiltered ] = useState([]);
     const [ focus, setFocus] = useState();
     const [ active, setActive ] = useState();
     const [ initialState, setInitialState ] = useState([]);
     const [ loading, setLoading ] = useState(true);
 
+    const dispatch = useDispatch();
+
+    const videos = useSelector((state)=> state.authReducer.videos)
+    // console.log('test', videos)
     // react navigation when in focus a screen will use callback. useful when we have several products in the same navigation, so that when we come back, there will be a callback for data changes
     useFocusEffect((
         useCallback(
@@ -29,7 +34,8 @@ const VideoContainer = (props) => {
                 axios
                     .get(`${baseURL}videos`)
                     .then((res) => {
-                        setVideos(res.data);
+                        dispatch(setStateVideos({videos:res.data}))
+                        // setVideos(res.data);
                         setVideosFiltered(res.data);
                         setInitialState(res.data);
                         setLoading(false);
@@ -39,7 +45,7 @@ const VideoContainer = (props) => {
                     })
         
                 return () => {
-                    setVideos([])
+                    // setVideos([])
                     setVideosFiltered([])
                     setFocus()
                     setActive()

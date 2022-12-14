@@ -4,7 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import VideoContainer from "../Screens/Video/VideoContainer";
 import StoreContainer from "../Screens/Store/StoreContainer";
 import StoreProfilePage from "../Screens/Store/StoreProfilePage";
-import SingleProduct from "../Screens/Products/SingleProduct";
 import StoreSingleProduct from "../Screens/Store/StoreSingleProduct";
 
 const Stack = createStackNavigator()

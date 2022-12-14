@@ -13,7 +13,7 @@ import baseURL from '../../assets/common/baseUrl';
 //redux
 import { connect, useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
-import { setVideoProduct } from '../../Redux/state/authSlice';
+import { setVideoProduct, setProduct } from '../../Redux/state/authSlice';
 
 const StoreSingleProduct = (props) => {
     const [availability, setAvailability] = useState('');
@@ -23,8 +23,6 @@ const StoreSingleProduct = (props) => {
     const stateProduct = useSelector((state) => state.authReducer.videoProducts.find((item) => item.product._id == productId));
     const product = stateProduct.product;
 
-    const test = useSelector((state)=>state.authReducer.videoProducts)
-    // console.log('state products', test)
     const dispatch = useDispatch();
     const context = useContext(AuthGlobal);
     const [token, setToken] = useState();
@@ -69,6 +67,7 @@ const StoreSingleProduct = (props) => {
         })
         const updatedProduct = await response.json();
         dispatch(setVideoProduct({product: updatedProduct}));
+        dispatch(setProduct({product: updatedProduct}));
     };
 
     return (
@@ -122,7 +121,7 @@ const StoreSingleProduct = (props) => {
                             <Title style={styles.contentHeader}>{product.name}</Title>
                             <View style={styles.subHeader}>
                                 <Text style={styles.contentBrand}>{product.brand}</Text>
-                                <Text style={styles.price}>{product.price}원</Text>
+                                <Text style={styles.price}>{product.price.toLocaleString()}원</Text>
                             </View>
                             <Paragraph style={styles.contentText}>{product.description}</Paragraph>  
                             <View style={styles.availabilityContainer}>

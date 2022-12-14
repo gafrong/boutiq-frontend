@@ -1,5 +1,5 @@
 import React, {useState, useCallback } from "react";
-import { View, StyleSheet, ActivityIndicator, FlatList, Dimensions } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, FlatList, Dimensions, SafeAreaView } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Text } from 'react-native-paper';
 
@@ -7,14 +7,16 @@ import { Text } from 'react-native-paper';
 import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
 
-import ProductList from './ProductList'
+import SearchArea from "./SearchArea";
+import ProductList from './ProductList';
+
+import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../../Redux/state/authSlice";
 
 var { width, height } = Dimensions.get('window');
 
 const ProductContainer = (props) => {
 
-    const [ products, setProducts ] = useState([]);
     const [ productsFiltered, setProductsFiltered ] = useState([]);
     const [ focus, setFocus] = useState();
     const [ categories, setCategories ] = useState([]);
@@ -23,22 +25,24 @@ const ProductContainer = (props) => {
     const [ initialState, setInitialState ] = useState([]);
     const [ loading, setLoading ] = useState(true);
 
-
+    const dispatch = useDispatch();
+    const products = useSelector((state)=> state.authReducer.products);
+ 
     // react navigation when in focus a screen will use callback. useful when we have several products in the same navigation, so that when we come back, there will be a callback for data changes
     useFocusEffect((
         useCallback(
             () => {
-                console.log('PRODUC CONTAINER')
                 setFocus(false);
                 setActive(-1);
                 // Products from database
                 axios
                     .get(`${baseURL}products`)
                     .then((res) => {
-                        setProducts(res.data);
+                        // setProducts(res.data);
                         // setProductsFiltered(res.data);
                         // setProductsCtg(res.data);
                         // setInitialState(res.data);
+                        dispatch(setProducts({products:res.data}))
                         setLoading(false);
                     })
                     .catch((error) => {
@@ -55,12 +59,12 @@ const ProductContainer = (props) => {
                     })
         
                 return () => {
-                    setProducts([])
-                    setProductsFiltered([])
-                    setFocus()
-                    setCategories([])
-                    setActive()
-                    setInitialState()
+                    // setProducts([])
+                    // setProductsFiltered([])
+                    // setFocus()
+                    // setCategories([])
+                    // setActive()
+                    // setInitialState()
                 }
             },
             [],
@@ -68,12 +72,14 @@ const ProductContainer = (props) => {
     ))
 
     return(
-        <>
+        <>           
             {loading == false ? (
                 <View style={[styles.container,{width:width}]}>
+                    
                     <Text 
-                        style={[{color:"#ffffff"}, {padding:15}]}
-                        variant="titleLarge">STORE</Text>
+                        style={[{color:"#ffffff"}, {padding:10}]}
+                        variant="titleLarge"></Text>
+                        <SearchArea />
                     <FlatList
                         numColumns={2}
                         data={products}
@@ -84,6 +90,7 @@ const ProductContainer = (props) => {
                             item={item}
                         />}
                         keyExtractor={item => item.name}
+                        style={{marginTop: 8}}
                     />
                 </View>
             ) : (

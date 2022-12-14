@@ -9,7 +9,7 @@ import baseURL from '../../assets/common/baseUrl';
 
 //redux
 import { useDispatch, useSelector } from 'react-redux';
-import { setVideoProduct } from '../../Redux/state/authSlice';
+import { setVideoProduct, setProduct } from '../../Redux/state/authSlice';
 
 const StoreProductCard = ({item, navigation}) => {
   
@@ -18,16 +18,16 @@ const StoreProductCard = ({item, navigation}) => {
     const context = useContext(AuthGlobal);
     const userAuthenticated = context.stateUser.isAuthenticated;  
     const loggedInUserId = context.stateUser.user.userId;
-    // console.log('ITEM', item)
+ 
     const productId = item.product._id;
     const stateProduct = useSelector((state) => state.authReducer.videoProducts.find((item) => item.product._id == productId));
-
-    
     const product = stateProduct.product;
     const productLikes = product.likes; 
-    console.log('product ID', productId)
     const isLiked = Boolean(productLikes[loggedInUserId]);
 
+    const test = useSelector((state)=>state.authReducer.videoProducts);
+    const productCount = Object.keys(test).length;
+    console.log('VIDEO PROD COUNT', productCount);
     useEffect(()=> {
         AsyncStorage.getItem("jwt")
             .then((res) => {
@@ -47,6 +47,7 @@ const StoreProductCard = ({item, navigation}) => {
         })
         const updatedProduct = await response.json();
         dispatch(setVideoProduct({product: updatedProduct}));
+        dispatch(setProduct({product: updatedProduct}));
     };
 
     return (
@@ -88,7 +89,7 @@ const StoreProductCard = ({item, navigation}) => {
                             : product.name    
                         }
                     </Title>
-                    <Paragraph style={styles.price}>{product.price}</Paragraph>
+                    <Paragraph style={styles.price}>{product.price.toLocaleString()}원</Paragraph>
                     <Paragraph style={styles.whiteText}>
                         {product.description.length > 100
                             ? product.description.substring(0, 100 - 3) + '...'
@@ -114,11 +115,11 @@ const styles = StyleSheet.create({
     },
     price: {
         color: '#ffffff',
-        fontWeight: 'bold'
+        fontSize: 20,
     },  
     title: {
         color: "#ffffff",
-        fontSize: 17,
+        fontSize: 15,
         fontWeight: 'bold',
         paddingTop: 10
     },

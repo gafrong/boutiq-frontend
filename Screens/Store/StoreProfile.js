@@ -1,6 +1,5 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
-import styled from "styled-components";
+import { StyleSheet, Text, View } from "react-native";
 import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
 
@@ -8,25 +7,25 @@ const StoreProfile = (props) => {
     const videoProfile = props.route.params.videoProps;
     const userProfile = props.route.params.user;
     return(
-        <Container>           
-            <ProfileContainer>
+        <View style={styles.container}>           
+            <View style={styles.profileContainer}>
                 <Avatar.Image size={50} source={'https://picsum.photos/700'} style={{marginRight:20, marginLeft: 20}} />
-                <ProfileItemContainer>
-                    <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{videoProfile.followers}</ProfileItemText>
-                        <ProfileItemText>팔로워</ProfileItemText>
-                    </ProfileItem>
-                    <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{videoProfile.like}</ProfileItemText>
-                        <ProfileItemText>좋아요</ProfileItemText>
-                    </ProfileItem>
-                    <ProfileItem>
-                        <ProfileItemText style={styles.itemBold}>{videoProfile.numViews}</ProfileItemText>
-                        <ProfileItemText>리뷰</ProfileItemText>
-                    </ProfileItem> 
-                </ProfileItemContainer>     
-            </ProfileContainer>  
-            <ProfileButtonContainer>
+                <View style={styles.profileItemContainer}>
+                    <View style={styles.profileItem}>
+                        <Text style={styles.itemBold}>{videoProfile.followers}</Text>
+                        <Text style={styles.profileItemText}>팔로워</Text>
+                    </View>
+                    <View style={styles.profileItem}>
+                        <Text style={styles.itemBold}>{videoProfile.like}</Text>
+                        <Text style={styles.profileItemText}>좋아요</Text>
+                    </View>
+                    <View style={styles.profileItem}>
+                        <Text style={styles.itemBold}>{videoProfile.numViews}</Text>
+                        <Text style={styles.profileItemText}>리뷰</Text>
+                    </View> 
+                </View>     
+            </View>  
+            <View style={styles.profileBtnContainer}>
                 <Button style={styles.allBtn} 
                     contentStyle={{width:60}}
                     color="#333333"
@@ -49,43 +48,43 @@ const StoreProfile = (props) => {
                 >   <Text style={{paddingRight:5, alignItems:"center", lineHeight:60, fontSize:13}}>더보기</Text>
                     <Icon style={{alignItems:"center", lineHeight:40}} name="chevron-right" size={13} color="white"/>
                 </Button>
-            </ProfileButtonContainer>              
-        </Container>
+            </View>              
+        </View>
     )
 }
 
-const Container = styled.View`
-    background-color: #000000;
-    flex-direction: column;
-    margin-left: 10px;
-    margin-top: 15px;
-`
-const ProfileContainer = styled.View`
-    flex-direction: row;
-    padding-top: 2px;
-`
-const ProfileItemContainer = styled.View`
-    flex-direction: row;
-`
-const ProfileItem = styled.View`
-    flex-dierction: column;
-    margin-top: 8px;
-    margin-right: 25px;
-    margin-bottom: 12px;
-    margin-left: 10px;
-    padding-right: 0;
-`
-const ProfileItemText = styled.Text`
-    color: #ffffff;
-`
-const ProfileButtonContainer = styled.View`
-    flex-direction: row;
-    height: 38px;
-    margin: 10px;
-    margin-left: 0;
-    width: 100%;
-`
 const styles = StyleSheet.create({
+    container:{
+        backgroundColor: "#000000",
+        flexDirection:'column',
+        marginLeft: 10,
+        marginTop: 15,
+    },
+    profileBtnContainer:{
+        flexDirection: 'row',
+        height: 38,
+        margin: 10,
+        marginLeft: 0,
+        width: '100%'
+    },
+    profileContainer:{
+        flexDirection: 'row',
+        paddingTop: 2,
+    },
+    profileItemContainer:{
+        flexDirection: 'row',
+    },
+    profileItem: {
+        flexDirection: 'column',
+        marginTop: 8,
+        marginRight: 25,
+        marginBottom: 12,
+        marginLeft: 10,
+        paddingRight: 0,
+    },
+    profileItemText:{
+        color: '#ffffff',
+    },
     goBackBtn: {
         margin: 10,
         marginTop: 10,
@@ -95,7 +94,8 @@ const styles = StyleSheet.create({
     }, 
     itemBold:{
         fontSize:15,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        color: '#ffffff',
     },
     allBtn: {
         width: 50,
