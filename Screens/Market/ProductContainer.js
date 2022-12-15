@@ -11,7 +11,7 @@ import SearchArea from "./SearchArea";
 import ProductList from './ProductList';
 
 import { useDispatch, useSelector } from "react-redux";
-import { setProducts } from "../../Redux/state/authSlice";
+import { setProducts } from "../../Redux/state/productSlice";
 
 var { width, height } = Dimensions.get('window');
 
@@ -26,8 +26,9 @@ const ProductContainer = (props) => {
     const [ loading, setLoading ] = useState(true);
 
     const dispatch = useDispatch();
-    const products = useSelector((state)=> state.authReducer.products);
- 
+    const products = useSelector((state)=> state.stateProducts.products);
+    const productCount = Object.keys(products).length;
+    console.log('VIDEO PROD COUNT', productCount);
     // react navigation when in focus a screen will use callback. useful when we have several products in the same navigation, so that when we come back, there will be a callback for data changes
     useFocusEffect((
         useCallback(
@@ -42,6 +43,7 @@ const ProductContainer = (props) => {
                         // setProductsFiltered(res.data);
                         // setProductsCtg(res.data);
                         // setInitialState(res.data);
+                        console.log('RES DATA', res.data.length)
                         dispatch(setProducts({products:res.data}))
                         setLoading(false);
                     })
@@ -74,12 +76,11 @@ const ProductContainer = (props) => {
     return(
         <>           
             {loading == false ? (
-                <View style={[styles.container,{width:width}]}>
-                    
+                <View style={[styles.container,{width:width}]}>            
                     <Text 
                         style={[{color:"#ffffff"}, {padding:10}]}
                         variant="titleLarge"></Text>
-                        <SearchArea />
+                    <SearchArea />
                     <FlatList
                         numColumns={2}
                         data={products}

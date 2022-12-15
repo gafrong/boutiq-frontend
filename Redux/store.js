@@ -1,11 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from 'redux';
-import authReducer from './Redux/state/authSlice';
-import cartItems from './Redux/Reducers/cartItem';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+// Reducers
+import productReducer from './state/productSlice';
+import cartItems from './Reducers/cartItem';
 
 import {
-  persistStore,
   persistReducer,
   FLUSH,
   REHYDRATE,
@@ -14,14 +16,13 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-// import storage from 'redux-persist/lib/storage';
-import { PersistGate } from 'redux-persist/integration/react';
 
 // Reducer Store Set
 const persistConfig = { key: "root", storage:AsyncStorage, version: 1 };
 const reducer = combineReducers({
   cartItems: cartItems,
-  authReducer,
+  stateProducts: productReducer,
+  // auth: AuthReducer,
 })
 const persistedReducer = persistReducer(persistConfig, reducer);
 const store = configureStore({
@@ -33,3 +34,5 @@ const store = configureStore({
       },
     }),
 });
+
+export default store;

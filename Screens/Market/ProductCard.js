@@ -3,20 +3,20 @@ import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { Card, Title } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useDispatch, useSelector } from "react-redux";
-import { setProduct, setVideoProduct } from "../../Redux/state/authSlice";
+import { setProduct, setVideoProduct } from "../../Redux/state/productSlice";
 import AuthGlobal from '../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../assets/common/baseUrl';
 
 const ProductCard = (props) => {
     const { id } = props;
+    const productId = id;
     const dispatch = useDispatch();
     const [token, setToken] = useState();
     const context = useContext(AuthGlobal);
     const userAuthenticated = context.stateUser.isAuthenticated;  
     const loggedInUserId = context.stateUser.user.userId;
-
-    const stateProduct = useSelector((state) => state.authReducer.products.find((item) => item._id == id));
+    const stateProduct = useSelector((state) => state.stateProducts.products.find((item) => item._id == id));
     const product = stateProduct;
 
     let productLikes = {};
@@ -34,7 +34,7 @@ const ProductCard = (props) => {
     }, [])
 
     const patchProductLike = async () => {
-        const response = await fetch(`${baseURL}products/${id}/like`, {
+        const response = await fetch(`${baseURL}products/${productId}/like`, {
             method: "PATCH",
             headers : {
                 Authorization: `Bearer ${token}`,

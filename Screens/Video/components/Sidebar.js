@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../../assets/common/baseUrl';
 
 import { useDispatch } from 'react-redux';
-import { setVideoProducts } from '../../../Redux/state/authSlice';
+import { setVideoProducts } from '../../../Redux/state/productSlice';
 
 const Sidebar = (props) => {
     const context = useContext(AuthGlobal);

@@ -13,14 +13,15 @@ import baseURL from '../../assets/common/baseUrl';
 //redux
 import { connect, useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
-import { setVideoProduct, setProduct } from '../../Redux/state/authSlice';
+import { setVideoProduct, setProduct } from '../../Redux/state/productSlice';
 
 const StoreSingleProduct = (props) => {
     const [availability, setAvailability] = useState('');
     const [availabilityText, setAvailabilityText] = useState("");
     const productParams = props.route.params.product;
     const productId = productParams._id;
-    const stateProduct = useSelector((state) => state.authReducer.videoProducts.find((item) => item.product._id == productId));
+
+    const stateProduct = useSelector((state) => state.stateProducts.videoProducts.find((item) => item.product._id == productId));
     const product = stateProduct.product;
 
     const dispatch = useDispatch();

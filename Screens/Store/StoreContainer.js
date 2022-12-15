@@ -11,7 +11,7 @@ const StoreContainer = (props) => {
 
     const videoProfile = props.route.params.videoProps;
     const userProfile = props.route.params.createdBy;
-    const products = useSelector((state) => state.authReducer.videoProducts);
+    const products = useSelector((state) => state.stateProducts.videoProducts);
  
     return(        
         <Container>

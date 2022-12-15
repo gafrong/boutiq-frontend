@@ -1,11 +1,11 @@
 import React, {useCallback, useState} from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ActivityIndicator, FlatList } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ActivityIndicator, FlatList, ScrollView } from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
 import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setProducts } from "../../Redux/state/authSlice";
+import { setProducts } from "../../Redux/state/productSlice";
 
 import ProductList from "../Market/ProductList";
 // import functions to access database
@@ -16,7 +16,6 @@ var { width } = Dimensions.get('window');
 
 const StoreProfilePage = (props) => {
     const storeProfile = props.route.params.videoProfile;
-    // console.log('STORE PROFILE', props)
     const [ productsFiltered, setProductsFiltered ] = useState([]);
     const [ focus, setFocus] = useState();
     const [ categories, setCategories ] = useState([]);
@@ -26,8 +25,7 @@ const StoreProfilePage = (props) => {
     const [ loading, setLoading ] = useState(true);
   
     const dispatch = useDispatch();
-    const products = useSelector((state)=> state.authReducer.products);
-console.log('PRODUCT', products)
+    const products = useSelector((state)=> state.stateProducts.products);
 
     const productCount = Object.keys(products).length;
 console.log('PROD COUNT', productCount);
@@ -66,7 +64,7 @@ console.log('PROD COUNT', productCount);
         )
     ))
     return(
-        <View style={styles.container}>  
+        <ScrollView style={styles.container}>  
             <TouchableOpacity onPress={() => props.navigation.goBack()}>
                 <Button
                     size={45}
@@ -136,21 +134,16 @@ console.log('PROD COUNT', productCount);
                     <Icon name="message-circle" size={18} color="white"/>
                 </Button>
             </View>     
-            <View style={styles.storeProductsContainer}>
+            <View >
                 {loading == false ? (
-                    <View style={[styles.container,{width:width}]}>
-                        <FlatList
-                            numColumns={2}
-                            data={products}
-                            renderItem={({item}) => 
+                    <View style={styles.storeProductsContainer}>
+                        {products.map((item)=> 
                             <ProductList
                                 navigation={props.navigation}
                                 key={item._id}
                                 item={item}
-                            />}
-                            keyExtractor={item => item.name}
-                            style={{marginTop: 8}}
-                        />
+                                style={{width:'50%'}}
+                            />)}
                     </View>
                 ) : (
                     // Loading
@@ -162,7 +155,7 @@ console.log('PROD COUNT', productCount);
                     </View>
                 )}
             </View>         
-        </View>
+        </ScrollView>
     )
 }
 
@@ -189,6 +182,10 @@ const styles = StyleSheet.create({
     },
     storeProductsContainer:{
         flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+        marginTop: 10,
     },
     profileBtnContainer:{
         flexDirection: 'row',

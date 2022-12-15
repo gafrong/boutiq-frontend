@@ -13,7 +13,7 @@ import baseURL from '../../assets/common/baseUrl';
 //redux
 import { connect, useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
-import { setProduct, setVideoProduct } from '../../Redux/state/authSlice';
+import { setProduct, setVideoProduct } from '../../Redux/state/productSlice';
 
 const SingleProduct = (props) => {
     const [availability, setAvailability] = useState('');
@@ -21,7 +21,7 @@ const SingleProduct = (props) => {
     const productParams = props.route.params.product;
     const productId = productParams._id;
 
-    const stateProduct = useSelector((state) => state.authReducer.products.find((item) => item._id == productId));
+    const stateProduct = useSelector((state) => state.stateProducts.products.find((item) => item._id == productId));
 
     const product = stateProduct;
 
@@ -68,8 +68,8 @@ const SingleProduct = (props) => {
             body: JSON.stringify({userId: loggedInUserId}),
         })
         const updatedProduct = await response.json();
-        dispatch(setProduct({product: updatedProduct}));
         dispatch(setVideoProduct({product: updatedProduct}));
+        dispatch(setProduct({product: updatedProduct}));
     };
 
     return (
