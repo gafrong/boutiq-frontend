@@ -2,28 +2,28 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
+import { useDispatch, useSelector } from "react-redux";
 
 const StoreProfile = (props) => {
-    const videoProfile = props.route.params.videoProps;
-    const vendorProfile = props.route.params.createdBy;
+    const vendor = useSelector((state) => state.vendors.vendor)
 
-    console.log('VENDOR PROFILE', vendorProfile)
+    // console.log('VIDEOS', props.route.params.videoProps)
     return(
         <View style={styles.container}>           
             <View style={styles.profileContainer}>
                 <Avatar.Image size={50} source={'https://picsum.photos/700'} style={{marginRight:20, marginLeft: 20}} />
                 <View style={styles.profileItemContainer}>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{videoProfile.followers}</Text>
+                        <Text style={styles.itemBold}>{vendor.followers.length}</Text>
                         <Text style={styles.profileItemText}>팔로워</Text>
                     </View>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{videoProfile.like}</Text>
+                        <Text style={styles.itemBold}>{vendor.like ? vendor.like : 0}</Text>
                         <Text style={styles.profileItemText}>좋아요</Text>
                     </View>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{videoProfile.numViews}</Text>
-                        <Text style={styles.profileItemText}>리뷰</Text>
+                        <Text style={styles.itemBold}>{vendor.videos.length}</Text>
+                        <Text style={styles.profileItemText}>영상</Text>
                     </View> 
                 </View>     
             </View>  
@@ -46,7 +46,7 @@ const StoreProfile = (props) => {
                     dark={true}
                     uppercase={false}
                     labelStyle={{fontSize:13}}
-                    onPress={()=> props.navigation.navigate('StoreProfilePage', {vendorProfile, videoProfile})}
+                    onPress={()=> props.navigation.navigate('StoreProfilePage', {vendor})}
                 >   <Text style={{paddingRight:5, alignItems:"center", lineHeight:60, fontSize:13}}>더보기</Text>
                     <Icon style={{alignItems:"center", lineHeight:40}} name="chevron-right" size={13} color="white"/>
                 </Button>

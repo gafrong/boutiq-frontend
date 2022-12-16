@@ -6,21 +6,13 @@ import { Button } from 'react-native-paper';
 import StoreProfile from "./StoreProfile";
 import StoreProductList from './StoreProductList';
 import { useSelector, useDispatch } from "react-redux";
-import { setVendor } from "../../Redux/Reducers/vendorSlice";
 
 const StoreContainer = (props) => {
     const dispatch = useDispatch();
-    const videoProfile = props.route.params.videoProps;
     const vendorProfile = props.route.params.createdBy;
     const products = useSelector((state) => state.stateProducts.videoProducts);
-
     const vendor = useSelector((state) => state.vendors.vendor)
-    console.log('STORE OWNER', vendor)
-
-    useEffect(()=> {
-        // Set vendor to state
-        dispatch(setVendor(vendorProfile))
-    }, [])
+    console.log('STORE OWNER', vendor.username)
   
 
     return(        
@@ -60,7 +52,7 @@ const StoreContainer = (props) => {
                                 color="tomato"
                                 dark
                                 mode={'contained'}
-                                onPress={()=> props.navigation.navigate('StoreProfilePage', {videoProfile, vendorProfile})}
+                                onPress={()=> props.navigation.navigate('StoreProfilePage', vendorProfile)}
                             >Visit Store</Button>       
                         </TouchableOpacity>
                     </ScrollView>

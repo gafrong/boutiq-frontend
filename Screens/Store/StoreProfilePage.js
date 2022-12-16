@@ -15,27 +15,20 @@ import axios from 'axios';
 var { width } = Dimensions.get('window');
 
 const StoreProfilePage = (props) => {
-    const storeProfile = props.route.params.videoProfile;
-    const [ productsFiltered, setProductsFiltered ] = useState([]);
-    const [ focus, setFocus] = useState();
-    const [ categories, setCategories ] = useState([]);
-    const [ productsCtg, setProductsCtg ] = useState([]);
-    const [ active, setActive ] = useState();
-    const [ initialState, setInitialState ] = useState([]);
     const [ loading, setLoading ] = useState(true);
+    const vendor = useSelector((state) => state.vendors.vendor)
+    const products = useSelector((state)=> state.stateProducts.products);
+    console.log('vendor products', products)
+    const [ categories, setCategories ] = useState([]);
   
     const dispatch = useDispatch();
-    const products = useSelector((state)=> state.stateProducts.products);
-
     const productCount = Object.keys(products).length;
 console.log('PROD COUNT', productCount);
-    const storeId = storeProfile.createdBy._id;
+    const storeId = vendor._id;
     console.log('store ID', storeId)
     useFocusEffect((
         useCallback(
             () => {
-                setFocus(false);
-                setActive(-1);
                 // Products from database
                 axios
                     .get(`${baseURL}products/admin/${storeId}`)
@@ -77,27 +70,27 @@ console.log('PROD COUNT', productCount);
                     />
                 </Button>
             </TouchableOpacity>
-            <Text style={styles.storeHeader}>{storeProfile.createdBy.username}</Text>         
+            <Text style={styles.storeHeader}>{vendor.username}</Text>         
             <View style={styles.profileContainer}>
-                <Avatar.Image size={90} source={'https://picsum.photos/700'} style={{marginRight:20, marginLeft: 10}} />
+                <Avatar.Image size={90} source={vendor.image} style={{marginRight:20, marginLeft: 10}} />
                 <View style={styles.profileItemContainer}>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{storeProfile.followers}</Text>
+                        <Text style={styles.itemBold}>{vendor.followers.length}</Text>
                         <Text style={styles.profileItemText}>팔로워</Text>
                     </View>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{storeProfile.like}</Text>
+                        <Text style={styles.itemBold}>{vendor.like ? vendor.like : 0}</Text>
                         <Text style={styles.profileItemText}>좋아요</Text>
                     </View>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{storeProfile.numViews}</Text>
-                        <Text style={styles.profileItemText}>리뷰</Text>
+                        <Text style={styles.itemBold}>{productCount}</Text>
+                        <Text style={styles.profileItemText}>상품수</Text>
                     </View> 
                 </View>     
             </View> 
             <View style={styles.profileDetail}>
-                <Text style={{color:'#ffffff', marginBottom:5}}>{storeProfile.brand.toUpperCase()}</Text>
-                <Text style={{color:'#ffffff'}}>{storeProfile.description}</Text>
+                <Text style={{color:'#ffffff', marginBottom:5}}>{vendor.brand.toUpperCase()}</Text>
+                <Text style={{color:'#ffffff'}}>{vendor.brandDescription}</Text>
             </View> 
             <View style={styles.profileBtnContainer}>
                 <Button style={styles.allBtn} 
