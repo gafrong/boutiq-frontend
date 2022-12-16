@@ -10,7 +10,11 @@ const Stack = createStackNavigator()
 
 function MyStack() {
     return (
-        <Stack.Navigator screenOptions={{headerTrasparent: true}}>
+        <Stack.Navigator 
+            screenOptions={{
+                headerTrasparent: true
+            }}
+        >
             <Stack.Screen 
                 name='Video'
                 component={VideoContainer}

@@ -1,18 +1,28 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/Feather'
 import styled from "styled-components";
 import { Button } from 'react-native-paper';
 import StoreProfile from "./StoreProfile";
 import StoreProductList from './StoreProductList';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setVendor } from "../../Redux/Reducers/vendorSlice";
 
 const StoreContainer = (props) => {
-
+    const dispatch = useDispatch();
     const videoProfile = props.route.params.videoProps;
-    const userProfile = props.route.params.createdBy;
+    const vendorProfile = props.route.params.createdBy;
     const products = useSelector((state) => state.stateProducts.videoProducts);
- 
+
+    const vendor = useSelector((state) => state.vendors.vendor)
+    console.log('STORE OWNER', vendor)
+
+    useEffect(()=> {
+        // Set vendor to state
+        dispatch(setVendor(vendorProfile))
+    }, [])
+  
+
     return(        
         <Container>
             <ScrollView>
@@ -28,7 +38,7 @@ const StoreContainer = (props) => {
                         />
                     </Button>
                 </TouchableOpacity>
-                <StoreHeader>{videoProfile.createdBy.name}</StoreHeader>
+                <StoreHeader>{vendor.username}</StoreHeader>
                 <StoreProfile 
                     {...props}
                 />
@@ -50,7 +60,7 @@ const StoreContainer = (props) => {
                                 color="tomato"
                                 dark
                                 mode={'contained'}
-                                onPress={()=> props.navigation.navigate('StoreProfilePage', {videoProfile, userProfile})}
+                                onPress={()=> props.navigation.navigate('StoreProfilePage', {videoProfile, vendorProfile})}
                             >Visit Store</Button>       
                         </TouchableOpacity>
                     </ScrollView>

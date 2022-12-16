@@ -10,7 +10,6 @@ import Header from './components/Header';
 import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
-import { setStateVideos } from "../../Redux/state/productSlice";
 
 
 import AuthGlobal from "../../Context/store/AuthGlobal";
@@ -37,7 +36,6 @@ const VideoContainer = (props) => {
                 axios
                     .get(`${baseURL}videos`)
                     .then((res) => {
-                        // dispatch(setStateVideos({videos:res.data}))
                         setVideos(res.data);
                         setVideosFiltered(res.data);
                         setInitialState(res.data);

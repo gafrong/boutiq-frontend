@@ -5,7 +5,9 @@ import Icon from "react-native-vector-icons/Feather";
 
 const StoreProfile = (props) => {
     const videoProfile = props.route.params.videoProps;
-    const userProfile = props.route.params.user;
+    const vendorProfile = props.route.params.createdBy;
+
+    console.log('VENDOR PROFILE', vendorProfile)
     return(
         <View style={styles.container}>           
             <View style={styles.profileContainer}>
@@ -44,7 +46,7 @@ const StoreProfile = (props) => {
                     dark={true}
                     uppercase={false}
                     labelStyle={{fontSize:13}}
-                    onPress={()=> props.navigation.navigate('StoreProfilePage', {userProfile, videoProfile})}
+                    onPress={()=> props.navigation.navigate('StoreProfilePage', {vendorProfile, videoProfile})}
                 >   <Text style={{paddingRight:5, alignItems:"center", lineHeight:60, fontSize:13}}>더보기</Text>
                     <Icon style={{alignItems:"center", lineHeight:40}} name="chevron-right" size={13} color="white"/>
                 </Button>

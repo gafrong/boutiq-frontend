@@ -13,7 +13,7 @@ import baseURL from '../../assets/common/baseUrl';
 //redux
 import { connect, useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
-import { setProduct, setVideoProduct } from '../../Redux/state/productSlice';
+import { setProduct, setVideoProduct } from '../../Redux/Reducers/productSlice';
 
 const SingleProduct = (props) => {
     const [availability, setAvailability] = useState('');

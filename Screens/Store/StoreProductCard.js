@@ -9,7 +9,7 @@ import baseURL from '../../assets/common/baseUrl';
 
 //redux
 import { useDispatch, useSelector } from 'react-redux';
-import { setVideoProduct, setProduct } from '../../Redux/state/productSlice';
+import { setVideoProduct, setProduct } from '../../Redux/Reducers/productSlice';
 
 const StoreProductCard = ({item, navigation}) => {
   

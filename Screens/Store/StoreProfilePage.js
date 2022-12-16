@@ -5,7 +5,7 @@ import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setProducts } from "../../Redux/state/productSlice";
+import { setProducts } from "../../Redux/Reducers/productSlice";
 
 import ProductList from "../Market/ProductList";
 // import functions to access database

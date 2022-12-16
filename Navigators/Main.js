@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { BlurView } from 'expo-blur';
 
@@ -25,6 +25,7 @@ const Main = () => {
         <Tab.Navigator 
             initialRouteName="Videos"
             screenOptions={{
+                unmountOnBlur:true,
                 headerShown: false,
                 keboardHidesTabBar: true,
                 tabBarShowLabel: false,

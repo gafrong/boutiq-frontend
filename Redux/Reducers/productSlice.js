@@ -1,7 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-    videos: [],
     videoProducts: [],
     products: [],
 };
@@ -40,7 +39,7 @@ export const productSlice = createSlice({
             });
             state.videoProducts = updatedVideoProducts;
         },
-    },
+    }
 });
 
 export const { setLogin, setLogout, setStateVideos, setStateVideo, setProducts, setProduct, setVideoProducts, setVideoProduct} = productSlice.actions;

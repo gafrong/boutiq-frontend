@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Reducers
-import productReducer from './state/productSlice';
+import productReducer from './Reducers/productSlice';
 import cartItems from './Reducers/cartItem';
+import vendorReducer from './Reducers/vendorSlice';
 
 import {
   persistReducer,
@@ -22,9 +22,10 @@ const persistConfig = { key: "root", storage:AsyncStorage, version: 1 };
 const reducer = combineReducers({
   cartItems: cartItems,
   stateProducts: productReducer,
-  // auth: AuthReducer,
+  vendors: vendorReducer,
 })
 const persistedReducer = persistReducer(persistConfig, reducer);
+
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
@@ -36,3 +37,4 @@ const store = configureStore({
 });
 
 export default store;
+

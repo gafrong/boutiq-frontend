@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { Card, Title } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useDispatch, useSelector } from "react-redux";
-import { setProduct, setVideoProduct } from "../../Redux/state/productSlice";
+import { setProduct, setVideoProduct } from "../../Redux/Reducers/productSlice";
 import AuthGlobal from '../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../assets/common/baseUrl';

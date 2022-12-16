@@ -11,7 +11,7 @@ import SearchArea from "./SearchArea";
 import ProductList from './ProductList';
 
 import { useDispatch, useSelector } from "react-redux";
-import { setProducts } from "../../Redux/state/productSlice";
+import { setProducts } from "../../Redux/Reducers/productSlice";
 
 var { width, height } = Dimensions.get('window');
 
