@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useState, useEffect} from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ActivityIndicator, FlatList, ScrollView } from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
 import { Avatar, Button } from 'react-native-paper';
@@ -56,21 +56,16 @@ console.log('PROD COUNT', productCount);
             [],
         )
     ))
+
+    useEffect(() => {
+        props.navigation.setOptions({
+            title: vendor.brand
+        });
+    }, [vendor.brand, props.navigation])
+
     return(
         <ScrollView style={styles.container}>  
-            <TouchableOpacity onPress={() => props.navigation.goBack()}>
-                <Button
-                    size={45}
-                    style={styles.goBackBtn}>
-                    <Icon 
-                        name="chevron-left"
-                        style={{}}
-                        color={"#ffffff"}
-                        size={32}
-                    />
-                </Button>
-            </TouchableOpacity>
-            <Text style={styles.storeHeader}>{vendor.username}</Text>         
+            {/* <Text style={styles.storeHeader}>{vendor.username}</Text>          */}
             <View style={styles.profileContainer}>
                 <Avatar.Image size={90} source={vendor.image} style={{marginRight:20, marginLeft: 10}} />
                 <View style={styles.profileItemContainer}>
@@ -162,7 +157,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingTop: 2,
         marginLeft: 10,
-        marginTop: 15,
+        marginTop: 0,
         marginRight: 10,
     },
     storeHeader: {

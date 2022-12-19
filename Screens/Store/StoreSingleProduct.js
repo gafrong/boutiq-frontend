@@ -57,6 +57,12 @@ const StoreSingleProduct = (props) => {
         }
     }, [])
 
+    useEffect(() => {
+        props.navigation.setOptions({
+            title: product.name
+        });
+    }, [product.name, props.navigation])
+
     const patchProductLike = async () => {
         const response = await fetch(`${baseURL}products/${productId}/like`, {
             method: "PATCH",
@@ -75,18 +81,6 @@ const StoreSingleProduct = (props) => {
         <View style={{backgroundColor: '#000000'}}>
             <ScrollView>
                 <View style={styles.container}>
-                    <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.goBackBtn}>
-                        <Button
-                            size={20}
-                            >
-                            <Icon 
-                                name="chevron-left"
-                                style={styles.backBtnIcon}
-                                color={"#ffffff"}
-                                size={40}
-                            />
-                        </Button>
-                    </TouchableOpacity>
                     <Card style={styles.card}>
                         {userAuthenticated 
                             ? <Pressable onPress={()=> patchProductLike()}>
@@ -178,7 +172,7 @@ const styles = StyleSheet.create({
     goBackBtn:{
         position: 'absolute',
         left: -5,
-        top: 18,
+        top: 0,
         width: 30,
         height: 50,
         zIndex: 1,
@@ -190,7 +184,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#000000',
         color: '#ffffff',
-        paddingTop: 50
+        paddingTop: 0
     },
     card: {
         marginTop: 20,

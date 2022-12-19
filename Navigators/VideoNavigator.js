@@ -12,44 +12,55 @@ function MyStack() {
     return (
         <Stack.Navigator 
             screenOptions={{
-                headerTrasparent: true
-            }}
-        >
-            <Stack.Screen 
-                name='Video'
-                component={VideoContainer}
-                options={{
-                    headerShown:false,
-                }}
-            />
-            <Stack.Screen 
-                name='Store'
-                component={StoreContainer}
-                options={{
-                    headerShown:false,
-                }}
-            />
-            <Stack.Screen 
-                name='StoreProductDetail'
-                component={StoreSingleProduct}
-                options={{
-                    headerShown:false,
-                }}
-            />
-            <Stack.Screen 
-                name='StoreProfilePage'
-                component={StoreProfilePage}
-                options={{
-                    headerShown:false,
-                }}
-            />
-            <Stack.Screen 
-                name='ProductDetail'
-                component={StoreSingleProduct}
-                options={{
-                    headerShown:false,
-                }}
-            />
+                headerTrasparent: true,
+                headerStyle:{backgroundColor: '#000'},
+                headerTintColor: '#fff'
+            }}>   
+            <Stack.Group>
+                <Stack.Screen 
+                    name='Video'
+                    component={VideoContainer}
+                    options={{
+                        headerShown:false,
+                    }}
+                />
+                <Stack.Screen 
+                    name='Store'
+                    component={StoreContainer}
+                    options={{
+                        headerShown:true,
+                        headerShadowVisible: false,
+                        headerBackTitleVisible: false
+                    }}
+                />
+                <Stack.Screen 
+                    name='StoreProductDetail'
+                    component={StoreSingleProduct}
+                    options={{
+                        headerShown:true,
+                        headerShadowVisible: false,
+                        headerBackTitleVisible: false
+                    }}
+                />
+                <Stack.Screen 
+                    name='StoreProfilePage'
+                    component={StoreProfilePage}
+                    options={{
+                        headerShown:true,
+                        headerShadowVisible: false,
+                        headerBackTitleVisible: false
+                    }}
+                />
+                <Stack.Screen 
+                    name='ProductDetail'
+                    component={StoreSingleProduct}
+                    options={{
+                        headerShown:true,
+                        headerShadowVisible: false,
+                        headerBackTitleVisible: false
+                    }}
+                />
+            </Stack.Group>
         </Stack.Navigator>
     )
 }

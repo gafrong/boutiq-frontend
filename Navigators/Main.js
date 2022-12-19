@@ -25,7 +25,7 @@ const Main = () => {
         <Tab.Navigator 
             initialRouteName="Videos"
             screenOptions={{
-                unmountOnBlur:true,
+                // unmountOnBlur:true,
                 headerShown: false,
                 keboardHidesTabBar: true,
                 tabBarShowLabel: false,

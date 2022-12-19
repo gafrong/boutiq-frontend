@@ -14,23 +14,16 @@ const StoreContainer = (props) => {
     const vendor = useSelector((state) => state.vendors.vendor)
     console.log('STORE OWNER', vendor.username)
   
+    useEffect(() => {
+        props.navigation.setOptions({
+            title: '@'+vendor.username
+        });
+    }, [vendor.username, props.navigation])
 
     return(        
         <Container>
             <ScrollView>
-                <TouchableOpacity onPress={() => props.navigation.navigate('Video')}>
-                    <Button
-                        size={45}
-                        style={styles.goBackBtn}>
-                        <Icon 
-                            name="chevron-left"
-                            style={{}}
-                            color={"#ffffff"}
-                            size={32}
-                        />
-                    </Button>
-                </TouchableOpacity>
-                <StoreHeader>{vendor.username}</StoreHeader>
+                {/* <StoreHeader>{vendor.username}</StoreHeader> */}
                 <StoreProfile 
                     {...props}
                 />
