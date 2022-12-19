@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { BlurView } from 'expo-blur';
-
+import { StackActions } from '@react-navigation/native';
 
 // Stacks
 import MarketNavigator from "./MarketNavigator";
@@ -58,6 +58,13 @@ const Main = () => {
                         />
                     )
                 }}
+                listeners={({ navigation, route }) => ({
+                    blur: () => {
+                      if (route.state && route.state.index > 0) {
+                        navigation.dispatch(StackActions.popToTop());
+                      }
+                    },
+                })}
            /> 
            <Tab.Screen
                 name="Shop"
