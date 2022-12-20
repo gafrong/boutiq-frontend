@@ -1,71 +1,29 @@
 import React, {useCallback, useState, useEffect} from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ActivityIndicator, FlatList, ScrollView } from "react-native";
-import { useFocusEffect } from '@react-navigation/native';
 import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
 
-import { useDispatch, useSelector } from "react-redux";
-import { setProducts } from "../../Redux/Reducers/productSlice";
+import { useSelector } from "react-redux";
 
 import ProductList from "../Market/ProductList";
-// import functions to access database
-import baseURL from '../../assets/common/baseUrl';
-import axios from 'axios';
 
-var { width } = Dimensions.get('window');
 
 const StoreProfilePage = (props) => {
     const [ loading, setLoading ] = useState(true);
     const vendor = useSelector((state) => state.vendors.vendor)
     const products = useSelector((state)=> state.stateProducts.products);
-    console.log('vendor products', products)
-    const [ categories, setCategories ] = useState([]);
-  
-    const dispatch = useDispatch();
-    const productCount = Object.keys(products).length;
-console.log('PROD COUNT', productCount);
-    const storeId = vendor._id;
-    console.log('store ID', storeId)
-    useFocusEffect((
-        useCallback(
-            () => {
-                // Products from database
-                axios
-                    .get(`${baseURL}products/admin/${storeId}`)
-                    .then((res) => {
-                        dispatch(setProducts({products:res.data}))
-                        setLoading(false);
-                    })
-                    .catch((error) => {
-                        console.log('Server error msg',error.message)
-                    })
-                // Categories from database
-                axios
-                    .get(`${baseURL}categories`)
-                    .then((res) => {
-                        setCategories(res.data)
-                    })
-                    .catch((error) => {
-                        alert(error.message)
-                    })
-        
-                return () => {
 
-                }
-            },
-            [],
-        )
-    ))
+    const productCount = Object.keys(products).length;
 
     useEffect(() => {
         props.navigation.setOptions({
             title: vendor.brand
         });
+        setLoading(false);
     }, [vendor.brand, props.navigation])
 
     return(
-        <ScrollView style={styles.container}>  
-            {/* <Text style={styles.storeHeader}>{vendor.username}</Text>          */}
+        <ScrollView style={styles.container}>        
             <View style={styles.profileContainer}>
                 <Avatar.Image size={90} source={{url:vendor.image}} style={{marginRight:20, marginLeft: 10}} />
                 <View style={styles.profileItemContainer}>

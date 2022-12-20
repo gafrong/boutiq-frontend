@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useCallback} from "react";
 import { StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/Feather'
 import styled from "styled-components";
@@ -6,14 +6,39 @@ import { Button } from 'react-native-paper';
 import StoreProfile from "./StoreProfile";
 import StoreProductList from './StoreProductList';
 import { useSelector, useDispatch } from "react-redux";
+import { useFocusEffect } from '@react-navigation/native';
+import axios from "axios";
+import baseURL from "../../assets/common/baseUrl";
+import { setProducts } from "../../Redux/Reducers/productSlice";
 
 const StoreContainer = (props) => {
     const dispatch = useDispatch();
     const vendorProfile = props.route.params.createdBy;
     const products = useSelector((state) => state.stateProducts.videoProducts);
     const vendor = useSelector((state) => state.vendors.vendor)
-    console.log('STORE OWNER', vendor.username)
-  
+    const storeId = vendorProfile._id
+    
+    useFocusEffect((
+        useCallback(
+            () => {
+                // Products from database
+                axios
+                    .get(`${baseURL}products/admin/${storeId}`)
+                    .then((res) => {
+                        dispatch(setProducts({products:res.data}))
+                    })
+                    .catch((error) => {
+                        console.log('Server error msg',error.message)
+                    })
+
+                return () => {
+
+                }
+            },
+            [],
+        )
+    ))
+
     useEffect(() => {
         props.navigation.setOptions({
             title: '@'+vendor.username
@@ -23,7 +48,6 @@ const StoreContainer = (props) => {
     return(        
         <Container>
             <ScrollView>
-                {/* <StoreHeader>{vendor.username}</StoreHeader> */}
                 <StoreProfile 
                     {...props}
                 />

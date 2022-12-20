@@ -10,6 +10,7 @@ import AuthGlobal from '../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
+import { setVendor } from '../../Redux/Reducers/vendorSlice';
 
 //redux
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -17,15 +18,15 @@ import * as actions from '../../Redux/Actions/cartActions';
 import { setProduct, setVideoProduct } from '../../Redux/Reducers/productSlice';
 
 const SingleProduct = (props) => {
+    const dispatch = useDispatch();
     const [availability, setAvailability] = useState('');
     const [availabilityText, setAvailabilityText] = useState("");
-    const [vendor, setVendor] = useState({});
+
     const productParams = props.route.params.product;
     const productId = productParams._id;
     const stateProduct = useSelector((state) => state.stateProducts.products.find((item) => item._id == productId));
 
     const product = stateProduct;
-    const dispatch = useDispatch();
     const context = useContext(AuthGlobal);
     const [token, setToken] = useState();
 
@@ -34,6 +35,9 @@ const SingleProduct = (props) => {
     const loggedInUserId = context.stateUser.user.userId;
     const isLiked = Boolean(productLikes[loggedInUserId]);
 
+    const vendor = useSelector((state) => state.vendors.vendor)
+// console.log('VVV', vendor.brand)
+// console.log('PROD BRNA', product.brand)
     useEffect(() => {
         AsyncStorage.getItem("jwt")
         .then((res) => {
@@ -41,7 +45,7 @@ const SingleProduct = (props) => {
             axios.get(`${baseURL}users/${product.createdBy}`, {
                 headers: { Authorization: `Bearer ${res}`}
             })
-            .then((x) => setVendor(x.data))
+            .then((x) => dispatch(setVendor(x.data)))
         })
         .catch((error) => console.log(error))
         
@@ -118,13 +122,15 @@ const SingleProduct = (props) => {
                             style={styles.image}
                         /> 
                         <Card.Content style={styles.contentContainer}>
+                            <Card.Title 
+                                title={vendor.brand + " >"}
+                                left={() => <Avatar.Image size={25} source={{url:vendor.image}} style={{left:-18}}/>}
+                                titleStyle={{color: "#fff", fontSize:13, left: -40}}
+                                style={{marginTop: -10}}
+                            />
                             <Title style={styles.contentHeader}>{product.name}</Title>
                             <Text style={styles.price}>{product.price.toLocaleString()}원</Text>
-                            <Card.Title 
-                                title={product.brand}
-                                left={() => <Avatar.Image size={48} source={{url:vendor.image}} style={{left:-18}}/>}
-                                titleStyle={{color: "#fff", fontSize:14, fontWeight: 'bold', left: -15}}
-                            />
+                            
                             <Paragraph style={styles.contentText}>{product.description}</Paragraph>  
                             <View style={styles.availabilityContainer}>
                                 <View style={styles.availability}>
@@ -200,7 +206,6 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         backgroundColor: '#222222',
-        paddingTop: 10,
         paddingBottom: 10
     },
 
@@ -219,7 +224,8 @@ const styles = StyleSheet.create({
     contentHeader: {
         color: '#ffffff',
         marginBottom: 10,
-        fontSize: 17
+        fontSize: 17,
+        marginTop: -10,
     }, 
     contentBrand: {
         color: '#ffffff',
@@ -245,7 +251,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18,
         right: 5,
-        position: 'absolute'
     },
     availabilityContainer: {
         marginBottom: 20,

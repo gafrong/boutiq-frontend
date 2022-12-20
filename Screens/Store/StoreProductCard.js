@@ -20,14 +20,11 @@ const StoreProductCard = ({item, navigation}) => {
     const loggedInUserId = context.stateUser.user.userId;
  
     const productId = item.product._id;
-    const stateProduct = useSelector((state) => state.stateProducts.videoProducts.find((item) => item.product._id == productId));
+    const stateProduct = useSelector((state) => state.stateProducts.videoProducts.find((obj) => obj.product._id == productId));
     const product = stateProduct.product;
     const productLikes = product.likes; 
     const isLiked = Boolean(productLikes[loggedInUserId]);
 
-    const test = useSelector((state)=>state.stateProducts.videoProducts);
-    const productCount = Object.keys(test).length;
-    console.log('VIDEO PROD COUNT', productCount);
     useEffect(()=> {
         AsyncStorage.getItem("jwt")
             .then((res) => {

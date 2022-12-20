@@ -18,11 +18,10 @@ import { setVideoProduct, setProduct } from '../../Redux/Reducers/productSlice';
 const StoreSingleProduct = (props) => {
     const [availability, setAvailability] = useState('');
     const [availabilityText, setAvailabilityText] = useState("");
-    const productParams = props.route.params.product;
-    const productId = productParams._id;
+    const productId = props.route.params.product._id;
+    const stateProduct = useSelector((state) => state.stateProducts.products.filter((item) => item._id == productId));
 
-    const stateProduct = useSelector((state) => state.stateProducts.videoProducts.find((item) => item.product._id == productId));
-    const product = stateProduct.product;
+    const product = stateProduct[0];
 
     const dispatch = useDispatch();
     const context = useContext(AuthGlobal);

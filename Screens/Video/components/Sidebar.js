@@ -19,7 +19,7 @@ const Sidebar = (props) => {
     const [video, setVideo] = useState(videoProps);
     const [token, setToken] = useState();
     const vendor = video.createdBy;
-    // console.log('VENDOR', vendor)
+    // console.log('VENDOR', vendor._id)
     const videoId = video.id;
     const videoLikes = video.likes;
     const loggedInUserId = context.stateUser.user.userId;
