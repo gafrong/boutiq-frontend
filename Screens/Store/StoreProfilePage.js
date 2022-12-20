@@ -28,7 +28,7 @@ const StoreProfilePage = (props) => {
                 <Avatar.Image size={90} source={{url:vendor.image}} style={{marginRight:20, marginLeft: 10}} />
                 <View style={styles.profileItemContainer}>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{vendor.followers.length}</Text>
+                        <Text style={styles.itemBold}>{vendor.followers? vendor.followers.length: 0}</Text>
                         <Text style={styles.profileItemText}>팔로워</Text>
                     </View>
                     <View style={styles.profileItem}>

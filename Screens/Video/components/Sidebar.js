@@ -7,7 +7,7 @@ import AuthGlobal from '../../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../../assets/common/baseUrl';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setVideoProducts } from '../../../Redux/Reducers/productSlice';
 import { setVendor } from '../../../Redux/Reducers/vendorSlice';
 
@@ -18,8 +18,7 @@ const Sidebar = (props) => {
     const videoProps = props.videoProps;
     const [video, setVideo] = useState(videoProps);
     const [token, setToken] = useState();
-    const vendor = video.createdBy;
-    // console.log('VENDOR', vendor._id)
+    const vendor = videoProps.createdBy;
     const videoId = video.id;
     const videoLikes = video.likes;
     const loggedInUserId = context.stateUser.user.userId;

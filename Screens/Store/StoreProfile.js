@@ -14,7 +14,7 @@ const StoreProfile = (props) => {
                 <Avatar.Image size={50} source={{url: vendor.image}} style={{marginRight:20, marginLeft: 20}} />
                 <View style={styles.profileItemContainer}>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{vendor.followers.length}</Text>
+                        <Text style={styles.itemBold}>{vendor.followers? vendor.followers.length: 0}</Text>
                         <Text style={styles.profileItemText}>팔로워</Text>
                     </View>
                     <View style={styles.profileItem}>
@@ -22,7 +22,7 @@ const StoreProfile = (props) => {
                         <Text style={styles.profileItemText}>좋아요</Text>
                     </View>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{vendor.videos.length}</Text>
+                        <Text style={styles.itemBold}>{vendor.videos? vendor.videos.length : 0}</Text>
                         <Text style={styles.profileItemText}>영상</Text>
                     </View> 
                 </View>     

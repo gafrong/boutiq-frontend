@@ -14,9 +14,8 @@ const StoreContainer = (seller) => {
     const dispatch = useDispatch();
     const vendorProfile = seller.route.params.seller;
     const products = useSelector((state) => state.stateProducts.videoProducts);
-    const vendor = useSelector((state) => state.vendors.vendor)
     const storeId = vendorProfile._id
-    
+    console.log('VED P', vendorProfile.username)
     useFocusEffect((
         useCallback(
             () => {
@@ -40,9 +39,9 @@ const StoreContainer = (seller) => {
 
     useEffect(() => {
         seller.navigation.setOptions({
-            title: '@'+vendor.username
+            title: '@'+vendorProfile.username
         });
-    }, [vendor.username, seller.navigation])
+    }, [vendorProfile.username, seller.navigation])
 
     return(        
         <Container>
