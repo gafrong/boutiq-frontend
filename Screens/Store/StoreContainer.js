@@ -1,6 +1,5 @@
 import React, {useEffect, useCallback} from "react";
 import { StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import Icon from 'react-native-vector-icons/Feather'
 import styled from "styled-components";
 import { Button } from 'react-native-paper';
 import StoreProfile from "./StoreProfile";
@@ -11,9 +10,9 @@ import axios from "axios";
 import baseURL from "../../assets/common/baseUrl";
 import { setProducts } from "../../Redux/Reducers/productSlice";
 
-const StoreContainer = (props) => {
+const StoreContainer = (seller) => {
     const dispatch = useDispatch();
-    const vendorProfile = props.route.params.createdBy;
+    const vendorProfile = seller.route.params.seller;
     const products = useSelector((state) => state.stateProducts.videoProducts);
     const vendor = useSelector((state) => state.vendors.vendor)
     const storeId = vendorProfile._id
@@ -40,16 +39,16 @@ const StoreContainer = (props) => {
     ))
 
     useEffect(() => {
-        props.navigation.setOptions({
+        seller.navigation.setOptions({
             title: '@'+vendor.username
         });
-    }, [vendor.username, props.navigation])
+    }, [vendor.username, seller.navigation])
 
     return(        
         <Container>
             <ScrollView>
                 <StoreProfile 
-                    {...props}
+                    {...seller}
                 />
                 <ProductContainer>
                     <VideoProductTitle>영상 아이템</VideoProductTitle>
@@ -59,7 +58,7 @@ const StoreContainer = (props) => {
                     >
                         {products.map((item, index) => 
                             <StoreProductList 
-                                navigation={props.navigation}
+                                navigation={seller.navigation}
                                 key={index}
                                 item={item}
                             />)}
@@ -69,7 +68,7 @@ const StoreContainer = (props) => {
                                 color="tomato"
                                 dark
                                 mode={'contained'}
-                                onPress={()=> props.navigation.navigate('StoreProfilePage', vendorProfile)}
+                                onPress={()=> seller.navigation.navigate('StoreProfilePage', vendorProfile)}
                             >Visit Store</Button>       
                         </TouchableOpacity>
                     </ScrollView>
