@@ -55,7 +55,6 @@ const Sidebar = (props) => {
                 onPress={() => [
                     dispatch(setVideoProducts({videoProducts:videoProps.videoItems})),
                     dispatch(setVendor(vendor)),
-                    props.props.navigation.setOptions({headerTitle:'hello '}),
                     props.props.navigation.navigate('Store', props)
                 ]}>
                 <Menu>

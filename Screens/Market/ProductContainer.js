@@ -13,7 +13,7 @@ import ProductList from './ProductList';
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../../Redux/Reducers/productSlice";
 
-var { width, height } = Dimensions.get('window');
+var { width } = Dimensions.get('window');
 
 const ProductContainer = (props) => {
 

@@ -8,7 +8,12 @@ const Stack = createStackNavigator()
 
 function MyStack() {
     return (
-        <Stack.Navigator screenOptions={{headerTrasparent: true}}>
+        <Stack.Navigator 
+            screenOptions={{
+                headerTrasparent: true,
+                headerStyle:{backgroundColor: '#000'},
+                headerTintColor: '#fff'
+            }}>  
             <Stack.Screen 
                 name='Homee'
                 component={ProductContainer}
@@ -20,7 +25,9 @@ function MyStack() {
                 name='ProductDetail'
                 component={SingleProduct}
                 options={{
-                    headerShown:false,
+                    headerShown:true,
+                    headerShadowVisible: false,
+                    headerBackTitleVisible: false
                 }}
             />
         </Stack.Navigator>

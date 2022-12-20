@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Image, View, StyleSheet, Text, ScrollView, TouchableOpacity, Pressable } from 'react-native';
-import { Card, Button, Title, Paragraph, Provider as PaperProvider } from 'react-native-paper';
+import { Card, Title, Paragraph, Provider as PaperProvider, Avatar } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import BoutiqButton from '../../Shared/StyledComponents/BoutiqButton';
 import TrafficLight from '../../Shared/StyledComponents/TrafficLight';
@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import AuthGlobal from '../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../assets/common/baseUrl';
+import axios from 'axios';
 
 //redux
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -18,13 +19,12 @@ import { setProduct, setVideoProduct } from '../../Redux/Reducers/productSlice';
 const SingleProduct = (props) => {
     const [availability, setAvailability] = useState('');
     const [availabilityText, setAvailabilityText] = useState("");
+    const [vendor, setVendor] = useState({});
     const productParams = props.route.params.product;
     const productId = productParams._id;
-
     const stateProduct = useSelector((state) => state.stateProducts.products.find((item) => item._id == productId));
 
     const product = stateProduct;
-
     const dispatch = useDispatch();
     const context = useContext(AuthGlobal);
     const [token, setToken] = useState();
@@ -37,7 +37,11 @@ const SingleProduct = (props) => {
     useEffect(() => {
         AsyncStorage.getItem("jwt")
         .then((res) => {
-            setToken(res)
+            setToken(res),
+            axios.get(`${baseURL}users/${product.createdBy}`, {
+                headers: { Authorization: `Bearer ${res}`}
+            })
+            .then((x) => setVendor(x.data))
         })
         .catch((error) => console.log(error))
         
@@ -58,6 +62,12 @@ const SingleProduct = (props) => {
         }
     }, [])
 
+    useEffect(() => {
+        props.navigation.setOptions({
+            title: product.name
+        });
+    }, [product.name, props.navigation])
+
     const patchProductLike = async () => {
         const response = await fetch(`${baseURL}products/${productId}/like`, {
             method: "PATCH",
@@ -76,18 +86,6 @@ const SingleProduct = (props) => {
         <View style={{backgroundColor: '#000000'}}>
             <ScrollView>
                 <View style={styles.container}>
-                    <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.goBackBtn}>
-                        <Button
-                            size={20}
-                            >
-                            <Icon 
-                                name="chevron-left"
-                                style={styles.backBtnIcon}
-                                color={"#ffffff"}
-                                size={40}
-                            />
-                        </Button>
-                    </TouchableOpacity>
                     <Card style={styles.card}>
                         {userAuthenticated 
                             ? <Pressable onPress={()=> patchProductLike()}>
@@ -121,10 +119,12 @@ const SingleProduct = (props) => {
                         /> 
                         <Card.Content style={styles.contentContainer}>
                             <Title style={styles.contentHeader}>{product.name}</Title>
-                            <View style={styles.subHeader}>
-                                <Text style={styles.contentBrand}>{product.brand}</Text>
-                                <Text style={styles.price}>{product.price.toLocaleString()}원</Text>
-                            </View>
+                            <Text style={styles.price}>{product.price.toLocaleString()}원</Text>
+                            <Card.Title 
+                                title={product.brand}
+                                left={() => <Avatar.Image size={48} source={{url:vendor.image}} style={{left:-18}}/>}
+                                titleStyle={{color: "#fff", fontSize:14, fontWeight: 'bold', left: -15}}
+                            />
                             <Paragraph style={styles.contentText}>{product.description}</Paragraph>  
                             <View style={styles.availabilityContainer}>
                                 <View style={styles.availability}>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#000000',
         color: '#ffffff',
-        paddingTop: 50
+        paddingTop: 0
     },
     card: {
         marginTop: 20,
@@ -203,10 +203,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10
     },
-    subHeader: {
-        flexDirection: 'row',
-        marginTop: 10,
-    },
+
     imageContainer: {
         backgroundColor: 'white',
         margin: 0
@@ -222,7 +219,7 @@ const styles = StyleSheet.create({
     contentHeader: {
         color: '#ffffff',
         marginBottom: 10,
-        fontSize: 20
+        fontSize: 17
     }, 
     contentBrand: {
         color: '#ffffff',
@@ -244,7 +241,7 @@ const styles = StyleSheet.create({
     },
     price: {
         fontsize: 30,
-        color: 'tomato',
+        color: '#fff',
         fontWeight: 'bold',
         fontSize: 18,
         right: 5,

@@ -11,7 +11,7 @@ const StoreProfile = (props) => {
     return(
         <View style={styles.container}>           
             <View style={styles.profileContainer}>
-                <Avatar.Image size={50} source={'https://picsum.photos/700'} style={{marginRight:20, marginLeft: 20}} />
+                <Avatar.Image size={50} source={{url: vendor.image}} style={{marginRight:20, marginLeft: 20}} />
                 <View style={styles.profileItemContainer}>
                     <View style={styles.profileItem}>
                         <Text style={styles.itemBold}>{vendor.followers.length}</Text>

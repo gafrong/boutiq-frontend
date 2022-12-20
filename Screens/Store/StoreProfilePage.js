@@ -67,7 +67,7 @@ console.log('PROD COUNT', productCount);
         <ScrollView style={styles.container}>  
             {/* <Text style={styles.storeHeader}>{vendor.username}</Text>          */}
             <View style={styles.profileContainer}>
-                <Avatar.Image size={90} source={vendor.image} style={{marginRight:20, marginLeft: 10}} />
+                <Avatar.Image size={90} source={{url:vendor.image}} style={{marginRight:20, marginLeft: 10}} />
                 <View style={styles.profileItemContainer}>
                     <View style={styles.profileItem}>
                         <Text style={styles.itemBold}>{vendor.followers.length}</Text>
