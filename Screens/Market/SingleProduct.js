@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Image, View, StyleSheet, Text, ScrollView, TouchableOpacity, Pressable } from 'react-native';
+import { Image, View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Card, Title, Paragraph, Provider as PaperProvider, Avatar } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import BoutiqButton from '../../Shared/StyledComponents/BoutiqButton';
 import TrafficLight from '../../Shared/StyledComponents/TrafficLight';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import AuthGlobal from '../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -36,8 +36,7 @@ const SingleProduct = (props) => {
     const isLiked = Boolean(productLikes[loggedInUserId]);
 
     const vendor = useSelector((state) => state.vendors.vendor)
-// console.log('VVV', vendor.brand)
-// console.log('PROD BRNA', product.brand)
+
     useEffect(() => {
         AsyncStorage.getItem("jwt")
         .then((res) => {
@@ -92,7 +91,7 @@ const SingleProduct = (props) => {
                 <View style={styles.container}>
                     <Card style={styles.card}>
                         {userAuthenticated 
-                            ? <Pressable onPress={()=> patchProductLike()}>
+                            ? <TouchableOpacity onPress={()=> patchProductLike()}>
                                 <View style={styles.likeBtn}>
                                     {isLiked 
                                     ? <Icon 
@@ -104,15 +103,15 @@ const SingleProduct = (props) => {
                                         size={30} 
                                         color={"#ffffff"}/> }
                                 </View>
-                            </Pressable>
-                            : <Pressable onPress={()=> alert('Please login')}>
+                            </TouchableOpacity>
+                            : <TouchableOpacity onPress={()=> alert('Please login')}>
                                 <View style={styles.likeBtn}>
                                     <Icon 
                                         name="cards-heart-outline" 
                                         size={30} 
                                         color={"#ffffff"}/>
                                 </View>
-                            </Pressable>
+                            </TouchableOpacity>
                         }
                         <Card.Cover
                             source={{

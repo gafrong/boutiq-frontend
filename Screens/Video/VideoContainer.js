@@ -36,9 +36,10 @@ const VideoContainer = (props) => {
                 axios
                     .get(`${baseURL}videos`)
                     .then((res) => {
+                        // console.log('RES DATA', res.data)
                         setVideos(res.data);
-                        setVideosFiltered(res.data);
-                        setInitialState(res.data);
+                        // setVideosFiltered(res.data);
+                        // setInitialState(res.data);
                         setLoading(false);
                     })
                     .catch((error) => {
@@ -46,11 +47,11 @@ const VideoContainer = (props) => {
                     })
         
                 return () => {
-                    // setVideos([])
-                    setVideosFiltered([])
-                    setFocus()
-                    setActive()
-                    setInitialState()
+                    setVideos([])
+                    // setVideosFiltered([])
+                    // setFocus()
+                    // setActive()
+                    // setInitialState()
                 }
             },
             [],

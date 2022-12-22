@@ -28,7 +28,7 @@ const ProductContainer = (props) => {
     const dispatch = useDispatch();
     const products = useSelector((state)=> state.stateProducts.products);
     const productCount = Object.keys(products).length;
-    console.log('VIDEO PROD COUNT', productCount);
+
     // react navigation when in focus a screen will use callback. useful when we have several products in the same navigation, so that when we come back, there will be a callback for data changes
     useFocusEffect((
         useCallback(
@@ -43,7 +43,6 @@ const ProductContainer = (props) => {
                         // setProductsFiltered(res.data);
                         // setProductsCtg(res.data);
                         // setInitialState(res.data);
-                        console.log('RES DATA', res.data.length)
                         dispatch(setProducts({products:res.data}))
                         setLoading(false);
                     })

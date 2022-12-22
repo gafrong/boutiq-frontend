@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from "react";
-import { TouchableOpacity, StyleSheet, Pressable, View, Text } from 'react-native';
+import { TouchableOpacity, StyleSheet, Pressable, View } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -55,7 +55,7 @@ const StoreProductCard = ({item, navigation}) => {
         >
             <Card style={styles.card}>
                 {userAuthenticated 
-                ? <Pressable onPress={()=> patchProductLike()}>
+                ? <TouchableOpacity onPress={()=> patchProductLike()}>
                     <View style={styles.likeBtn}>
                         {isLiked 
                         ? <Icon 
@@ -67,15 +67,15 @@ const StoreProductCard = ({item, navigation}) => {
                             size={25} 
                             color={"#ffffff"}/> }
                     </View>
-                </Pressable>
-                : <Pressable onPress={()=> alert('Please login')}>
+                </TouchableOpacity>
+                : <TouchableOpacity onPress={()=> alert('Please login')}>
                     <View style={styles.likeBtn}>
                         <Icon 
                             name="cards-heart-outline" 
                             size={25} 
                             color={"#ffffff"}/>
                     </View>
-                </Pressable>
+                </TouchableOpacity>
                 }
                 <Card.Cover source={{ uri: product.image }} style={{zIndex: -1}}/>
                 

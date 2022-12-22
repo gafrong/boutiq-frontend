@@ -3,7 +3,8 @@ import React from 'react';
 import { LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import {PortalProvider} from '@gorhom/portal'
 
 // Redux
 import { Provider } from 'react-redux';
@@ -29,11 +30,13 @@ export default function App() {
       <Auth>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistStore(store)}>
-            <NavigationContainer>
-              {/* <Header /> */}
-              <Main/>
-              <Toast refs={(ref) => Toast.setRef(ref)} />
-            </NavigationContainer>
+            <PortalProvider>
+              <NavigationContainer>
+                {/* <Header /> */}
+                <Main/>
+                <Toast forwardRef={(ref) => Toast.setRef(ref)} />
+              </NavigationContainer>
+            </PortalProvider>
           </PersistGate>
         </Provider>
       </Auth>

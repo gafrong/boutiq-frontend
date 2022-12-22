@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Pressable, TouchableOpacity } from 'react-native';
 import { Card, Title } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useDispatch, useSelector } from "react-redux";
@@ -51,7 +51,7 @@ const ProductCard = (props) => {
         <View style={styles.container}>
             <Card style={styles.cardCover}>
                 {userAuthenticated 
-                    ? <Pressable onPress={()=> patchProductLike()}>
+                    ? <TouchableOpacity onPress={()=> patchProductLike()}>
                         <View style={styles.likeBtn}>
                             {isLiked 
                             ? <Icon 
@@ -63,15 +63,15 @@ const ProductCard = (props) => {
                                 size={25} 
                                 color={"#ffffff"}/> }
                         </View>
-                    </Pressable>
-                    : <Pressable onPress={()=> alert('Please login')}>
+                    </TouchableOpacity>
+                    : <TouchableOpacity onPress={()=> alert('Please login')}>
                         <View style={styles.likeBtn}>
                             <Icon 
                                 name="cards-heart-outline" 
                                 size={25} 
                                 color={"#ffffff"}/>
                         </View>
-                    </Pressable>
+                    </TouchableOpacity>
                 }
                 <Card.Cover                
                     source={{uri: product.image? 

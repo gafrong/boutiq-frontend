@@ -15,7 +15,7 @@ const StoreContainer = (seller) => {
     const vendorProfile = seller.route.params.seller;
     const products = useSelector((state) => state.stateProducts.videoProducts);
     const storeId = vendorProfile._id
-    console.log('VED P', vendorProfile.username)
+
     useFocusEffect((
         useCallback(
             () => {

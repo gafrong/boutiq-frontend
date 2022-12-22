@@ -5,6 +5,8 @@ const Container = styled.View`
 	flex: 1;
 	justify-content: flex-end;
 	margin: 0 0 70px 13px;
+	position: absolute;
+	bottom: 0px;
 `
 const User = styled.View`
 	flex-direction: row;

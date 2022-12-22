@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Pressable } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Card, Button, Title, Paragraph, Provider as PaperProvider } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import BoutiqButton from '../../Shared/StyledComponents/BoutiqButton';
@@ -82,7 +82,7 @@ const StoreSingleProduct = (props) => {
                 <View style={styles.container}>
                     <Card style={styles.card}>
                         {userAuthenticated 
-                            ? <Pressable onPress={()=> patchProductLike()}>
+                            ? <TouchableOpacity onPress={()=> patchProductLike()}>
                                 <View style={styles.likeBtn}>
                                     {isLiked 
                                     ? <Icon 
@@ -94,15 +94,15 @@ const StoreSingleProduct = (props) => {
                                         size={30} 
                                         color={"#ffffff"}/> }
                                 </View>
-                            </Pressable>
-                            : <Pressable onPress={()=> alert('Please login')}>
+                            </TouchableOpacity>
+                            : <TouchableOpacity onPress={()=> alert('Please login')}>
                                 <View style={styles.likeBtn}>
                                     <Icon 
                                         name="cards-heart-outline" 
                                         size={30} 
                                         color={"#ffffff"}/>
                                 </View>
-                            </Pressable>
+                            </TouchableOpacity>
                         }
                         <Card.Cover
                             source={{

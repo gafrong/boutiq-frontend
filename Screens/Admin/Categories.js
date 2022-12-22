@@ -1,48 +1,52 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { useCallback, useRef, useMemo } from "react";
+import { StyleSheet, View, Text, Button } from "react-native";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
-const Categories = (props) => {
-    return(
-        <View>
-            <Text>Categories Screen</Text>
-        </View>
-    )
-}
+const Categories = () => {
+  // hooks
+  const sheetRef = useRef<BottomSheet>(null);
+  const shetRef = useRef(null);
+  console.log('sheet', shetRef)
+  // variables
+  const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
+
+  // callbacks
+  const handleSheetChange = useCallback((index) => {
+    console.log("handleSheetChange", index);
+  }, []);
+  const handleSnapPress = useCallback((index) => {
+    shetRef.current?.snapToIndex(index);
+  }, []);
+  const handleClosePress = useCallback(() => {
+    shetRef.current?.close();
+  }, []);
+
+  // render
+  return (
+    <View style={styles.container}>
+      <Button title="Snap To 90%" onPress={() => handleSnapPress(2)} />
+      <Button title="Snap To 50%" onPress={() => handleSnapPress(1)} />
+      <Button title="Snap To 25%" onPress={() => handleSnapPress(0)} />
+      <Button title="Close" onPress={() => handleClosePress()} />
+      <BottomSheet
+        ref={shetRef}
+        snapPoints={snapPoints}
+        onChange={handleSheetChange}
+        index={-1}
+      >
+        <BottomSheetView>
+          <Text>Awesome 🔥</Text>
+        </BottomSheetView>
+      </BottomSheet>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    bottomBar: {
-        backgroundColor: "white",
-        height: 60,
-        padding: 2,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        position: "absolute",
-        bottom: 0,
-        left: 0
-    },
-    input: {
-        height: 40,
-        borderColor: "gray",
-        borderWidth: 1
-    },
-    item: {
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
-        elevation: 1,
-        padding: 5,
-        margin: 5,
-        backgroundColor: "white",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        borderRadius: 5
-    }
-})
+  container: {
+    flex: 1,
+    paddingTop: 200,
+  },
+});
 
 export default Categories;
