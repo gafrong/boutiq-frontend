@@ -66,6 +66,7 @@ const Sidebar = (props) => {
     const snapPoints = useMemo(() => ["80%"], []);
     const [commentText, setCommentText] = useState(null);
     const [commentList, setCommentList] = useState([]);
+    const inputRef = useRef();
     // callbacks
     const handleSheetChange = useCallback((index) => {
         // console.log("handleSheetChange", index);
@@ -93,7 +94,7 @@ const Sidebar = (props) => {
         })
         .then(response => {
             if(response.data.success) {
-                setCommentText("")
+                inputRef.current.clear();
                 updateComment(response.data.result)
             } else {
                 alert('Failed to save your comment')
@@ -157,7 +158,7 @@ const Sidebar = (props) => {
                             <TextInput
                                 style={styles.input}
                                 onChangeText={setCommentText}
-                                value={commentText}
+                                ref={inputRef}
                                 placeholder="Add comment.."
                                 placeholderTextColor="#777"
                                 selectionColor={"tomato"}
@@ -316,7 +317,7 @@ const styles = StyleSheet.create({
         bottom: 10,
         width: width -80,
         right: 10,
-        borderRadius: 5
+        borderRadius: 5,
     },
     commentorImg: {
         marginTop: 6,
