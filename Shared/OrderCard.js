@@ -27,8 +27,7 @@ const OrderCard = (props) => {
             .catch((error) => console.log(error));
 
         }
-        
-    
+            
         if (props.status == "Pending" || props.status == "3") {
           setOrderStatus(<TrafficLight unavailable></TrafficLight>);
           setStatusText("pending");

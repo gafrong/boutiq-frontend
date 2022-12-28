@@ -63,10 +63,12 @@ const Sidebar = (props) => {
     // BottomSheet for Comments
     const [isOpen, setIsOpen] = useState(false)
     const sheetRef = useRef(null);
-    const snapPoints = useMemo(() => ["80%"], []);
+    const snapPoints = useMemo(() => ["90%"], []);
     const [commentText, setCommentText] = useState(null);
     const [commentList, setCommentList] = useState([]);
+    const [commentSize, setCommentSize] = useState(video.numComments);
     const inputRef = useRef();
+
     // callbacks
     const handleSheetChange = useCallback((index) => {
         // console.log("handleSheetChange", index);
@@ -79,9 +81,9 @@ const Sidebar = (props) => {
     }, []);
 
     const updateComment = (newComment) => {
-        setCommentList(commentList.concat(newComment))
+        setCommentList(commentList.concat(newComment));  
     }
- 
+    
     const handleCommentSend = () => {
         const variables = {
             content: commentText,
@@ -95,11 +97,23 @@ const Sidebar = (props) => {
         .then(response => {
             if(response.data.success) {
                 inputRef.current.clear();
-                updateComment(response.data.result)
+                updateComment(response.data.result);
             } else {
                 alert('Failed to save your comment')
             }
+        });
+
+        const commentNum = {numComments: commentList.length};
+        axios.put(`${baseURL}videos/${videoId}/updatecomments`, commentNum, {
+            headers: { Authorization: `Bearer ${token}`}
         })
+        .then(response => {
+            if(response.data) {
+                setCommentSize(response.data.numComments);
+            } else {
+                alert("Video comments not showing...")
+            }
+        }) 
     }
  
     const getVideoComments = () => {
@@ -107,6 +121,7 @@ const Sidebar = (props) => {
             headers: { Authorization: `Bearer ${token}`}
         })
         .then(response => {
+            
             if(response.data) {
                 setCommentList(response.data)
             } else {
@@ -137,7 +152,7 @@ const Sidebar = (props) => {
                         />
                     </TouchableOpacity>
                     <View style={styles.commentArea}>
-                        <ScrollView style={styles.commentArea} contentContainerStyle={{flex:1}}>
+                        <ScrollView >
                             {commentList && [...commentList].reverse().map((comment, index) => (
                                 <Card.Title
                                     title={comment.content}
@@ -235,7 +250,7 @@ const Sidebar = (props) => {
                             name="comment-outline"
                             color={"#ffffff"}
                         />
-                        <Count>{video.rating}</Count>
+                        <Count>{commentSize}</Count>
                     </Menu>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>alert("slide up sharing field")}>
