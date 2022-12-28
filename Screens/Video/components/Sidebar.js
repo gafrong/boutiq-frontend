@@ -4,11 +4,12 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styled from 'styled-components/native';
 import BottomSheetModal from '@gorhom/bottom-sheet';
 import {Portal, PortalHost} from '@gorhom/portal';
-import { Avatar } from 'react-native-paper';
+import { Avatar, Card } from 'react-native-paper';
 
 import AuthGlobal from '../../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../../assets/common/baseUrl';
+import axios from 'axios';
 
 import { useDispatch } from 'react-redux';
 import { setVideoProducts } from '../../../Redux/Reducers/productSlice';
@@ -22,6 +23,7 @@ const Sidebar = (props) => {
     const videoProps = props.videoProps;
     const [video, setVideo] = useState(videoProps);
     const [token, setToken] = useState();
+    const [userImg, setUserImg] = useState("");
     const vendor = videoProps.createdBy;
     const videoId = video.id;
     const videoLikes = video.likes;
@@ -38,6 +40,12 @@ const Sidebar = (props) => {
             })
             .catch((error) => console.log(error));
     }, [])
+
+    useEffect(() => {
+        if (context.stateUser.userProfile) {
+            return setUserImg(context.stateUser.userProfile.image)
+        }
+    }, [context])
 
     const patchVideoLike = async () => {
         const response = await fetch(`${baseURL}videos/${videoId}/like`, {
@@ -56,7 +64,8 @@ const Sidebar = (props) => {
     const [isOpen, setIsOpen] = useState(false)
     const sheetRef = useRef(null);
     const snapPoints = useMemo(() => ["80%"], []);
-    const [text, onChangeText] = useState(null);
+    const [commentText, setCommentText] = useState(null);
+    const [commentList, setCommentList] = useState([]);
     // callbacks
     const handleSheetChange = useCallback((index) => {
         // console.log("handleSheetChange", index);
@@ -67,6 +76,43 @@ const Sidebar = (props) => {
     const handleClosePress = useCallback(() => {
         sheetRef.current?.close();
     }, []);
+
+    const updateComment = (newComment) => {
+        setCommentList(commentList.concat(newComment))
+    }
+ 
+    const handleCommentSend = () => {
+        const variables = {
+            content: commentText,
+            writer: loggedInUserId,
+            postId: videoId
+        }
+
+        axios.post(`${baseURL}videocomments/saveComment`, variables, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(response => {
+            if(response.data.success) {
+                setCommentText("")
+                updateComment(response.data.result)
+            } else {
+                alert('Failed to save your comment')
+            }
+        })
+    }
+ 
+    const getVideoComments = () => {
+        axios.get(`${baseURL}videocomments/${videoId}`, {
+            headers: { Authorization: `Bearer ${token}`}
+        })
+        .then(response => {
+            if(response.data) {
+                setCommentList(response.data)
+            } else {
+                alert("Video comments not loading...")
+            }
+        }) 
+    }
 
 	return (
         <>  
@@ -91,20 +137,28 @@ const Sidebar = (props) => {
                     </TouchableOpacity>
                     <View style={styles.commentArea}>
                         <ScrollView style={styles.commentArea} contentContainerStyle={{flex:1}}>
-                            <Text style={styles.white}>This is the comments testing area</Text>
-                            <Text style={styles.white}>This is the comments testing area</Text>
-                            <Text style={styles.white}>This is the comments testing area</Text>
+                            {commentList && [...commentList].reverse().map((comment, index) => (
+                                <Card.Title
+                                    title={comment.content}
+                                    subtitle={comment.createdAt}
+                                    left={() => <Avatar.Image size={24} source={{url: comment.writer.image}} />}
+                                    key={index}
+                                    titleStyle={{color:"#fff", fontSize:13}}
+                                    subtitleStyle={{color:"#fff"}}
+                                />
+                            ))}
+             
                         </ScrollView>          
                         <View style={styles.inputArea}>
                             <Avatar.Image 
                                 size={35} 
-                                source={{url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg"}} 
+                                source={{url: userImg? userImg : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg"}} 
                                 style={styles.commentorImg} />
                             <TextInput
                                 style={styles.input}
-                                onChangeText={onChangeText}
-                                value={text}
-                                placeholder="글을 남기세요.."
+                                onChangeText={setCommentText}
+                                value={commentText}
+                                placeholder="Add comment.."
                                 placeholderTextColor="#777"
                                 selectionColor={"tomato"}
                                 maxLength={140}
@@ -112,12 +166,14 @@ const Sidebar = (props) => {
                                 blurOnSubmit={true}
                                 clearButtonMode="always"
                             />
-                            <Icon
-                                name="arrow-up-circle"
-                                size={28}
-                                color={'tomato'}
-                                style={styles.submitIcon}
-                            />
+                            <TouchableOpacity onPress={() => handleCommentSend()} style={styles.submitIcon}>
+                                <Icon
+                                    name="arrow-up-circle"
+                                    size={28}
+                                    color={'tomato'}
+                                    
+                                />
+                            </TouchableOpacity>
                         </View>
                     </View>             
                 </BottomSheetModal>
@@ -171,7 +227,7 @@ const Sidebar = (props) => {
                         <Count>{video.rating}</Count>
                     </Menu>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=> {handleSnapPress(0); setIsOpen(true);}}>
+                <TouchableOpacity onPress={()=> {handleSnapPress(0); setIsOpen(true); getVideoComments();}}>
                     <Menu>
                         <Icon
                             size={25}
