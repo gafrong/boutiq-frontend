@@ -16,7 +16,6 @@ export const loginUser = (user, dispatch) => {
     })
     .then((res) => res.json())
     .then((data) => {
-        console.log('DATA', data)
         if(data){
             const token = data.token;
             // using AsyncStorage to set local storage in the app to access 'jwt' from anywhere

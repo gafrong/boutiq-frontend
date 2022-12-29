@@ -1,10 +1,12 @@
 import React, {useContext, useEffect, useState, useRef, useCallback, useMemo }  from 'react';
-import {TouchableOpacity, View, Text, StyleSheet, Dimensions, ScrollView, TextInput} from 'react-native';
+import {TouchableOpacity, View, Text, StyleSheet, Dimensions, ScrollView, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styled from 'styled-components/native';
 import BottomSheetModal from '@gorhom/bottom-sheet';
 import {Portal, PortalHost} from '@gorhom/portal';
-import { Avatar, Card } from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
+import Moment from 'react-moment';
+import 'moment/locale/ko';
 
 import AuthGlobal from '../../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -99,7 +101,7 @@ const Sidebar = (props) => {
                 inputRef.current.clear();
                 updateComment(response.data.result);
             } else {
-                alert('Failed to save your comment')
+                alert('글을 남기려면 로그인이 필요합니다.')
             }
         });
 
@@ -115,21 +117,27 @@ const Sidebar = (props) => {
             }
         }) 
     }
- 
+
+    const [skip, setSkip] = useState(0);
+    const [limit, setLimite] = useState(20);
+
     const getVideoComments = () => {
-        axios.get(`${baseURL}videocomments/${videoId}`, {
+        const conditions = {
+            skip: skip,
+            limit: limit
+        }
+        axios.post(`${baseURL}videocomments/${videoId}`, conditions, {
             headers: { Authorization: `Bearer ${token}`}
         })
-        .then(response => {
-            
+        .then(response => {         
             if(response.data) {
                 setCommentList(response.data)
             } else {
                 alert("Video comments not loading...")
             }
-        }) 
+        })     
     }
-
+    
 	return (
         <>  
             <Portal>
@@ -151,20 +159,20 @@ const Sidebar = (props) => {
                             style={styles.closeBtn}
                         />
                     </TouchableOpacity>
-                    <View style={styles.commentArea}>
+                    <View style={styles.commentArea}>   
+                        <Text style={styles.totalCmts}>Total comments: {commentSize +1}</Text>          
                         <ScrollView >
                             {commentList && [...commentList].reverse().map((comment, index) => (
-                                <Card.Title
-                                    title={comment.content}
-                                    subtitle={comment.createdAt}
-                                    left={() => <Avatar.Image size={24} source={{url: comment.writer.image}} />}
-                                    key={index}
-                                    titleStyle={{color:"#fff", fontSize:13}}
-                                    subtitleStyle={{color:"#fff"}}
-                                />
+                                <View style={styles.commentBox} key={index}>
+                                    <Avatar.Image size={30} source={{url: comment.writer.image}} style={styles.avatarImg}/>
+                                    <View style={styles.commentDetails}>
+                                        <Text style={styles.writer}>{comment.writer.username}</Text>
+                                        <Text style={styles.content}>{comment.content}</Text>
+                                        <Moment element={Text} fromNow style={styles.date}>{comment.createdAt}</Moment>
+                                    </View>
+                                </View>
                             ))}
-             
-                        </ScrollView>          
+                        </ScrollView>  
                         <View style={styles.inputArea}>
                             <Avatar.Image 
                                 size={35} 
@@ -243,14 +251,14 @@ const Sidebar = (props) => {
                         <Count>{video.rating}</Count>
                     </Menu>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=> {handleSnapPress(0); setIsOpen(true); getVideoComments();}}>
+                <TouchableOpacity onPress={()=> {handleSnapPress(0); setIsOpen(true); getVideoComments()}}>
                     <Menu>
                         <Icon
                             size={25}
                             name="comment-outline"
                             color={"#ffffff"}
                         />
-                        <Count>{commentSize}</Count>
+                        <Count>{commentSize +1}</Count>
                     </Menu>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>alert("slide up sharing field")}>
@@ -308,7 +316,46 @@ const styles = StyleSheet.create({
     },
     commentArea:{
         flex: 1, 
-        padding: 10
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 5
+    },
+    commentBox: {
+        padding: 8,
+        flexDirection: 'row',
+    },
+    commentDetails: {
+        paddingLeft: 15,
+        paddingRight: 35,
+        
+    },  
+    avatarImg: {
+        marginTop: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    writer:{
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 12
+    },
+    content:{
+        color: '#fff',
+        paddingTop: 3,
+        lineHeight: 18
+    },
+    date: {
+        color: '#fff',
+        paddingTop: 5,
+        fontSize:11,
+    },
+    totalCmts: {
+        color: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: width,
+        paddingBottom: 10,
+        paddingLeft: 8
     },
     white: {
         color: '#fff'
