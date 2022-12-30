@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState, useRef, useCallback, useMemo }  from 'react';
-import {TouchableOpacity, View, Text, StyleSheet, Dimensions, ScrollView, TextInput } from 'react-native';
+import {TouchableOpacity, View, Text, StyleSheet, Dimensions, TextInput, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styled from 'styled-components/native';
 import BottomSheetModal from '@gorhom/bottom-sheet';
@@ -83,7 +83,7 @@ const Sidebar = (props) => {
     }, []);
 
     const updateComment = (newComment) => {
-        setCommentList(commentList.concat(newComment));  
+        setCommentList(newComment.concat(commentList));  
     }
     
     const handleCommentSend = () => {
@@ -105,13 +105,13 @@ const Sidebar = (props) => {
             }
         });
 
-        const commentNum = {numComments: commentList.length};
+        const commentNum = {numComments: commentSize + 1};
         axios.put(`${baseURL}videos/${videoId}/updatecomments`, commentNum, {
             headers: { Authorization: `Bearer ${token}`}
         })
         .then(response => {
             if(response.data) {
-                setCommentSize(response.data.numComments);
+                setCommentSize(commentSize + 1);
             } else {
                 alert("Video comments not showing...")
             }
@@ -119,7 +119,7 @@ const Sidebar = (props) => {
     }
 
     const [skip, setSkip] = useState(0);
-    const [limit, setLimite] = useState(20);
+    const [limit, setLimit] = useState(20);
 
     const getVideoComments = () => {
         const conditions = {
@@ -131,13 +131,33 @@ const Sidebar = (props) => {
         })
         .then(response => {         
             if(response.data) {
-                setCommentList(response.data)
+                setCommentList([...commentList].concat(response.data))
             } else {
                 alert("Video comments not loading...")
             }
-        })     
+        })  
+        .catch((err) => {
+            console.log(err)
+        })   
     }
-    
+
+    const handleLoadMore = () => {
+        setSkip(skip + 1)
+        getVideoComments()
+    }
+
+    const renderItem = ({item, index}) => {
+        return(
+            <View style={styles.commentBox} key={index}>
+                <Avatar.Image size={30} source={{url: item.writer.image}} style={styles.avatarImg}/>
+                <View style={styles.commentDetails}>
+                    <Text style={styles.writer}>{item.writer.username}</Text>
+                    <Text style={styles.content}>{item.content}</Text>
+                    <Moment element={Text} fromNow style={styles.date}>{item.createdAt}</Moment>
+                </View>
+            </View>
+        )
+    }
 	return (
         <>  
             <Portal>
@@ -160,19 +180,15 @@ const Sidebar = (props) => {
                         />
                     </TouchableOpacity>
                     <View style={styles.commentArea}>   
-                        <Text style={styles.totalCmts}>Total comments: {commentSize +1}</Text>          
-                        <ScrollView >
-                            {commentList && [...commentList].reverse().map((comment, index) => (
-                                <View style={styles.commentBox} key={index}>
-                                    <Avatar.Image size={30} source={{url: comment.writer.image}} style={styles.avatarImg}/>
-                                    <View style={styles.commentDetails}>
-                                        <Text style={styles.writer}>{comment.writer.username}</Text>
-                                        <Text style={styles.content}>{comment.content}</Text>
-                                        <Moment element={Text} fromNow style={styles.date}>{comment.createdAt}</Moment>
-                                    </View>
-                                </View>
-                            ))}
-                        </ScrollView>  
+                        <Text style={styles.totalCmts}>Total comments: {commentSize +1}</Text>  
+                            <FlatList 
+                                data={commentList}
+                                renderItem={renderItem}
+                                keyExtractor={(item, index) => index.toString()}
+                                onEndReached={handleLoadMore}
+                                onEndReachedThreshold={0}
+                            />        
+  
                         <View style={styles.inputArea}>
                             <Avatar.Image 
                                 size={35} 
@@ -251,7 +267,7 @@ const Sidebar = (props) => {
                         <Count>{video.rating}</Count>
                     </Menu>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=> {handleSnapPress(0); setIsOpen(true); getVideoComments()}}>
+                <TouchableOpacity onPress={()=> {handleSnapPress(0); setIsOpen(true);getVideoComments()}}>
                     <Menu>
                         <Icon
                             size={25}
