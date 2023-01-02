@@ -119,7 +119,7 @@ const Sidebar = (props) => {
     }
 
     const [skip, setSkip] = useState(0);
-    const [limit, setLimit] = useState(20);
+    const [limit, setLimit] = useState(30);
 
     const getVideoComments = () => {
         const conditions = {
@@ -131,7 +131,8 @@ const Sidebar = (props) => {
         })
         .then(response => {         
             if(response.data) {
-                setCommentList([...commentList].concat(response.data))
+                setCommentList([...commentList].concat(response.data));
+                setSkip(20 + skip);
             } else {
                 alert("Video comments not loading...")
             }
@@ -141,8 +142,7 @@ const Sidebar = (props) => {
         })   
     }
 
-    const handleLoadMore = () => {
-        setSkip(skip + 1)
+    const handleLoadMore = () => { 
         getVideoComments()
     }
 
@@ -186,7 +186,6 @@ const Sidebar = (props) => {
                                 renderItem={renderItem}
                                 keyExtractor={(item, index) => index.toString()}
                                 onEndReached={handleLoadMore}
-                                onEndReachedThreshold={0}
                             />        
   
                         <View style={styles.inputArea}>
