@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
 import styled from 'styled-components/native'
 import { useNavigation } from '@react-navigation/native'
@@ -8,10 +8,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../../assets/common/baseUrl';
 import axios from 'axios';
 
-const Header = (props) => {
+const Header = ({loadPopularVideo, loadFollowingVideo}) => {
 	const navigation = useNavigation();
 	const context = useContext(AuthGlobal);
     const userAuthenticated = context.stateUser.isAuthenticated;
+	const [popularBold, setPopularBold] = useState(true);
+	const [followingBold, setFollowingBold] = useState(false);
 
 	return (
 		<Container>
@@ -26,12 +28,14 @@ const Header = (props) => {
 			: null
 			}
 			
-            <TouchableOpacity onPress={()=>alert('api call to fetch video data')}>
-                <Menu>Popular</Menu>
+            <TouchableOpacity onPress={()=> [setPopularBold(true), setFollowingBold(false), loadPopularVideo()]}>
+                <Menu bold={popularBold}>Popular</Menu>
             </TouchableOpacity>
 			
 			<Separator />
-			<Menu bold='true'>Following</Menu>
+			<TouchableOpacity onPress={()=> [setPopularBold(false), setFollowingBold(true), loadFollowingVideo()]}>
+				<Menu bold={followingBold}>Following</Menu>
+			</TouchableOpacity>
 		</Container>
 	)
 }

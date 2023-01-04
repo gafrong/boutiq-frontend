@@ -14,7 +14,6 @@ import { useDispatch } from "react-redux";
 
 const VideoContainer = (props) => {
     const [ videos, setVideos ] = useState([]);
-    const [ videosFiltered, setVideosFiltered ] = useState([]);
     const [ focus, setFocus] = useState();
     const [ active, setActive ] = useState();
     const [ loading, setLoading ] = useState(true);
@@ -31,9 +30,7 @@ const VideoContainer = (props) => {
                 axios
                     .get(`${baseURL}videos`)
                     .then((res) => {
-                        // console.log('INITIAL VIDEOS', res.data)
                         setVideos(res.data);
-                        // setVideosFiltered(res.data);
                         setLoading(false);
                     })
                     .catch((error) => {
@@ -42,14 +39,21 @@ const VideoContainer = (props) => {
         
                 return () => {
                     setVideos([])
-                    // setVideosFiltered([])
-                    // setFocus()
-                    // setActive()
+                    setFocus()
+                    setActive()
                 }
             },
             [],
         )
     ))
+
+    const loadPopularVideo = () => {
+        alert('Load popular video function!!!')
+    }
+
+    const loadFollowingVideo = () => {
+        alert('Load Following video function!!!')
+    }
 
     return(
         <>
@@ -59,7 +63,7 @@ const VideoContainer = (props) => {
                 barStyle='light-content'
             />
             <Container>
-                <Header props/>
+                <Header props loadPopularVideo={loadPopularVideo} loadFollowingVideo={loadFollowingVideo}/>
                 <VideoCompiler videos={videos} props={props} />
             </Container>    
         </>
