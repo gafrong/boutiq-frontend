@@ -1,6 +1,5 @@
 import React from 'react';
 import { Video } from 'expo-av';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 
 const Play = styled(Video)`
@@ -11,7 +10,7 @@ const Poster = styled.ImageBackground`
     height: 100%;
 `
 const VideoPlayer = ({video, isPlay}) => {
-    // console.log('VIDEO PLAYER VIDEO', video)
+
     return isPlay ? (
         <Play
             rate={1.0}
@@ -20,7 +19,7 @@ const VideoPlayer = ({video, isPlay}) => {
             shouldPlay
             useNativeControls={false}
             posterSource={video.image}
-            source={{uri:video.videoUrl}}
+            source={{uri: video.videoUrl ? video.videoUrl : video.videoId.videoUrl}}
             resizeMode='cover'
             isLooping
         />

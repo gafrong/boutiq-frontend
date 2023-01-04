@@ -5,6 +5,7 @@ import VideoContainer from "../Screens/Video/VideoContainer";
 import StoreContainer from "../Screens/Store/StoreContainer";
 import StoreProfilePage from "../Screens/Store/StoreProfilePage";
 import StoreSingleProduct from "../Screens/Store/StoreSingleProduct";
+import BookmarkedVideos from "../Screens/Video/BookmarkedVideos";
 
 const Stack = createStackNavigator()
 
@@ -56,6 +57,15 @@ function MyStack() {
                     component={StoreSingleProduct}
                     options={{
                         headerShown:true,
+                        headerShadowVisible: false,
+                        headerBackTitleVisible: false
+                    }}
+                />
+                <Stack.Screen 
+                    name='BookmarkedVideos'
+                    component={BookmarkedVideos}
+                    options={{
+                        headerShown: false,
                         headerShadowVisible: false,
                         headerBackTitleVisible: false
                     }}

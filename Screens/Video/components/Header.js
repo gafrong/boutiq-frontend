@@ -1,6 +1,47 @@
-import React from 'react'
-import { Pressable } from 'react-native'
+import React, {useContext} from 'react'
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
 import styled from 'styled-components/native'
+import { useNavigation } from '@react-navigation/native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AuthGlobal from '../../../Context/store/AuthGlobal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import baseURL from '../../../assets/common/baseUrl';
+import axios from 'axios';
+
+const Header = (props) => {
+	const navigation = useNavigation();
+	const context = useContext(AuthGlobal);
+    const userAuthenticated = context.stateUser.isAuthenticated;
+
+	return (
+		<Container>
+			{userAuthenticated ?
+				<TouchableOpacity onPress={()=> navigation.navigate('BookmarkedVideos', {user:context.stateUser.user.userId})} style={styles.bookmark}>
+                	<Icon
+						size={28}
+						name="bookmark-outline"
+						color={"#fff"}
+					/>
+           		</TouchableOpacity>
+			: null
+			}
+			
+            <TouchableOpacity onPress={()=>alert('api call to fetch video data')}>
+                <Menu>Popular</Menu>
+            </TouchableOpacity>
+			
+			<Separator />
+			<Menu bold='true'>Following</Menu>
+		</Container>
+	)
+}
+const styles = StyleSheet.create({
+    bookmark:{
+		position: 'absolute',
+		left: 15,
+		top: 8
+    }
+})
 
 const Container = styled.View`
 	top: 22px;
@@ -25,18 +66,5 @@ const Separator = styled.View`
 	background-color: #d8d8d8;
 	opacity: 0.6;
 `
-
-const Header = () => {
-	return (
-		<Container>
-            <Pressable onPress={()=>alert('api call to fetch video data')}>
-                <Menu>Popular</Menu>
-            </Pressable>
-			
-			<Separator />
-			<Menu bold='true'>Following</Menu>
-		</Container>
-	)
-}
 
 export default Header

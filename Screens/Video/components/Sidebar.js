@@ -7,6 +7,7 @@ import {Portal, PortalHost} from '@gorhom/portal';
 import { Avatar } from 'react-native-paper';
 import Moment from 'react-moment';
 import 'moment/locale/ko';
+import Bookmark from './Bookmark';
 
 import AuthGlobal from '../../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,6 +27,7 @@ const Sidebar = (props) => {
     const [video, setVideo] = useState(videoProps);
     const [token, setToken] = useState();
     const [userImg, setUserImg] = useState("");
+
     const vendor = videoProps.createdBy;
     const videoId = video.id;
     const videoLikes = video.likes;
@@ -256,16 +258,10 @@ const Sidebar = (props) => {
                     </Menu>
                 </TouchableOpacity>
                 }
-                <TouchableOpacity onPress={()=>alert("slide up comment field")}>
-                    <Menu>
-                        <Icon
-                            size={28}
-                            name="bookmark-outline"
-                            color={"#ffffff"}
-                        />
-                        <Count>{video.rating}</Count>
-                    </Menu>
-                </TouchableOpacity>
+                {token
+                ? <Bookmark videoId={videoId} userId={loggedInUserId} token={token}/>
+                : <Bookmark videoId={videoId} userId={loggedInUserId} />}
+                
                 <TouchableOpacity onPress={()=> {handleSnapPress(0); setIsOpen(true);getVideoComments()}}>
                     <Menu>
                         <Icon

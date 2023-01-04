@@ -35,12 +35,12 @@ const VideoCompiler = ({ videos, props }) => {
 								'rgba(26,26,26,0.5)'
 							]}>
 							<Center>
-								<Info username={item.createdBy.username} description={item.description} />
+								<Info username={item.createdBy ? item.createdBy.username : item.videoId.createdBy.username} description={item.description ? item.description : item.videoId.description} />
 								<Sidebar 
-									avatar={item.createdBy.image} 
+									avatar={item.createdBy ? item.createdBy.image : item.videoId.createdBy.image} 
 									props={props} 
-									createdBy={item.createdBy} 
-									videoProps={item}/>
+									createdBy={item.createdBy ? item.createdBy : item.videoId.createdBy} 
+									videoProps={item.createdBy ? item : item.videoId}/>
 							</Center>
 						</Gradient>
                     </View>
