@@ -12,7 +12,7 @@ const { height } = Dimensions.get('window')
 
 const VideoCompiler = ({ videos, props }) => {
     const [selected, setSelected] = useState(0)
-	
+
     return(
         <Container
             orientation='vertical'

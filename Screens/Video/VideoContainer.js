@@ -1,10 +1,10 @@
-import React, {useState, useCallback } from "react";
-import { StatusBar } from 'react-native';
+import React, {useState, useCallback, useEffect } from "react";
+import { StatusBar, Animated, TouchableOpacity } from 'react-native';
 import styled from 'styled-components';
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import VideoCompiler from './VideoCompiler';
-import Header from './components/Header';
 
 // import functions to access database
 import baseURL from '../../assets/common/baseUrl';
@@ -13,18 +13,27 @@ import { useDispatch } from "react-redux";
 
 
 const VideoContainer = (props) => {
+
     const [ videos, setVideos ] = useState([]);
-    const [ focus, setFocus] = useState();
     const [ active, setActive ] = useState();
     const [ loading, setLoading ] = useState(true);
+    const [ token, setToken] = useState();
+    const [ popular, setPopular] = useState(true);
+    const [ following, setFollowing] = useState(false);
 
     const dispatch = useDispatch();
 
+    useEffect(()=> {
+        AsyncStorage.getItem("jwt")
+            .then((res) => {
+                setToken(res)
+            })
+            .catch((error) => console.log(error));
+    }, [])
     // react navigation when in focus a screen will use callback. useful when we have several products in the same navigation, so that when we come back, there will be a callback for data changes
     useFocusEffect((
         useCallback(
             () => {
-                setFocus(false);
                 setActive(-1);
                 // Videos from database
                 axios
@@ -39,21 +48,12 @@ const VideoContainer = (props) => {
         
                 return () => {
                     setVideos([])
-                    setFocus()
                     setActive()
                 }
             },
             [],
         )
     ))
-
-    const loadPopularVideo = () => {
-        alert('Load popular video function!!!')
-    }
-
-    const loadFollowingVideo = () => {
-        alert('Load Following video function!!!')
-    }
 
     return(
         <>
@@ -63,7 +63,6 @@ const VideoContainer = (props) => {
                 barStyle='light-content'
             />
             <Container>
-                <Header props loadPopularVideo={loadPopularVideo} loadFollowingVideo={loadFollowingVideo}/>
                 <VideoCompiler videos={videos} props={props} />
             </Container>    
         </>

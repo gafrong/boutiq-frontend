@@ -21,10 +21,8 @@ export const loginUser = (user, dispatch) => {
             // using AsyncStorage to set local storage in the app to access 'jwt' from anywhere
             AsyncStorage.setItem("jwt", token)
             const decoded = jwt_decode(token)
-            // console.log('USER', user)
             const userEmail = user.email;
             const updatedUser = { ...data.user}
-            // console.log('UPDATED', updatedUser)
             dispatch(setCurrentUser(decoded, updatedUser)) 
         } else {
             logoutUser(dispatch)

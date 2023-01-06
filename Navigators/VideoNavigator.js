@@ -6,6 +6,8 @@ import StoreContainer from "../Screens/Store/StoreContainer";
 import StoreProfilePage from "../Screens/Store/StoreProfilePage";
 import StoreSingleProduct from "../Screens/Store/StoreSingleProduct";
 import BookmarkedVideos from "../Screens/Video/BookmarkedVideos";
+import FollowingVideos from "../Screens/Video/FollowingVideos";
+import VideosMain from "../Screens/Video/VideosMain";
 
 const Stack = createStackNavigator()
 
@@ -20,7 +22,7 @@ function MyStack() {
             <Stack.Group>
                 <Stack.Screen 
                     name='Video'
-                    component={VideoContainer}
+                    component={VideosMain}
                     options={{
                         headerShown:false,
                     }}

@@ -1,10 +1,10 @@
 import React, { useEffect, useState} from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { TouchableOpacity, Text, StyleSheet, Dimensions, Button } from 'react-native'
 import { StatusBar } from 'react-native';
 import styled from 'styled-components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import VideoCompiler from './VideoCompiler';
-import Header from './components/Header';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
 
@@ -51,6 +51,17 @@ const BookmarkedVideos = (props) => {
                 barStyle='light-content'
             />
             <Container>
+                <TouchableOpacity 
+                    onPress={()=>props.navigation.goBack()}    
+                    style={styles.button}
+                >
+                    <Icon 
+                        name="chevron-left" 
+                        size={46} 
+                        color={'#fff'}
+                        style={styles.closeBtn}
+                    />
+                </TouchableOpacity>
                 <Text style={styles.header}>Saved Videos</Text>
                 <VideoCompiler videos={videos} props={props} />
             </Container>    
@@ -78,6 +89,19 @@ const styles = StyleSheet.create({
         width: width,
         marginTop: 50,
         fontWeight: 'bold'
+    },
+    button : {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 5,
+        elevation: 3,
+        position: 'absolute',
+        zIndex: 1,
+        top: 26
+    },
+    buttonText: {
+        color: '#fff'
     }
 })
 

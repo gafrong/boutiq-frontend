@@ -9,6 +9,8 @@ import Moment from 'react-moment';
 import 'moment/locale/ko';
 import Bookmark from './Bookmark';
 
+import { useNavigation } from '@react-navigation/native'
+
 import AuthGlobal from '../../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from '../../../assets/common/baseUrl';
@@ -21,6 +23,7 @@ import { setVendor } from '../../../Redux/Reducers/vendorSlice';
 var { width } = Dimensions.get('window');
 
 const Sidebar = (props) => {
+    const navigation = useNavigation();
     const context = useContext(AuthGlobal);
     const userAuthenticated = context.stateUser.isAuthenticated;
     const videoProps = props.videoProps;
@@ -225,7 +228,7 @@ const Sidebar = (props) => {
                     onPress={() => [
                         dispatch(setVideoProducts({videoProducts:videoProps.videoItems})),
                         dispatch(setVendor(vendor)),
-                        props.props.navigation.navigate('Store', {seller:vendor})
+                        navigation.navigate('Store', {seller:vendor})
                     ]}>
                     <Menu>
                         <User>
