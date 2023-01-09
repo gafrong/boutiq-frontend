@@ -21,23 +21,24 @@ const BookmarkedVideos = (props) => {
             .then((res) => {
                 setToken(res)
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log('Error One'));
     }, [])
 
     useEffect (() => {
         {token 
             ? axios.post(`${baseURL}bookmarks/getBookmarkedVideos`, variables, {
-                    headers: { Authorization: `Bearer ${token}` }
+                    headers: { 
+                        'Content-Type': 'application/json', 
+                        'Authorization': `Bearer ${token}` }
                 })
                 .then(response => {
                     if(response.data.success) {
-                        // console.log('RES', response.data)
                         setVideos(response.data.result)
                     } else {
                         alert('Failed to load bookmarked videos')
                     }
                 })
-                .catch((err) => console.log(err))
+                .catch((err) => console.log('Error two'))
             : null
         }
         

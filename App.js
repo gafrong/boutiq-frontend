@@ -20,7 +20,8 @@ import Main from './Navigators/Main';
 // Screens
 import Header from './Shared/Header';
 
-LogBox.ignoreAllLogs(true);
+LogBox.ignoreLogs(['Warning: ...']); 
+LogBox.ignoreAllLogs();
 
 
 export default function App() {

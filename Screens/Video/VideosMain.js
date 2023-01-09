@@ -6,8 +6,6 @@ import { useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AuthGlobal from "../../Context/store/AuthGlobal";
 
-import SIZES  from "../../assets/constants/sizes";
-import videoTabs from "../../assets/constants/videoTabs";
 import FollowingVideos from "./FollowingVideos";
 import VideoContainer from "./VideoContainer";
 
@@ -27,7 +25,7 @@ const VideosMain = (props) => {
             .then((res) => {
                 setToken(res)
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log("There is an error with token"));
     }, [])
 
     return(

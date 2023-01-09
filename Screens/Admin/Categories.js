@@ -6,7 +6,7 @@ const Categories = () => {
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
   const shetRef = useRef(null);
-  console.log('sheet', shetRef)
+
   // variables
   const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
 

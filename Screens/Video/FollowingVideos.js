@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect, useContext } from "react";
-import { StatusBar, Text, View, StyleSheet, Dimensions } from 'react-native';
+import { StatusBar, Text, View, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import styled from 'styled-components';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -36,7 +36,7 @@ const FollowingVideos = (props) => {
             .then((res) => {
                 setToken(res)
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log('There is an error with the token'));
     }, [])
    
     useFocusEffect((
@@ -49,7 +49,9 @@ const FollowingVideos = (props) => {
                     ? 
                         axios
                             .post(`${baseURL}videos/${userId}/followingVideos`, variables, {
-                                headers: { Authorization: `Bearer ${token}` }
+                                headers: { 
+                                    'Content-Type': 'application/json', 
+                                    'Authorization': `Bearer ${token}` }
                             })
                             .then((res) => {
                                 setVideos(res.data);

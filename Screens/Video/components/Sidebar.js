@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState, useRef, useCallback, useMemo }  from 'react';
-import {TouchableOpacity, View, Text, StyleSheet, Dimensions, TextInput, FlatList } from 'react-native';
+import {TouchableOpacity, View, Text, StyleSheet, Dimensions, TextInput, FlatList, Share } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styled from 'styled-components/native';
 import BottomSheetModal from '@gorhom/bottom-sheet';
@@ -8,8 +8,7 @@ import { Avatar } from 'react-native-paper';
 import Moment from 'react-moment';
 import 'moment/locale/ko';
 import Bookmark from './Bookmark';
-
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native';
 
 import AuthGlobal from '../../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -38,6 +37,8 @@ const Sidebar = (props) => {
     const isLiked = Boolean(videoLikes[loggedInUserId]);
     const likeCount = Object.keys(videoLikes).length;
 
+    console.log('VIDEO', video.videoUrl)
+
     const dispatch = useDispatch();
 
     useEffect(()=> {
@@ -45,7 +46,7 @@ const Sidebar = (props) => {
             .then((res) => {
                 setToken(res)
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log('Token error'));
     }, [])
 
     useEffect(() => {
@@ -99,7 +100,7 @@ const Sidebar = (props) => {
         }
 
         axios.post(`${baseURL}videocomments/saveComment`, variables, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${token}` },
         })
         .then(response => {
             if(response.data.success) {
@@ -112,7 +113,7 @@ const Sidebar = (props) => {
 
         const commentNum = {numComments: commentSize + 1};
         axios.put(`${baseURL}videos/${videoId}/updatecomments`, commentNum, {
-            headers: { Authorization: `Bearer ${token}`}
+            headers: { 'Authorization': `Bearer ${token}`}
         })
         .then(response => {
             if(response.data) {
@@ -163,6 +164,28 @@ const Sidebar = (props) => {
             </View>
         )
     }
+
+    const handleShare = async () => {
+        try {
+            const result = await Share.share({
+                message: video.name,
+                url: video.videoUrl,
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                  // shared with activity type of result.activityType
+                } else {
+                  // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // dismissed
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+      };
+    
+
 	return (
         <>  
             <Portal>
@@ -275,13 +298,13 @@ const Sidebar = (props) => {
                         <Count>{commentSize +1}</Count>
                     </Menu>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>alert("slide up sharing field")}>
+                <TouchableOpacity onPress={()=>handleShare()}>
                     <Menu>
                         <Icon 
                             size={26} 
                             name="share" 
                             color={"#ffffff"}/>
-                        <Count>{video.numReviews}</Count>
+                        <Count></Count>
                     </Menu>
                 </TouchableOpacity>
             </Container>

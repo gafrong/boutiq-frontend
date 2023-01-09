@@ -19,7 +19,7 @@ const Orders = (props) => {
             .then((res) => {
                 axios
                     .get(`${baseURL}orders`, {
-                        headers: {Authorization: `Bearer ${res}`}
+                        headers: {'Authorization': `Bearer ${res}`}
                     })
                     .then((x) => setOrderList(x.data))
             })

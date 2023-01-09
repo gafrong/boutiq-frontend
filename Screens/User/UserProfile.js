@@ -29,13 +29,13 @@ const UserProfile = (props) => {
             .then((res) => {
                 axios
                     .get(`${baseURL}users/${context.stateUser.user.userId}`, {
-                        headers: { Authorization: `Bearer ${res}`},
+                        headers: { 'Authorization': `Bearer ${res}`},
                     })
                     .then((user) => setUserProfile(user.data))
                     .then(
                         axios
                         .get(`${baseURL}orders`, {
-                            headers: {Authorization: `Bearer ${res}`}
+                            headers: {'Authorization': `Bearer ${res}`}
                         })
                         .then((x) => {
                             const data = x.data;

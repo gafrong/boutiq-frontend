@@ -66,7 +66,7 @@ const StoreSingleProduct = (props) => {
         const response = await fetch(`${baseURL}products/${productId}/like`, {
             method: "PATCH",
             headers : {
-                Authorization: `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({userId: loggedInUserId}),

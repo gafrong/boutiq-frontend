@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 const StoreProfile = (props) => {
     const vendor = useSelector((state) => state.vendors.vendor)
 
-    // console.log('VIDEOS', props.route.params.videoProps)
     return(
         <View style={styles.container}>           
             <View style={styles.profileContainer}>

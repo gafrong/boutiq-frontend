@@ -17,7 +17,9 @@ const Bookmark = (props) => {
     useEffect(() => {
         
         axios.post(`${baseURL}bookmarks/getBookmarkCount`, variable, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` },
         })
             .then(response => {
                 if(response.data.success) {
@@ -28,7 +30,9 @@ const Bookmark = (props) => {
             });
 
         axios.post(`${baseURL}bookmarks/bookmarked`, variable, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { 
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}` },
         })
             .then(response => {
                 if(response.data.success) {

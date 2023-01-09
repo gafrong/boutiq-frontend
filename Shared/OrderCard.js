@@ -52,7 +52,7 @@ const OrderCard = (props) => {
     const updateOrder = (element) => {
         const config = {
           headers: {
-            Authorization: `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`,
           },
         };
 

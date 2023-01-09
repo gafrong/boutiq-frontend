@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useContext }  from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Login from '../Screens/User/Login';
 import Register from '../Screens/User/Register';
 import UserProfile from '../Screens/User/UserProfile';
+import AuthGlobal from '../Context/store/AuthGlobal';
 
 const Stack = createStackNavigator();
 
-function MyStack() {
+const UserNavigator =  () => {
+    const context = useContext(AuthGlobal);
+    const isAuthenticated = context.stateUser.isAuthenticated;
+
     return(
         <Stack.Navigator screenOptions={{headerTrasparent: true}}>
             <Stack.Screen
@@ -35,6 +39,4 @@ function MyStack() {
     )
 }
 
-export default function UserNavigator() {
-    return <MyStack />
-}
+export default UserNavigator;
