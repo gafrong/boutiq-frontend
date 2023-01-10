@@ -30,14 +30,13 @@ const Sidebar = (props) => {
     const [token, setToken] = useState();
     const [userImg, setUserImg] = useState("");
 
+    const user = context.stateUser.user;
     const vendor = videoProps.createdBy;
     const videoId = video.id;
     const videoLikes = video.likes;
     const loggedInUserId = context.stateUser.user.userId;
     const isLiked = Boolean(videoLikes[loggedInUserId]);
     const likeCount = Object.keys(videoLikes).length;
-
-    console.log('VIDEO', video.videoUrl)
 
     const dispatch = useDispatch();
 
@@ -168,8 +167,9 @@ const Sidebar = (props) => {
     const handleShare = async () => {
         try {
             const result = await Share.share({
-                message: video.name,
+                message: video.description,
                 url: video.videoUrl,
+                title: video.name,
             });
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
@@ -251,7 +251,7 @@ const Sidebar = (props) => {
                     onPress={() => [
                         dispatch(setVideoProducts({videoProducts:videoProps.videoItems})),
                         dispatch(setVendor(vendor)),
-                        navigation.navigate('Store', {seller:vendor})
+                        navigation.navigate('Store', {seller:vendor, token:token, user:user})
                     ]}>
                     <Menu>
                         <User>

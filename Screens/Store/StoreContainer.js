@@ -10,9 +10,11 @@ import axios from "axios";
 import baseURL from "../../assets/common/baseUrl";
 import { setProducts } from "../../Redux/Reducers/productSlice";
 
-const StoreContainer = (seller) => {
+const StoreContainer = (props) => {
+    const token = props.route.params.token;
+    const user = props.route.params.user;
     const dispatch = useDispatch();
-    const vendorProfile = seller.route.params.seller;
+    const vendorProfile = props.route.params.seller;
     const products = useSelector((state) => state.stateProducts.videoProducts);
     const storeId = vendorProfile._id
 
@@ -38,16 +40,17 @@ const StoreContainer = (seller) => {
     ))
 
     useEffect(() => {
-        seller.navigation.setOptions({
+        props.navigation.setOptions({
             title: '@'+vendorProfile.username
         });
-    }, [vendorProfile.username, seller.navigation])
+    }, [vendorProfile.username, props.navigation])
 
     return(        
         <Container>
             <ScrollView>
                 <StoreProfile 
-                    {...seller}
+                    {...props}
+                    {...token}
                 />
                 <ProductContainer>
                     <VideoProductTitle>영상 아이템</VideoProductTitle>
@@ -57,7 +60,7 @@ const StoreContainer = (seller) => {
                     >
                         {products.map((item, index) => 
                             <StoreProductList 
-                                navigation={seller.navigation}
+                                navigation={props.navigation}
                                 key={index}
                                 item={item}
                             />)}
@@ -67,7 +70,7 @@ const StoreContainer = (seller) => {
                                 color="tomato"
                                 dark
                                 mode={'contained'}
-                                onPress={()=> seller.navigation.navigate('StoreProfilePage', vendorProfile)}
+                                onPress={()=> props.navigation.navigate('StoreProfilePage', vendorProfile)}
                             >Visit Store</Button>       
                         </TouchableOpacity>
                     </ScrollView>

@@ -32,7 +32,7 @@ const Bookmark = (props) => {
         axios.post(`${baseURL}bookmarks/bookmarked`, variable, {
             headers: { 
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}` },
+                'Authorization': `Bearer ${token}` },
         })
             .then(response => {
                 if(response.data.success) {
@@ -47,7 +47,7 @@ const Bookmark = (props) => {
     const handleBookmark = () => {
         if(bookmarked) {
             axios.post(`${baseURL}bookmarks/removeFromBookmark`, variable, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { 'Authorization': `Bearer ${token}` },
             })
             .then(response => {
                 if(response.data.success) {
@@ -59,7 +59,7 @@ const Bookmark = (props) => {
             })
         } else {
             axios.post(`${baseURL}bookmarks/addToBookmark`, variable, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { 'Authorization': `Bearer ${token}` },
             })
             .then(response => {
                 if(response.data.success) {

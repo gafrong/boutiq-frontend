@@ -1,11 +1,39 @@
-import React from "react";
+import React, {useState} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import baseURL from "../../assets/common/baseUrl";
 
 const StoreProfile = (props) => {
     const vendor = useSelector((state) => state.vendors.vendor)
+    const token = props.route.params.token;
+    const userId = props.route.params.user.userId;
+    const followCheck = Boolean(vendor.followers[userId])
+    const [isFollowing, setIsFollowing] = useState(followCheck);
+    const [followersCount, setFollowersCount] = useState(Object.keys(vendor.followers).length);
+
+    const subscribeUser = () => {
+        const variables = {
+            vendorId:vendor.id, 
+            userId: userId
+        }
+        axios.patch(`${baseURL}users/subscribeUser`, variables, {
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` },
+            })
+            .then(res => {
+                if(res.data) {
+                    const checkFollowers = res.data.find(x=>x.id==vendor.id).followers
+                    setIsFollowing(Boolean(checkFollowers[userId]))
+                    setFollowersCount(Object.keys(checkFollowers).length)
+                } else {
+                    console.log('Failed to load')
+                }
+            })     
+    }
 
     return(
         <View style={styles.container}>           
@@ -13,7 +41,7 @@ const StoreProfile = (props) => {
                 <Avatar.Image size={50} source={{url: vendor.image}} style={{marginRight:20, marginLeft: 20}} />
                 <View style={styles.profileItemContainer}>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{vendor.followers? vendor.followers.length: 0}</Text>
+                        <Text style={styles.itemBold}>{followersCount? followersCount : 0}</Text>
                         <Text style={styles.profileItemText}>팔로워</Text>
                     </View>
                     <View style={styles.profileItem}>
@@ -27,28 +55,54 @@ const StoreProfile = (props) => {
                 </View>     
             </View>  
             <View style={styles.profileBtnContainer}>
-                <Button style={styles.allBtn} 
-                    contentStyle={{width:60}}
-                    color="#333333"
-                    mode="contained"
-                    dark={true}
-                    uppercase={false}
-                    labelStyle={{fontSize:13}}
-                    onPress={()=> alert('follow')}
-                >
-                    <Icon name="user-plus" size={18} color="white"/>
-                </Button>
-                <Button style={[styles.allBtn, {width:200}]} 
-                    contentStyle={{width:200}}
-                    color="#333333"
-                    mode="contained"
-                    dark={true}
-                    uppercase={false}
-                    labelStyle={{fontSize:13}}
-                    onPress={()=> props.navigation.navigate('StoreProfilePage', {vendor})}
-                >   <Text style={{paddingRight:5, alignItems:"center", lineHeight:60, fontSize:13}}>더보기</Text>
-                    <Icon style={{alignItems:"center", lineHeight:40}} name="chevron-right" size={13} color="white"/>
-                </Button>
+                {isFollowing 
+                ? <>
+                    <Button style={styles.unfollowBtn} 
+                        contentStyle={{width:60}}
+                        color="#333333"
+                        mode="contained"
+                        dark={true}
+                        uppercase={false}
+                        labelStyle={{fontSize:13}}
+                        onPress={()=> subscribeUser()}
+                    >
+                        <Icon name="user-check" size={18} color="#999"/>
+                    </Button>
+                    <Button style={[styles.allBtn, {width:200}]} 
+                        contentStyle={{width:200}}
+                        color="#333333"
+                        mode="contained"
+                        dark={true}
+                        uppercase={false}
+                        labelStyle={{fontSize:13}}
+                        onPress={()=> props.navigation.navigate('StoreProfilePage', {vendor})}
+                    >더보기<Icon style={{alignItems:"center", lineHeight:40}} name="chevron-right" size={13} color="white"/>
+                    </Button>
+                </>
+                : <>
+                    <Button style={styles.followBtn} 
+                        contentStyle={{width:150}}
+                        color="#333333"
+                        mode="contained"
+                        dark={true}
+                        uppercase={false}
+                        labelStyle={{fontSize:13}}
+                        onPress={()=> subscribeUser()}
+                    >
+                        <Icon name="user-plus" size={18} color="white"/>
+                    </Button>
+                    <Button style={[styles.allBtn, {width:150}]} 
+                        contentStyle={{width:150}}
+                        color="#333333"
+                        mode="contained"
+                        dark={true}
+                        uppercase={false}
+                        labelStyle={{fontSize:13}}
+                        onPress={()=> props.navigation.navigate('StoreProfilePage', {vendor})}
+                    > 더보기<Icon style={{alignItems:"center", lineHeight:40}} name="chevron-right" size={13} color="white"/>
+                    </Button>
+                    </>
+                }
             </View>              
         </View>
     )
@@ -104,6 +158,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "row"
+    },
+    followBtn: {
+        width: 150,
+        marginLeft: 13,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: 'tomato'
+    },
+    unfollowBtn: {
+        width: 50,
+        marginLeft: 13,
+        justifyContent: "center",
+        alignItems: "center"
     }
 })
 
