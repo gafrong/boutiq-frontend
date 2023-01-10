@@ -1,19 +1,37 @@
-import React, {useCallback, useState, useEffect} from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ActivityIndicator, FlatList, ScrollView } from "react-native";
+import React, {useState, useEffect, useContext} from "react";
+import { StyleSheet, View, Text, ActivityIndicator, FlatList, ScrollView } from "react-native";
 import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
 
-import { useSelector } from "react-redux";
+import axios from 'axios';
+import baseURL from "../../assets/common/baseUrl";
+
+import AuthGlobal from "../../Context/store/AuthGlobal";
+import { useSelector, useDispatch } from "react-redux";
 
 import ProductList from "../Market/ProductList";
-
+import {updateVendorFollowers} from '../../Redux/Reducers/vendorSlice';
 
 const StoreProfilePage = (props) => {
+    // console.log('PROPS', props)
+    const dispatch = useDispatch();
+    const context = useContext(AuthGlobal)
+    const user = context.stateUser.user;
+    const userId = user.userId;
     const [ loading, setLoading ] = useState(true);
     const vendor = useSelector((state) => state.vendors.vendor)
     const products = useSelector((state)=> state.stateProducts.products);
 
+    const token = props.route.params.token;
+    const vendorId = vendor.id;
+    const followCheck = Boolean(vendor.followers[userId])
+    const isFollowing = followCheck;
+
+    const followersCount = Object.keys(vendor.followers).length;
+
     const productCount = Object.keys(products).length;
+    const follwersCount = Object.keys(vendor.followers).length;
+console.log("FOLLOWERS",vendor.followers)
 
     useEffect(() => {
         props.navigation.setOptions({
@@ -22,13 +40,34 @@ const StoreProfilePage = (props) => {
         setLoading(false);
     }, [vendor.brand, props.navigation])
 
+    const subscribeUser = () => {
+        
+        const variables = {
+            vendorId:vendorId, 
+            userId:userId
+        }
+        axios.patch(`${baseURL}users/subscribeUser`, variables, {
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` },
+            })
+            .then(res => {
+                if(res.data) {
+                    const checkFollowers = res.data.find(x=>x.id==vendor.id).followers;
+                    dispatch(updateVendorFollowers(checkFollowers))
+                } else {
+                    alert('Please login')
+                }
+            })     
+    }
+
     return(
         <ScrollView style={styles.container}>        
             <View style={styles.profileContainer}>
                 <Avatar.Image size={90} source={{url:vendor.image}} style={{marginRight:20, marginLeft: 10}} />
                 <View style={styles.profileItemContainer}>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{vendor.followers? vendor.followers.length: 0}</Text>
+                        <Text style={styles.itemBold}>{vendor.followers? followersCount : 0}</Text>
                         <Text style={styles.profileItemText}>팔로워</Text>
                     </View>
                     <View style={styles.profileItem}>
@@ -46,17 +85,30 @@ const StoreProfilePage = (props) => {
                 <Text style={{color:'#ffffff'}}>{vendor.brandDescription}</Text>
             </View> 
             <View style={styles.profileBtnContainer}>
-                <Button style={styles.allBtn} 
-                    contentStyle={{width:100}}
-                    color="#333333"
-                    mode="contained"
-                    dark={true}
-                    uppercase={false}
-                    labelStyle={{fontSize:13}}
-                    onPress={()=> alert('follow')}
-                >
-                    <Icon name="user-plus" size={18} color="white"/>
-                </Button>
+                {isFollowing
+                ?   <Button style={styles.allBtn} 
+                        contentStyle={{width:100}}
+                        color="#333333"
+                        mode="contained"
+                        dark={true}
+                        uppercase={false}
+                        labelStyle={{fontSize:13}}
+                        onPress={()=> subscribeUser()}
+                    >
+                        <Icon name="user-check" size={18} color="#777"/>
+                    </Button>
+                :   <Button style={styles.followBtn} 
+                        contentStyle={{width:100}}
+                        color="#333333"
+                        mode="contained"
+                        dark={true}
+                        uppercase={false}
+                        labelStyle={{fontSize:13}}
+                        onPress={()=> subscribeUser()}
+                    >
+                        <Icon name="user-plus" size={18} color="#fff"/>
+                    </Button>
+                }
                 <Button style={styles.allBtn} 
                     contentStyle={{width:100}}
                     color="#333333"
@@ -176,6 +228,13 @@ const styles = StyleSheet.create({
         marginRight: 15,
         justifyContent: "center",
         alignItems: "center"
+    }, 
+    followBtn : {
+        width: 100,
+        marginRight: 15,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: 'tomato'        
     }
 })
 

@@ -2,19 +2,22 @@ import React, {useState} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch  } from "react-redux";
 import axios from "axios";
 import baseURL from "../../assets/common/baseUrl";
+import {updateVendorFollowers} from '../../Redux/Reducers/vendorSlice';
 
 const StoreProfile = (props) => {
+    const dispatch = useDispatch();
     const vendor = useSelector((state) => state.vendors.vendor)
     const token = props.route.params.token;
+    const user = props.route.params.user;
     const userId = props.route.params.user.userId;
     const followCheck = Boolean(vendor.followers[userId])
-    const [isFollowing, setIsFollowing] = useState(followCheck);
-    const [followersCount, setFollowersCount] = useState(Object.keys(vendor.followers).length);
+    const isFollowing = followCheck;
+    const followersCount = Object.keys(vendor.followers).length;
 
-    const subscribeUser = () => {
+    const subscribeUser = () => {        
         const variables = {
             vendorId:vendor.id, 
             userId: userId
@@ -26,11 +29,10 @@ const StoreProfile = (props) => {
             })
             .then(res => {
                 if(res.data) {
-                    const checkFollowers = res.data.find(x=>x.id==vendor.id).followers
-                    setIsFollowing(Boolean(checkFollowers[userId]))
-                    setFollowersCount(Object.keys(checkFollowers).length)
+                    const checkFollowers = res.data.find(x=>x.id==vendor.id).followers;
+                    dispatch(updateVendorFollowers(checkFollowers))
                 } else {
-                    console.log('Failed to load')
+                    alert('Please login')
                 }
             })     
     }
@@ -66,7 +68,7 @@ const StoreProfile = (props) => {
                         labelStyle={{fontSize:13}}
                         onPress={()=> subscribeUser()}
                     >
-                        <Icon name="user-check" size={18} color="#999"/>
+                        <Icon name="user-check" size={18} color="#777"/>
                     </Button>
                     <Button style={[styles.allBtn, {width:200}]} 
                         contentStyle={{width:200}}
@@ -75,7 +77,7 @@ const StoreProfile = (props) => {
                         dark={true}
                         uppercase={false}
                         labelStyle={{fontSize:13}}
-                        onPress={()=> props.navigation.navigate('StoreProfilePage', {vendor})}
+                        onPress={()=> props.navigation.navigate('StoreProfilePage', {token:token, vendor:vendor})}
                     >더보기<Icon style={{alignItems:"center", lineHeight:40}} name="chevron-right" size={13} color="white"/>
                     </Button>
                 </>
@@ -98,7 +100,7 @@ const StoreProfile = (props) => {
                         dark={true}
                         uppercase={false}
                         labelStyle={{fontSize:13}}
-                        onPress={()=> props.navigation.navigate('StoreProfilePage', {vendor})}
+                        onPress={()=> props.navigation.navigate('StoreProfilePage', {token:token, vendor:vendor})}
                     > 더보기<Icon style={{alignItems:"center", lineHeight:40}} name="chevron-right" size={13} color="white"/>
                     </Button>
                     </>
