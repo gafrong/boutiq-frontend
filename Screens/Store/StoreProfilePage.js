@@ -10,12 +10,14 @@ import AuthGlobal from "../../Context/store/AuthGlobal";
 import { useSelector, useDispatch } from "react-redux";
 
 import ProductList from "../Market/ProductList";
-import {updateVendorFollowers} from '../../Redux/Reducers/vendorSlice';
+import { updateVendorFollowers } from '../../Redux/Reducers/vendorSlice';
+import { updateUserFollowing } from "../../Context/actions/Auth.actions";
 
 const StoreProfilePage = (props) => {
-    // console.log('PROPS', props)
     const dispatch = useDispatch();
     const context = useContext(AuthGlobal)
+    const userProfile = context.stateUser.userProfile;
+
     const user = context.stateUser.user;
     const userId = user.userId;
     const [ loading, setLoading ] = useState(true);
@@ -31,7 +33,6 @@ const StoreProfilePage = (props) => {
 
     const productCount = Object.keys(products).length;
     const follwersCount = Object.keys(vendor.followers).length;
-console.log("FOLLOWERS",vendor.followers)
 
     useEffect(() => {
         props.navigation.setOptions({
@@ -40,25 +41,41 @@ console.log("FOLLOWERS",vendor.followers)
         setLoading(false);
     }, [vendor.brand, props.navigation])
 
-    const subscribeUser = () => {
-        
-        const variables = {
-            vendorId:vendorId, 
-            userId:userId
+    const subscribeUser = () => {     
+        if (vendorId !== userId) {
+            const variables = {
+                vendorId:vendorId, 
+                userId: userId
+            }
+            axios.patch(`${baseURL}users/subscribeUser`, variables, {
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` },
+                })
+                .then(res => {
+                    if(res.data) {
+                        const checkFollowers = res.data.find(x=>x.id==vendorId).followers;
+                        dispatch(updateVendorFollowers({followers:checkFollowers}))
+    
+                        const checkFollowing = res.data.find(x=>x.id == userId).following;
+                        const checkedFollowingArray = Object.keys(checkFollowing);
+                        const checkExist = checkedFollowingArray.includes(vendorId)
+                        const updateProfile =() => {
+                            userProfile.following = checkFollowing;
+                            return (
+                                userProfile
+                            )
+                        }
+                        const updatedUserProfile = updateProfile()
+                        dispatch(updateUserFollowing({following:updatedUserProfile}));
+                    } else {
+                        alert('Please login')
+                    }
+                }) 
+        } else {
+            alert("Can not follow yourself!")
         }
-        axios.patch(`${baseURL}users/subscribeUser`, variables, {
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` },
-            })
-            .then(res => {
-                if(res.data) {
-                    const checkFollowers = res.data.find(x=>x.id==vendor.id).followers;
-                    dispatch(updateVendorFollowers(checkFollowers))
-                } else {
-                    alert('Please login')
-                }
-            })     
+            
     }
 
     return(

@@ -4,6 +4,7 @@ import Toast from "react-native-toast-message";
 import baseURL from "../../assets/common/baseUrl";
 
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+export const UPDATE_USER_FOLLOWING = "UPDATE_USER_FOLLOWING";
 
 export const loginUser = (user, dispatch) => {
     fetch(`${baseURL}users/login`, {
@@ -63,5 +64,12 @@ export const setCurrentUser = (decoded, user) => {
         type: SET_CURRENT_USER,
         payload: decoded,
         userProfile: user
+    }
+}
+
+export const updateUserFollowing = ({following}) => {
+    return {
+        type: UPDATE_USER_FOLLOWING,
+        userProfile: following
     }
 }
