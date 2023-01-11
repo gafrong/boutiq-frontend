@@ -17,6 +17,10 @@ const StoreProfile = (props) => {
     const userId = user.userId;
     const vendor = useSelector((state) => state.vendors.vendor)
     const vendorId = vendor.id;
+    const vendorLikes = vendor.likes;
+    const vendorIsLiked = Boolean(vendorLikes[userId]);
+    const vendorLikeCount = Object.keys(vendorLikes).length;
+
     const token = props.route.params.token;
 
     const followCheck = Boolean(vendor.followers[userId])
@@ -41,7 +45,6 @@ const StoreProfile = (props) => {
     
                         const checkFollowing = res.data.find(x=>x.id == userId).following;
                         const checkedFollowingArray = Object.keys(checkFollowing);
-                        const checkExist = checkedFollowingArray.includes(vendorId)
                         const updateProfile =() => {
                             userProfile.following = checkFollowing;
                             return (
@@ -70,7 +73,7 @@ const StoreProfile = (props) => {
                         <Text style={styles.profileItemText}>팔로워</Text>
                     </View>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{vendor.like ? vendor.like : 0}</Text>
+                        <Text style={styles.itemBold}>{vendorLikes ? vendorLikeCount : 0}</Text>
                         <Text style={styles.profileItemText}>좋아요</Text>
                     </View>
                     <View style={styles.profileItem}>

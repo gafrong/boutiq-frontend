@@ -13,10 +13,13 @@ export const vendorSlice = createSlice({
         },
         updateVendorFollowers: (state, action) => {
             state.vendor.followers = action.payload.followers;
-        }
+        },
+        updateVendor: (state, action) => {
+            state.vendor = action.payload.vendor;
+        },
     }
 });
 
-export const { setVendor, updateVendorFollowers } = vendorSlice.actions;
+export const { setVendor, updateVendorFollowers, updateVendor } = vendorSlice.actions;
 export default vendorSlice.reducer;
 

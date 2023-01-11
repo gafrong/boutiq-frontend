@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from "react";
 import { StyleSheet, View, Text, ActivityIndicator, FlatList, ScrollView } from "react-native";
 import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
+import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons"
 
 import axios from 'axios';
 import baseURL from "../../assets/common/baseUrl";
@@ -12,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ProductList from "../Market/ProductList";
 import { updateVendorFollowers } from '../../Redux/Reducers/vendorSlice';
 import { updateUserFollowing } from "../../Context/actions/Auth.actions";
+import { updateVendor } from "../../Redux/Reducers/vendorSlice";
 
 const StoreProfilePage = (props) => {
     const dispatch = useDispatch();
@@ -22,6 +24,10 @@ const StoreProfilePage = (props) => {
     const userId = user.userId;
     const [ loading, setLoading ] = useState(true);
     const vendor = useSelector((state) => state.vendors.vendor)
+    const vendorLikes = vendor.likes;
+    const vendorIsLiked = Boolean(vendorLikes[userId]);
+    const vendorLikeCount = Object.keys(vendorLikes).length;
+
     const products = useSelector((state)=> state.stateProducts.products);
 
     const token = props.route.params.token;
@@ -30,7 +36,6 @@ const StoreProfilePage = (props) => {
     const isFollowing = followCheck;
 
     const followersCount = Object.keys(vendor.followers).length;
-
     const productCount = Object.keys(products).length;
     const follwersCount = Object.keys(vendor.followers).length;
 
@@ -40,6 +45,19 @@ const StoreProfilePage = (props) => {
         });
         setLoading(false);
     }, [vendor.brand, props.navigation])
+
+    const patchVendorLike = async () => {
+        const response = await fetch(`${baseURL}users/${vendorId}/like`, {
+            method: "PATCH",
+            headers : {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({userId: userId}),
+        })
+        const updatedVendor = await response.json();
+        dispatch(updateVendor({vendor:updatedVendor}))
+    };
 
     const subscribeUser = () => {     
         if (vendorId !== userId) {
@@ -59,7 +77,6 @@ const StoreProfilePage = (props) => {
     
                         const checkFollowing = res.data.find(x=>x.id == userId).following;
                         const checkedFollowingArray = Object.keys(checkFollowing);
-                        const checkExist = checkedFollowingArray.includes(vendorId)
                         const updateProfile =() => {
                             userProfile.following = checkFollowing;
                             return (
@@ -88,7 +105,7 @@ const StoreProfilePage = (props) => {
                         <Text style={styles.profileItemText}>팔로워</Text>
                     </View>
                     <View style={styles.profileItem}>
-                        <Text style={styles.itemBold}>{vendor.like ? vendor.like : 0}</Text>
+                        <Text style={styles.itemBold}>{vendorLikes ? vendorLikeCount : 0}</Text>
                         <Text style={styles.profileItemText}>좋아요</Text>
                     </View>
                     <View style={styles.profileItem}>
@@ -126,6 +143,31 @@ const StoreProfilePage = (props) => {
                         <Icon name="user-plus" size={18} color="#fff"/>
                     </Button>
                 }
+                {vendorIsLiked 
+                ?   <Button style={styles.allBtn} 
+                        contentStyle={{width:100}}
+                        color="#333333"
+                        mode="contained"
+                        dark={true}
+                        uppercase={false}
+                        labelStyle={{fontSize:13}}
+                        onPress={()=> patchVendorLike()}
+                    >
+                        <MaterialIcon name="cards-heart" size={18} color="red"/>
+                    </Button>
+                :   <Button style={styles.allBtn} 
+                        contentStyle={{width:100}}
+                        color="#333"
+                        mode="contained"
+                        dark={true}
+                        uppercase={false}
+                        labelStyle={{fontSize:13}}
+                        onPress={()=> patchVendorLike()}
+                    >
+                        <MaterialIcon name="cards-heart-outline" size={18} color="white"/>
+                    </Button>
+                }
+                
                 <Button style={styles.allBtn} 
                     contentStyle={{width:100}}
                     color="#333333"
@@ -133,18 +175,7 @@ const StoreProfilePage = (props) => {
                     dark={true}
                     uppercase={false}
                     labelStyle={{fontSize:13}}
-                    onPress={()=> alert('follow')}
-                >
-                    <Icon name="heart" size={18} color="white"/>
-                </Button>
-                <Button style={styles.allBtn} 
-                    contentStyle={{width:100}}
-                    color="#333333"
-                    mode="contained"
-                    dark={true}
-                    uppercase={false}
-                    labelStyle={{fontSize:13}}
-                    onPress={()=> alert('follow')}
+                    onPress={()=> alert('comment')}
                 >
                     <Icon name="message-circle" size={18} color="white"/>
                 </Button>
