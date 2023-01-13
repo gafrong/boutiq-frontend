@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import { StyleSheet, View, Text, ActivityIndicator, FlatList, ScrollView } from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator, FlatList, ScrollView, Dimensions } from "react-native";
 import { Avatar, Button } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons"
@@ -15,12 +15,17 @@ import { updateVendorFollowers } from '../../Redux/Reducers/vendorSlice';
 import { updateUserFollowing } from "../../Context/actions/Auth.actions";
 import { updateVendor } from "../../Redux/Reducers/vendorSlice";
 
+var { width } = Dimensions.get('window');
+
 const StoreProfilePage = (props) => {
     const dispatch = useDispatch();
     const context = useContext(AuthGlobal)
     const userProfile = context.stateUser.userProfile;
 
     const user = context.stateUser.user;
+    
+    const isAuthenticated = context.stateUser.isAuthenticated;
+    console.log('USER', isAuthenticated)
     const userId = user.userId;
     const [ loading, setLoading ] = useState(true);
     const vendor = useSelector((state) => state.vendors.vendor)
@@ -118,68 +123,86 @@ const StoreProfilePage = (props) => {
                 <Text style={{color:'#ffffff', marginBottom:5}}>{vendor.brand.toUpperCase()}</Text>
                 <Text style={{color:'#ffffff'}}>{vendor.brandDescription}</Text>
             </View> 
-            <View style={styles.profileBtnContainer}>
-                {isFollowing
-                ?   <Button style={styles.allBtn} 
+            {isAuthenticated
+            ?
+                <View style={styles.profileBtnContainer}>
+                    {isFollowing
+                    ?   <Button style={styles.allBtn} 
+                            contentStyle={{width:100}}
+                            color="#333333"
+                            mode="contained"
+                            dark={true}
+                            uppercase={false}
+                            labelStyle={{fontSize:13}}
+                            onPress={()=> subscribeUser()}
+                        >
+                            <Icon name="user-check" size={18} color="tomato"/>
+                        </Button>
+                    :   <Button style={styles.followBtn} 
+                            contentStyle={{width:100}}
+                            color="#333333"
+                            mode="contained"
+                            dark={true}
+                            uppercase={false}
+                            labelStyle={{fontSize:13}}
+                            onPress={()=> subscribeUser()}
+                        >
+                            <Icon name="user-plus" size={18} color="#fff"/>
+                        </Button>
+                    }
+
+                    {vendorIsLiked 
+                    ?   <Button style={styles.allBtn} 
+                            contentStyle={{width:100}}
+                            color="#333333"
+                            mode="contained"
+                            dark={true}
+                            uppercase={false}
+                            labelStyle={{fontSize:13}}
+                            onPress={()=> patchVendorLike()}
+                        >
+                            <MaterialIcon name="cards-heart" size={18} color="tomato"/>
+                        </Button>
+                    :   <Button style={styles.allBtn} 
+                            contentStyle={{width:100}}
+                            color="#333"
+                            mode="contained"
+                            dark={true}
+                            uppercase={false}
+                            labelStyle={{fontSize:13}}
+                            onPress={()=> patchVendorLike()}
+                        >
+                            <MaterialIcon name="cards-heart-outline" size={18} color="white"/>
+                        </Button>
+                    }
+                    
+                    <Button style={styles.allBtn} 
                         contentStyle={{width:100}}
                         color="#333333"
                         mode="contained"
                         dark={true}
                         uppercase={false}
                         labelStyle={{fontSize:13}}
-                        onPress={()=> subscribeUser()}
+                        onPress={()=> alert('comment')}
                     >
-                        <Icon name="user-check" size={18} color="#777"/>
+                        <Icon name="message-circle" size={18} color="white"/>
                     </Button>
-                :   <Button style={styles.followBtn} 
-                        contentStyle={{width:100}}
-                        color="#333333"
+                </View> 
+            :   <View style={{}}>
+                    <Button 
+                        style={styles.loginBtn}
+                        color="#fff"
                         mode="contained"
-                        dark={true}
+                        dark={false}
                         uppercase={false}
                         labelStyle={{fontSize:13}}
-                        onPress={()=> subscribeUser()}
-                    >
-                        <Icon name="user-plus" size={18} color="#fff"/>
+                        onPress={()=> alert('LOGIN')}
+                        >
+                            <Text style={{color: '#fff'}}>로그인이 필요합니다</Text>
                     </Button>
-                }
-                {vendorIsLiked 
-                ?   <Button style={styles.allBtn} 
-                        contentStyle={{width:100}}
-                        color="#333333"
-                        mode="contained"
-                        dark={true}
-                        uppercase={false}
-                        labelStyle={{fontSize:13}}
-                        onPress={()=> patchVendorLike()}
-                    >
-                        <MaterialIcon name="cards-heart" size={18} color="red"/>
-                    </Button>
-                :   <Button style={styles.allBtn} 
-                        contentStyle={{width:100}}
-                        color="#333"
-                        mode="contained"
-                        dark={true}
-                        uppercase={false}
-                        labelStyle={{fontSize:13}}
-                        onPress={()=> patchVendorLike()}
-                    >
-                        <MaterialIcon name="cards-heart-outline" size={18} color="white"/>
-                    </Button>
-                }
+                </View>
+            }
                 
-                <Button style={styles.allBtn} 
-                    contentStyle={{width:100}}
-                    color="#333333"
-                    mode="contained"
-                    dark={true}
-                    uppercase={false}
-                    labelStyle={{fontSize:13}}
-                    onPress={()=> alert('comment')}
-                >
-                    <Icon name="message-circle" size={18} color="white"/>
-                </Button>
-            </View>     
             <View >
                 {loading == false ? (
                     <View style={styles.storeProductsContainer}>
@@ -277,6 +300,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     }, 
+    loginBtn : {
+        width: width,
+        justifyContent: "center",
+        backgroundColor:'tomato',
+        marginLeft: 10,
+        marginRight: 20,
+    },
     followBtn : {
         width: 100,
         marginRight: 15,

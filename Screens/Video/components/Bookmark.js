@@ -3,6 +3,7 @@ import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import baseURL from '../../../assets/common/baseUrl';
+import Toast from 'react-native-toast-message';
 
 const Bookmark = (props) => {
     const [bookmarkCount, setBookmarkCount] = useState(0);
@@ -76,7 +77,14 @@ const Bookmark = (props) => {
 	return (
         <> 
             {bookmarked ? 
-                <TouchableOpacity onPress={()=> handleBookmark()}>
+                <TouchableOpacity onPress={()=> {handleBookmark(), 
+                        Toast.show({
+                            topOffset: 60,
+                            type: "success",
+                            text1: `영상을 삭제했습니다.`,
+                            text2: ""
+                        })
+                    }}>
                     <View style={styles.menu}>
                         <Icon
                             size={28}
@@ -87,7 +95,14 @@ const Bookmark = (props) => {
                     </View>
                 </TouchableOpacity>
                 :
-                <TouchableOpacity onPress={()=> handleBookmark()}>
+                <TouchableOpacity onPress={()=> {handleBookmark(),
+                        Toast.show({
+                            topOffset: 60,
+                            type: "success",
+                            text1: `영상을 책갈피에 추가했습니다`,
+                            text2: ""
+                        })
+                    }}>
                     <View style={styles.menu}>
                         <Icon
                             size={28}

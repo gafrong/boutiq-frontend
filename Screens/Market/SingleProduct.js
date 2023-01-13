@@ -97,7 +97,7 @@ const SingleProduct = (props) => {
                                     ? <Icon 
                                         name="cards-heart" 
                                         size={30} 
-                                        color={'red'}/>
+                                        color={'tomato'}/>
                                     : <Icon 
                                         name="cards-heart-outline" 
                                         size={30} 
@@ -152,8 +152,8 @@ const SingleProduct = (props) => {
                         Toast.show({
                             topOffset: 60,
                             type: "success",
-                            text1: `${product.name} added to your cart`,
-                            text2: "Go to your cart to complete the order"
+                            text1: `제품이 추가되었습니다`,
+                            text2: "장바구니에 가셔서 주문을 완료하세요"
                         })
                     }}
                     style={{width: '20%'}}

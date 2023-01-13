@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState, useRef, useCallback, useMemo }  from 'react';
-import {TouchableOpacity, View, Text, StyleSheet, Dimensions, TextInput, FlatList, Share } from 'react-native';
+import {TouchableOpacity, View, Text, StyleSheet, Dimensions, TextInput, FlatList, Share, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styled from 'styled-components/native';
 import BottomSheetModal from '@gorhom/bottom-sheet';
@@ -9,6 +9,7 @@ import Moment from 'react-moment';
 import 'moment/locale/ko';
 import Bookmark from './Bookmark';
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 import AuthGlobal from '../../../Context/store/AuthGlobal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -71,6 +72,8 @@ const Sidebar = (props) => {
     const [isOpen, setIsOpen] = useState(false)
     const sheetRef = useRef(null);
     const snapPoints = useMemo(() => ["90%"], []);
+    const snapBlank = useMemo(() => ["30%"], []);
+    const [commentArea, setCommentArea] = useState(false);
     const [commentText, setCommentText] = useState(null);
     const [commentList, setCommentList] = useState([]);
     const [commentSize, setCommentSize] = useState(video.numComments);
@@ -85,6 +88,7 @@ const Sidebar = (props) => {
     }, []);
     const handleClosePress = useCallback(() => {
         sheetRef.current?.close();
+        Keyboard.dismiss();
     }, []);
 
     const updateComment = (newComment) => {
@@ -189,61 +193,78 @@ const Sidebar = (props) => {
 	return (
         <>  
             <Portal>
-                <BottomSheetModal
-                    detached
-                    ref={sheetRef}
-                    snapPoints={snapPoints}
-                    onChange={handleSheetChange}
-                    enablePanDownToClose={true}
-                    index={-1}
-                    backgroundStyle={{backgroundColor:"#222"}}
-                    handleIndicatorStyle={{backgroundColor:"#fff"}}
-                >   
-                    <TouchableOpacity onPress={() => {handleClosePress(); setIsOpen(false);}} style={{zIndex: 1}}>
-                        <Icon 
-                            name="close" 
-                            size={20} 
-                            color={'#fff'}
-                            style={styles.closeBtn}
-                        />
-                    </TouchableOpacity>
-                    <View style={styles.commentArea}>   
-                        <Text style={styles.totalCmts}>Total comments: {commentSize +1}</Text>  
-                            <FlatList 
-                                data={commentList}
-                                renderItem={renderItem}
-                                keyExtractor={(item, index) => index.toString()}
-                                onEndReached={handleLoadMore}
-                            />        
-  
-                        <View style={styles.inputArea}>
-                            <Avatar.Image 
-                                size={35} 
-                                source={{url: userImg? userImg : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg"}} 
-                                style={styles.commentorImg} />
-                            <TextInput
-                                style={styles.input}
-                                onChangeText={setCommentText}
-                                ref={inputRef}
-                                placeholder="Add comment.."
-                                placeholderTextColor="#777"
-                                selectionColor={"tomato"}
-                                maxLength={140}
-                                autoFocus={true}
-                                blurOnSubmit={true}
-                                clearButtonMode="always"
+                {userAuthenticated
+                ?   
+                    <BottomSheetModal
+                        detached
+                        ref={sheetRef}
+                        snapPoints={snapPoints}
+                        onChange={handleSheetChange}
+                        enablePanDownToClose={true}
+                        index={-1}
+                        backgroundStyle={{backgroundColor:"#222"}}
+                        handleIndicatorStyle={{backgroundColor:"#fff"}}
+                    >   
+                        <TouchableOpacity onPress={() => {handleClosePress(); setIsOpen(false);}} style={{zIndex: 1}}>
+                            <Icon 
+                                name="close" 
+                                size={20} 
+                                color={'#fff'}
+                                style={styles.closeBtn}
                             />
-                            <TouchableOpacity onPress={() => handleCommentSend()} style={styles.submitIcon}>
-                                <Icon
-                                    name="arrow-up-circle"
-                                    size={28}
-                                    color={'tomato'}
-                                    
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    </View>             
-                </BottomSheetModal>
+                        </TouchableOpacity>
+                        <View style={styles.commentArea}>   
+                            <Text style={styles.totalCmts}>Total comments: {commentSize +1}</Text>  
+                                <FlatList 
+                                    data={commentList}
+                                    renderItem={renderItem}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    onEndReached={handleLoadMore}
+                                />        
+                            {commentArea
+                            ?   <View style={styles.inputArea}>
+                                    <Avatar.Image 
+                                        size={35} 
+                                        source={{url: userImg? userImg : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg"}} 
+                                        style={styles.commentorImg} />
+                                    <TextInput
+                                        style={styles.input}
+                                        onChangeText={setCommentText}
+                                        ref={inputRef}
+                                        placeholder="Add comment.."
+                                        placeholderTextColor="#777"
+                                        selectionColor={"tomato"}
+                                        maxLength={140}
+                                        autoFocus={false}
+                                        blurOnSubmit={true}
+                                        clearButtonMode="always"
+                                    />
+                                    <TouchableOpacity onPress={() => handleCommentSend()} style={styles.submitIcon}>
+                                        <Icon
+                                            name="arrow-up-circle"
+                                            size={28}
+                                            color={'tomato'}
+                                            
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            :   <View></View>
+                            }
+                            
+                        </View>             
+                    </BottomSheetModal>
+                :   <BottomSheetModal
+                        detached
+                        ref={sheetRef}
+                        snapPoints={snapBlank}
+                        onChange={handleSheetChange}
+                        enablePanDownToClose={true}
+                        index={-1}
+                        backgroundStyle={{backgroundColor:"#222"}}
+                        handleIndicatorStyle={{backgroundColor:"#fff"}}
+                    ></BottomSheetModal>
+                }
+                
             </Portal>
             <PortalHost name="video_comment_host" />
             <Container>
@@ -266,7 +287,7 @@ const Sidebar = (props) => {
                         ? <Icon 
                             name="cards-heart" 
                             size={28} 
-                            color={'red'}/>
+                            color={'tomato'}/>
                         : <Icon 
                             name="cards-heart-outline" 
                             size={28} 
@@ -287,17 +308,31 @@ const Sidebar = (props) => {
                 {token
                 ? <Bookmark videoId={videoId} userId={loggedInUserId} token={token}/>
                 : <Bookmark videoId={videoId} userId={loggedInUserId} />}
+                {userAuthenticated
+                ?   
+                    <TouchableOpacity onPress={()=> {handleSnapPress(0); setIsOpen(true);getVideoComments(); setCommentArea(true);}}>
+                        <Menu>
+                            <Icon
+                                size={25}
+                                name="comment-outline"
+                                color={"#ffffff"}
+                            />
+                            <Count>{commentSize +1}</Count>
+                        </Menu>
+                    </TouchableOpacity>
+                :   
+                    <TouchableOpacity onPress={() => alert("Please login")}>
+                        <Menu>
+                            <Icon
+                                size={25}
+                                name="comment-outline"
+                                color={"#ffffff"}
+                            />
+                            <Count>{commentSize +1}</Count>
+                        </Menu>
+                    </TouchableOpacity>
+                }
                 
-                <TouchableOpacity onPress={()=> {handleSnapPress(0); setIsOpen(true);getVideoComments()}}>
-                    <Menu>
-                        <Icon
-                            size={25}
-                            name="comment-outline"
-                            color={"#ffffff"}
-                        />
-                        <Count>{commentSize +1}</Count>
-                    </Menu>
-                </TouchableOpacity>
                 <TouchableOpacity onPress={()=>handleShare()}>
                     <Menu>
                         <Icon 

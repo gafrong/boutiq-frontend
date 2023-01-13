@@ -25,8 +25,6 @@ const FollowingVideos = (props) => {
 	const context = useContext(AuthGlobal);
     const userAuthenticated = context.stateUser.isAuthenticated;
     const userId = context.stateUser.user.userId;
-    console.log('STATE USER', context.stateUser.userProfile)
-    console.log('FOLLL', Object.keys(context.stateUser.userProfile.following))
 
     let following = [];
     if (userAuthenticated) {

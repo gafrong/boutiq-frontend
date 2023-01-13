@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useEffect, useContext } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TouchableOpacity, View, Text, StyleSheet, Pressable, Animated, StatusBar } from 'react-native'
+import { TouchableOpacity, View, Text, StyleSheet, Pressable, Animated, StatusBar, Keyboard } from 'react-native'
 import styled from 'styled-components/native'
 import { useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,13 +19,13 @@ const VideosMain = (props) => {
     const userAuthenticated = context.stateUser.isAuthenticated;
     const [isPopular, setIsPopular] = useState(true);
     const [isFollowing, setIsFollowing] = useState(false);
-
+    Keyboard.dismiss();
     useEffect(()=> {
         AsyncStorage.getItem("jwt")
             .then((res) => {
                 setToken(res)
             })
-            .catch((error) => console.log("There is an error with token"));
+            .catch((error) => console.log("There is an error with t"));
     }, [])
 
     return(

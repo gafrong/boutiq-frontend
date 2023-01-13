@@ -35,7 +35,7 @@ function MyStack() {
                     headerShown: false
                 }}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="Login"
                 component={Login}
                 options={{
@@ -55,7 +55,7 @@ function MyStack() {
                 options={{
                     headerShown: false
                 }}
-            />
+            /> */}
         </Stack.Navigator>
     )
 }

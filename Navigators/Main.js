@@ -78,6 +78,13 @@ const Main = () => {
                         />
                     )
                 }}
+                listeners={({ navigation, route }) => ({
+                    blur: () => {
+                      if (route.state && route.state.index > 0) {
+                        navigation.dispatch(StackActions.popToTop());
+                      }
+                    },
+                })}
            /> 
            <Tab.Screen 
                 name="Cart"
@@ -104,9 +111,9 @@ const Main = () => {
                 options={{
                     tabBarIcon: ({color}) => (
                         <Icon 
-                            name="settings"
+                            name="grid"
                             color={color}
-                            size={30}
+                            size={28}
                         />
                     )
                 }}
@@ -125,6 +132,13 @@ const Main = () => {
                         />
                     )
                 }}
+                listeners={({ navigation, route }) => ({
+                    blur: () => {
+                      if (route.state && route.state.index > 0) {
+                        navigation.dispatch(StackActions.popToTop());
+                      }
+                    },
+                })}
            />           
 
         </Tab.Navigator>

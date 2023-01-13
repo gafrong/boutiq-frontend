@@ -57,7 +57,7 @@ const ProductCard = (props) => {
                             ? <Icon 
                                 name="cards-heart" 
                                 size={25} 
-                                color={'red'}/>
+                                color={'tomato'}/>
                             : <Icon 
                                 name="cards-heart-outline" 
                                 size={25} 

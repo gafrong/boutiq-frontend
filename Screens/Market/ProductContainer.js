@@ -1,13 +1,14 @@
 import React, {useState, useCallback } from "react";
-import { View, StyleSheet, ActivityIndicator, FlatList, Dimensions, SafeAreaView } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, FlatList, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Text } from 'react-native-paper';
+import Icon from "react-native-vector-icons/Feather";
+import { useNavigation } from "@react-navigation/native";
 
 // import functions to access database
 import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
 
-import SearchArea from "./SearchArea";
 import ProductList from './ProductList';
 
 import { useDispatch, useSelector } from "react-redux";
@@ -28,6 +29,8 @@ const ProductContainer = (props) => {
     const dispatch = useDispatch();
     const products = useSelector((state)=> state.stateProducts.products);
     const productCount = Object.keys(products).length;
+
+    const navigation = useNavigation();
 
     // react navigation when in focus a screen will use callback. useful when we have several products in the same navigation, so that when we come back, there will be a callback for data changes
     useFocusEffect((
@@ -73,43 +76,91 @@ const ProductContainer = (props) => {
     ))
 
     return(
-        <>           
-            {loading == false ? (
-                <View style={[styles.container,{width:width}]}>            
-                    <Text 
-                        style={[{color:"#ffffff"}, {padding:10}]}
-                        variant="titleLarge"></Text>
-                    <SearchArea />
-                    <FlatList
-                        numColumns={2}
-                        data={products}
-                        renderItem={({item}) => 
-                        <ProductList
-                            navigation={props.navigation}
-                            key={item._id}
-                            item={item}
-                        />}
-                        keyExtractor={item => item.name}
-                        style={{marginTop: 8}}
+        <View style={styles.pageContainer}>           
+            <View style={styles.headerContainer}>
+                <Text style={styles.headerTitle}>VOUTIQ</Text>
+                <TouchableOpacity 
+                    onPress={()=> navigation.navigate('SearchArea')}
+                    style={styles.search}>
+                    <Icon 
+                        name="search"
+                        style={styles.searchIcon}
+                        color={'#fff'}
+                        size={20}
                     />
+                </TouchableOpacity>
+                
+            </View>
+            <ScrollView>
+                <View style={styles.categoryArea}>
+
                 </View>
-            ) : (
-                // Loading
-                <View style={styles.loadingContainer}>
-                    <View>
-                        <ActivityIndicator size="large" color="red" />
+                {loading == false ? (
+                    <View style={[styles.container,{width:width}]}>            
+
+                        <FlatList
+                            numColumns={2}
+                            data={products}
+                            renderItem={({item}) => 
+                            <ProductList
+                                navigation={props.navigation}
+                                key={item._id}
+                                item={item}
+                            />}
+                            keyExtractor={item => item.name}
+                            style={{marginTop: 0}}
+                        />
                     </View>
-                </View>
-            )}
-        </>
+                ) : (
+                    // Loading
+                    <View style={styles.loadingContainer}>
+                        <View>
+                            <ActivityIndicator size="large" color="red" />
+                        </View>
+                    </View>
+                )}
+            </ScrollView>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
+    pageContainer: {
+        flex: 1,
+        backgroundColor: '#222'
+    },
     container: {
         flex:1,
         flexWrap: "wrap",
         backgroundColor: "#222222"
+    },
+    headerContainer:{
+        height: 65,
+        paddingLeft: 15,
+        padding: 10,
+        paddingTop: 30,
+        backgroundColor: '#000',
+        flexDirection: 'row'
+    },
+    headerTitle: {
+        color: '#fff',
+        fontSize: 22,
+        paddingTop: 2
+    },
+    headerText: {
+        color: '#fff'
+    },
+    categoryArea: {
+        height: 40,
+        flexDirection: 'row',
+        padding: 10,
+        backgroundColor: '#222',
+    },
+    search : {
+        color: '#fff',
+        position: 'absolute',
+        right: 15,
+        top: 35
     },
     loadingContainer:{
         flex:1,

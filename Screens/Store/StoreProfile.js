@@ -94,7 +94,7 @@ const StoreProfile = (props) => {
                         labelStyle={{fontSize:13}}
                         onPress={()=> subscribeUser()}
                     >
-                        <Icon name="user-check" size={18} color="#777"/>
+                        <Icon name="user-check" size={18} color="tomato"/>
                     </Button>
                     <Button style={[styles.allBtn, {width:200}]} 
                         contentStyle={{width:200}}
@@ -129,7 +129,7 @@ const StoreProfile = (props) => {
                         onPress={()=> props.navigation.navigate('StoreProfilePage', {token:token, vendor:vendor})}
                     > 더보기<Icon style={{alignItems:"center", lineHeight:40}} name="chevron-right" size={13} color="white"/>
                     </Button>
-                    </>
+                </>
                 }
             </View>              
         </View>
